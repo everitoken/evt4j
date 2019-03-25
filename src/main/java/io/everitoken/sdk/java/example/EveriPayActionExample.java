@@ -16,11 +16,15 @@ import io.everitoken.sdk.java.service.TransactionService;
 public class EveriPayActionExample {
     public static void main(String[] args) {
 
+        String uniqueLinkId = EvtLink.getUniqueLinkId();
+        int symbolId = 1;
         int maxAmount = 100;
+
         NetParams netParams = new TestNetNetParams();
         EvtLink evtLink = new EvtLink(netParams);
-        EvtLink.EveriPayParam everiPayParam1 = new EvtLink.EveriPayParam(1, EvtLink.getUniqueLinkId(), maxAmount);
-        String payText = evtLink.getEvtLinkForEveriPay(everiPayParam1,
+        EvtLink.EveriPayParam everiPayParam = new EvtLink.EveriPayParam(symbolId, uniqueLinkId, maxAmount);
+
+        String payText = evtLink.getEvtLinkForEveriPay(everiPayParam,
                 SignProvider.of(KeyProvider.of("5J1by7KRQujRdXrurEsvEr2zQGcdPaMJRjewER6XsAR2eCcpt3D")));
 
         EveriPayAction action = EveriPayAction.of(payText, "0.00001 " + "S#1",

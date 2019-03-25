@@ -2,6 +2,8 @@
 
 Official Java SDK for everiToken public chain.
 
+> This SDK also has an [**example package**](https://github.com/everitoken/evt4j/blob/master/src/main/java/io/everitoken/sdk/java/example/) set up, which lists various useful code examples for quick references on how to interact with everiToken public chain.
+
 - [Install](#install)
   - [use with Maven project](#use-with-maven-project)
   - [use with Gradle project](#use-with-gradle-project)
@@ -11,7 +13,6 @@ Official Java SDK for everiToken public chain.
 - [Api usage](#api-usage)
 - [Action usage](#action-usage)
 - [EvtLink usage](#evtlink-usage)
-- [EvtLink](#evtlink)
   - [EvtLink generation](#evtlink-generation)
 - [Deploy](#deploy)
 
@@ -53,6 +54,17 @@ Build jar with all the dependencies, run the following command
 `mvn clean compile assembly:single`
 
 It will generate jar with all dependencies under `target` folder
+
+Use maven command to install `jar` as dependency
+
+```console
+$ mvn install:install-file -Dfile=path/to/jar/file \
+                           -DgroupId=io.everitoken.sdk \
+                           -DartifactId=chain-sdk \
+                           -Dversion=version \
+                           -Dpackaging=jar
+
+```
 
 ## Usage overview
 
@@ -229,7 +241,7 @@ System.out.println(privateKey.toWif());
 
 By instantiate an `Api` instance, you will be able to use it to interact with the specified remote node.
 
-> Refer to [ApiExample.java](src/main/java/io/everitoken/sdk/java/example/ApiExample.java) in our [example package](src/main/java/io/everitoken/sdk/java/example/) for detailed code examples.
+> Refer to [ApiExample.java](https://github.com/everitoken/evt4j/blob/master/src/main/java/io/everitoken/sdk/java/example/ApiExample.java) in our [example package](https://github.com/everitoken/evt4j/blob/master/src/main/java/io/everitoken/sdk/java/example/) for detailed code examples.
 
 ## Action usage
 
@@ -238,7 +250,7 @@ An **Action** in an instruction to perform a given task on everiToken public cha
 1. construct the given action locally
 2. instantiate an `TransactionService` to push the action (or actions) to the chain
 
-> Refer to [example package](src/main/java/io/everitoken/sdk/java/example/) for more code examples of each **Action**.
+> Refer to [example package](https://github.com/everitoken/evt4j/blob/master/src/main/java/io/everitoken/sdk/java/example/) for more code examples of each **Action**.
 
 <details>
 <summary>Here is the code example showing how to create a domain on everiToken public chain</summary>
@@ -279,8 +291,6 @@ try {
 
 ## EvtLink usage
 
-## EvtLink
-
 ### EvtLink generation
 
 `EvtLink` is the place to generate and parse QR Codes using `EVT Link`'s syntax. `EVT Link` can be used for `everiPass`, `everiPay`, `Address Code for Receiver`.
@@ -302,13 +312,21 @@ NetParams netParams = new TestNetNetParams();
 EvtLink evtLink = new EvtLink(netParams);
 
 // make sure the domain and token you use exist and has correct authorize keys
+// replace "domainName" and "tokenName" with your custom values
 EvtLink.EveriPassParam everiPassParam = new EvtLink.EveriPassParam(true, "domainName", "tokenName");
 
 String passText = evtLink.getEvtLinkForEveriPass(everiPassParam,
         SignProvider.of(KeyProvider.of("5J1by7KRQujRdXrurEsvEr2zQGcdPaMJRjewER6XsAR2eCcpt3D")));
 
-// will print out evt link
+// will print out the content of evt link
 System.out.println(passText);
+
+try {
+    // will print PNG image data url, e.g. "data:image/png;base64,..."
+    System.out.println(Utils.getQrImageDataUri(passText));
+} catch (Exception e) {
+    // handle exception creating QR image data
+}
 
 ```
 
@@ -316,7 +334,35 @@ System.out.println(passText);
 
 **static** `getEvtLinkForEveriPay`
 
-**static** `getEvtLinkForPayeeCode`
+Generate a `EvtLink` for `EveriPay` is similar to the one shown above for `EveriPass`.
+
+<details>
+<summary>Click to see code example</summary>
+
+```java
+String uniqueLinkId = EvtLink.getUniqueLinkId();
+int symbolId = 1;
+int maxAmount = 100;
+
+// init Api connection to the node
+NetParams netParams = new TestNetNetParams();
+
+// init evtLink instance with api instance
+EvtLink evtLink = new EvtLink(netParams);
+
+// init everiPayParam which representing the everiPay action, which contains
+//      - symbolId (e.g. 1 for Evt),
+//      - uniqueLinkId (which can be generated with the helper function (getUniqueLinkId) from EvtLink class),
+//      - maxAmount
+EvtLink.EveriPayParam everiPayParam = new EvtLink.EveriPayParam(symbolId, uniqueLinkId, maxAmount);
+
+// the string generated here can be encoded in to QR code, refer to example "getEvtLinkForEveriPay" for code snippet
+String payText = evtLink.getEvtLinkForEveriPay(everiPayParam,
+        SignProvider.of(KeyProvider.of("5J1by7KRQujRdXrurEsvEr2zQGcdPaMJRjewER6XsAR2eCcpt3D")));
+
+```
+
+</details>
 
 ## Deploy
 
