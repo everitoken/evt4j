@@ -169,7 +169,7 @@ public class Utils {
         return dateTime.minus(diff);
     }
 
-    public static String getQrImageDateUri(String rawText) throws WriterException, IOException {
+    public static String getQrImageDataUri(String rawText) throws WriterException, IOException {
         byte[] qr = getQrImageInBytes(rawText);
 
         String data = new String(Base64.getEncoder().encode(qr), StandardCharsets.UTF_8);
