@@ -13,8 +13,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
-import com.mashape.unirest.http.JsonNode;
-
 import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -415,15 +413,13 @@ public class EvtLink {
 
 		do {
 			try {
-				JsonNode res = new EvtLinkStatus(params.isBlock()).request(RequestParams.of(netParams, () -> {
+				JSONObject json = new EvtLinkStatus(params.isBlock()).request(RequestParams.of(netParams, () -> {
 					JSONObject payload = new JSONObject();
 					payload.put("link_id", params.getLinkId());
 					return payload.toString();
 				}));
 
 				isOnline = true;
-
-				JSONObject json = res.getObject();
 
 				if (json.getString("trx_id") != null && json.getInt("block_num") > 0) {
 					rst.put("pending", "false");

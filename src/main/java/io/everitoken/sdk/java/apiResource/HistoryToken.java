@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import com.mashape.unirest.http.JsonNode;
-
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -14,7 +12,7 @@ import io.everitoken.sdk.java.dto.TokenDomain;
 import io.everitoken.sdk.java.exceptions.ApiResponseException;
 import io.everitoken.sdk.java.param.RequestParams;
 
-public class HistoryToken extends ApiResource {
+public class HistoryToken extends OkhttpApi {
     private static final String uri = "/v1/history/get_tokens";
 
     public HistoryToken() {
@@ -26,14 +24,10 @@ public class HistoryToken extends ApiResource {
     }
 
     public List<TokenDomain> request(RequestParams requestParams) throws ApiResponseException {
-        JsonNode res = super.makeRequest(requestParams);
-        JSONObject payload = res.getObject();
+        String res = super.makeRequest(requestParams);
+        JSONObject payload = new JSONObject(res);
 
         List<TokenDomain> tokens = new ArrayList<>();
-
-        if (payload == null) {
-            return tokens;
-        }
 
         Iterator<String> domains = payload.keys();
 

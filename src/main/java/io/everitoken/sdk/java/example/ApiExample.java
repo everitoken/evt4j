@@ -5,8 +5,6 @@ import java.util.List;
 
 import com.alibaba.fastjson.JSON;
 
-import org.json.JSONObject;
-
 import io.everitoken.sdk.java.Address;
 import io.everitoken.sdk.java.Api;
 import io.everitoken.sdk.java.Asset;
@@ -34,10 +32,10 @@ public class ApiExample {
         try {
             // replace this with method you want to test
             // getTransactionDetailById("93e0aa6bed4b2b768ce461jcc2cb66319aaef87bdc413cbb7148cc4690bc799f");
-            // getDomainDetail();
-            NetParams netParams = new TestNetNetParams();
-            JSONObject state = new Api(netParams).getHeadBlockHeaderState();
-            System.out.println(state.toString());
+            getDomainDetail();
+            // NetParams netParams = new TestNetNetParams();
+            // JSONObject state = new Api(netParams).getHeadBlockHeaderState();
+            // System.out.println(state.toString());
         } catch (ApiResponseException ex) {
             System.out.println(ex);
         }

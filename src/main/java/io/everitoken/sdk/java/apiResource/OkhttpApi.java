@@ -12,6 +12,7 @@ import io.everitoken.sdk.java.param.RequestParams;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 
 class OkhttpApi {
@@ -45,7 +46,9 @@ class OkhttpApi {
     }
 
     protected Request buildRequest(RequestParams requestParams) {
-        return new Request.Builder().url(getUrl(requestParams.getNetParams())).build();
+        RequestBody body = RequestBody.create(JSON_TYPE, requestParams.getApiParams().asBody());
+
+        return new Request.Builder().url(getUrl(requestParams.getNetParams())).post(body).build();
     }
 
     protected String makeRequest(RequestParams requestParams) throws ApiResponseException {

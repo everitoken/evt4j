@@ -1,14 +1,13 @@
 package io.everitoken.sdk.java.apiResource;
 
-import com.mashape.unirest.http.JsonNode;
-
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONObject;
 
 import io.everitoken.sdk.java.dto.TransactionDetail;
 import io.everitoken.sdk.java.exceptions.ApiResponseException;
 import io.everitoken.sdk.java.param.RequestParams;
 
-public class HistoryTransactionDetail extends ApiResource {
+public class HistoryTransactionDetail extends OkhttpApi {
     private static final String uri = "/v1/history/get_transaction";
 
     public HistoryTransactionDetail(boolean useHistoryPlugin) {
@@ -24,7 +23,7 @@ public class HistoryTransactionDetail extends ApiResource {
     }
 
     public TransactionDetail request(RequestParams requestParams) throws ApiResponseException {
-        JsonNode res = super.makeRequest(requestParams);
-        return TransactionDetail.create(res.getObject());
+        String res = super.makeRequest(requestParams);
+        return TransactionDetail.create(new JSONObject(res));
     }
 }

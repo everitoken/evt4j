@@ -12,7 +12,7 @@ import io.everitoken.sdk.java.dto.TokenDetailData;
 import io.everitoken.sdk.java.exceptions.ApiResponseException;
 import io.everitoken.sdk.java.param.RequestParams;
 
-public class DomainTokens extends ApiResource {
+public class DomainTokens extends OkhttpApi {
     private static final String uri = "/v1/evt/get_tokens";
 
     public DomainTokens() {
@@ -24,9 +24,10 @@ public class DomainTokens extends ApiResource {
     }
 
     public List<TokenDetailData> request(RequestParams requestParams) throws ApiResponseException {
-        JSONArray res = super.makeRequest(requestParams).getArray();
+        String res = super.makeRequest(requestParams);
+        JSONArray array = new JSONArray(res);
 
-        return StreamSupport.stream(res.spliterator(), true).map(raw -> TokenDetailData.create((JSONObject) raw))
+        return StreamSupport.stream(array.spliterator(), true).map(raw -> TokenDetailData.create((JSONObject) raw))
                 .collect(Collectors.toList());
     }
 }

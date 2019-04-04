@@ -4,15 +4,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import com.mashape.unirest.http.JsonNode;
-
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import io.everitoken.sdk.java.exceptions.ApiResponseException;
 import io.everitoken.sdk.java.param.RequestParams;
 
-public class SigningRequiredKeys extends ApiResource {
+public class SigningRequiredKeys extends OkhttpApi {
     private static final String uri = "/v1/chain/get_required_keys";
 
     public SigningRequiredKeys() {
@@ -24,8 +23,8 @@ public class SigningRequiredKeys extends ApiResource {
     }
 
     public List<String> request(RequestParams requestParams) throws ApiResponseException {
-        JsonNode res = super.makeRequest(requestParams);
-        JSONArray array = res.getObject().getJSONArray("required_keys");
+        String res = super.makeRequest(requestParams);
+        JSONArray array = new JSONObject(res).getJSONArray("required_keys");
 
         return StreamSupport.stream(array.spliterator(), true).map(key -> (String) key).collect(Collectors.toList());
     }

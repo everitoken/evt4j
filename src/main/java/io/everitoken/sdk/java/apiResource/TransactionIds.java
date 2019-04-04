@@ -6,7 +6,7 @@ import org.json.JSONArray;
 import io.everitoken.sdk.java.exceptions.ApiResponseException;
 import io.everitoken.sdk.java.param.RequestParams;
 
-public class TransactionIds extends ApiResource {
+public class TransactionIds extends OkhttpApi {
     private static final String uri = "/v1/chain/get_transaction_ids_for_block";
 
     public TransactionIds() {
@@ -18,6 +18,6 @@ public class TransactionIds extends ApiResource {
     }
 
     public JSONArray request(RequestParams requestParams) throws ApiResponseException {
-        return super.makeRequest(requestParams).getArray();
+        return new JSONArray(super.makeRequest(requestParams));
     }
 }

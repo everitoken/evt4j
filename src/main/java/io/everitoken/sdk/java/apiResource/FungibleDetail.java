@@ -1,14 +1,13 @@
 package io.everitoken.sdk.java.apiResource;
 
-import com.mashape.unirest.http.JsonNode;
-
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONObject;
 
 import io.everitoken.sdk.java.dto.FungibleDetailData;
 import io.everitoken.sdk.java.exceptions.ApiResponseException;
 import io.everitoken.sdk.java.param.RequestParams;
 
-public class FungibleDetail extends ApiResource {
+public class FungibleDetail extends OkhttpApi {
     private static final String uri = "/v1/evt/get_fungible";
 
     public FungibleDetail() {
@@ -20,7 +19,7 @@ public class FungibleDetail extends ApiResource {
     }
 
     public FungibleDetailData request(RequestParams requestParams) throws ApiResponseException {
-        JsonNode res = super.makeRequest(requestParams);
-        return FungibleDetailData.ofRaw(res.getObject());
+        String res = super.makeRequest(requestParams);
+        return FungibleDetailData.ofRaw(new JSONObject(res));
     }
 }
