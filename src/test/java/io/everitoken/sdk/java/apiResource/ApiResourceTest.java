@@ -16,17 +16,10 @@ class ApiResourceTest {
 
     @Test
     void getUrl() {
-        ApiResource info = new Info();
+        Info info = new Info();
         NetParams netParams = new TestNetNetParams();
         String url = info.getUrl(netParams);
         assertTrue(url.contains("testnet1.everitoken.io"), "url of getInfo");
         assertTrue(url.endsWith("/v1/chain/get_info"), "url of getInfo");
-    }
-
-    @Test
-    void equals() {
-        ApiResource info = new Info();
-        ApiResource info1 = new Info();
-        assertTrue(info.equals(info1), "Should equal");
     }
 }

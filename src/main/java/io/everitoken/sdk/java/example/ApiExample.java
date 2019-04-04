@@ -5,18 +5,19 @@ import java.util.List;
 
 import com.alibaba.fastjson.JSON;
 
+import org.json.JSONObject;
+
 import io.everitoken.sdk.java.Address;
 import io.everitoken.sdk.java.Api;
 import io.everitoken.sdk.java.Asset;
 import io.everitoken.sdk.java.PublicKey;
-import io.everitoken.sdk.java.apiResource.ApiResource;
+import io.everitoken.sdk.java.apiResource.ApiRequestConfig;
 import io.everitoken.sdk.java.dto.ActionData;
 import io.everitoken.sdk.java.dto.DomainDetailData;
 import io.everitoken.sdk.java.dto.FungibleCreated;
 import io.everitoken.sdk.java.dto.FungibleDetailData;
 import io.everitoken.sdk.java.dto.GroupDetailData;
 import io.everitoken.sdk.java.dto.NameableResource;
-import io.everitoken.sdk.java.dto.NodeInfo;
 import io.everitoken.sdk.java.dto.TokenDetailData;
 import io.everitoken.sdk.java.dto.TokenDomain;
 import io.everitoken.sdk.java.dto.TransactionDetail;
@@ -35,10 +36,10 @@ public class ApiExample {
             // getTransactionDetailById("93e0aa6bed4b2b768ce461jcc2cb66319aaef87bdc413cbb7148cc4690bc799f");
             // getDomainDetail();
             NetParams netParams = new TestNetNetParams();
-            NodeInfo info = new Api(netParams).getInfo();
-            System.out.println(info.getHeadBlockTime());
+            JSONObject state = new Api(netParams).getHeadBlockHeaderState();
+            System.out.println(state.toString());
         } catch (ApiResponseException ex) {
-            System.out.println(ex.getRaw());
+            System.out.println(ex);
         }
     }
 
@@ -103,7 +104,7 @@ public class ApiExample {
 
     static void getToken() throws ApiResponseException {
         NetParams netParams = new TestNetNetParams();
-        TokenDetailData res = new Api(netParams, ApiResource.ApiRequestConfig.of(10000)).getToken("test1122", "t2");
+        TokenDetailData res = new Api(netParams, ApiRequestConfig.of(10000)).getToken("test1122", "t2");
         System.out.println(res.getName());
         res.getOwner().forEach(publicKey -> System.out.println(publicKey.toString()));
     }

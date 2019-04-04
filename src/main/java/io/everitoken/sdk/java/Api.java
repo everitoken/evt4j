@@ -1,21 +1,57 @@
 package io.everitoken.sdk.java;
 
-import io.everitoken.sdk.java.apiResource.*;
-import io.everitoken.sdk.java.dto.*;
-import io.everitoken.sdk.java.exceptions.ApiResponseException;
-import io.everitoken.sdk.java.param.*;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.jetbrains.annotations.Nullable;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import io.everitoken.sdk.java.apiResource.ApiRequestConfig;
+import io.everitoken.sdk.java.apiResource.DomainDetail;
+import io.everitoken.sdk.java.apiResource.DomainTokens;
+import io.everitoken.sdk.java.apiResource.FungibleAction;
+import io.everitoken.sdk.java.apiResource.FungibleBalance;
+import io.everitoken.sdk.java.apiResource.FungibleDetail;
+import io.everitoken.sdk.java.apiResource.GroupDetail;
+import io.everitoken.sdk.java.apiResource.HeadBlockHeaderState;
+import io.everitoken.sdk.java.apiResource.HistoryAction;
+import io.everitoken.sdk.java.apiResource.HistoryDomain;
+import io.everitoken.sdk.java.apiResource.HistoryFungible;
+import io.everitoken.sdk.java.apiResource.HistoryGroup;
+import io.everitoken.sdk.java.apiResource.HistoryToken;
+import io.everitoken.sdk.java.apiResource.HistoryTransactionDetail;
+import io.everitoken.sdk.java.apiResource.Info;
+import io.everitoken.sdk.java.apiResource.RequiredSuspendedKeys;
+import io.everitoken.sdk.java.apiResource.SignableDigest;
+import io.everitoken.sdk.java.apiResource.SuspendedProposal;
+import io.everitoken.sdk.java.apiResource.TokenDetail;
+import io.everitoken.sdk.java.apiResource.TransactionDetailsOfPublicKeys;
+import io.everitoken.sdk.java.apiResource.TransactionIds;
+import io.everitoken.sdk.java.dto.ActionData;
+import io.everitoken.sdk.java.dto.DomainDetailData;
+import io.everitoken.sdk.java.dto.FungibleCreated;
+import io.everitoken.sdk.java.dto.FungibleDetailData;
+import io.everitoken.sdk.java.dto.GroupDetailData;
+import io.everitoken.sdk.java.dto.NameableResource;
+import io.everitoken.sdk.java.dto.NodeInfo;
+import io.everitoken.sdk.java.dto.TokenDetailData;
+import io.everitoken.sdk.java.dto.TokenDomain;
+import io.everitoken.sdk.java.dto.TransactionDetail;
+import io.everitoken.sdk.java.exceptions.ApiResponseException;
+import io.everitoken.sdk.java.param.ActionQueryParams;
+import io.everitoken.sdk.java.param.FungibleActionParams;
+import io.everitoken.sdk.java.param.NetParams;
+import io.everitoken.sdk.java.param.PublicKeysParams;
+import io.everitoken.sdk.java.param.RequestParams;
+import io.everitoken.sdk.java.param.TestNetNetParams;
+import io.everitoken.sdk.java.param.TransactionDetailParams;
 
 public class Api {
     private final NetParams netParams;
-    private ApiResource.ApiRequestConfig apiRequestConfig = new ApiResource.ApiRequestConfig();
+    private ApiRequestConfig apiRequestConfig = new ApiRequestConfig();
 
-    public Api(NetParams netParams, @Nullable ApiResource.ApiRequestConfig apiRequestConfig) {
+    public Api(NetParams netParams, @Nullable ApiRequestConfig apiRequestConfig) {
         this.netParams = netParams;
 
         if (apiRequestConfig != null) {
@@ -92,11 +128,10 @@ public class Api {
         }));
     }
 
-    public TransactionDetail getTransactionDetailById(TransactionDetailParams transactionDetailParams) throws ApiResponseException {
-        return new HistoryTransactionDetail(apiRequestConfig).request(RequestParams.of(
-                netParams,
-                transactionDetailParams
-        ));
+    public TransactionDetail getTransactionDetailById(TransactionDetailParams transactionDetailParams)
+            throws ApiResponseException {
+        return new HistoryTransactionDetail(apiRequestConfig)
+                .request(RequestParams.of(netParams, transactionDetailParams));
     }
 
     public DomainDetailData getDomainDetail(String name) throws ApiResponseException {
@@ -107,7 +142,8 @@ public class Api {
         }));
     }
 
-    public List<ActionData> getFungibleActionsByAddress(FungibleActionParams fungibleActionParams) throws ApiResponseException {
+    public List<ActionData> getFungibleActionsByAddress(FungibleActionParams fungibleActionParams)
+            throws ApiResponseException {
         return new FungibleAction(apiRequestConfig).request(RequestParams.of(netParams, fungibleActionParams));
     }
 
@@ -151,15 +187,12 @@ public class Api {
         }));
     }
 
-    public JSONArray getTransactionsDetailOfPublicKeys(List<PublicKey> publicKeys, int skip, int take,
-                                                       String direction) throws ApiResponseException {
+    public JSONArray getTransactionsDetailOfPublicKeys(List<PublicKey> publicKeys, int skip, int take, String direction)
+            throws ApiResponseException {
 
         if (!direction.equals("asc") && !direction.equals("desc")) {
             throw new IllegalArgumentException(
-                    String.format(
-                            "Direct \"%s\" is not supported, only asc and desc are supported",
-                            direction
-                    ));
+                    String.format("Direct \"%s\" is not supported, only asc and desc are supported", direction));
         }
 
         return new TransactionDetailsOfPublicKeys(apiRequestConfig).request(RequestParams.of(netParams, () -> {

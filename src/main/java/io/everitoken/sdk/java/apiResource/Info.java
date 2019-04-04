@@ -1,19 +1,23 @@
 package io.everitoken.sdk.java.apiResource;
 
 import com.alibaba.fastjson.JSON;
-import com.mashape.unirest.http.JsonNode;
-import com.mashape.unirest.http.Unirest;
-import com.mashape.unirest.request.GetRequest;
 
 import org.jetbrains.annotations.NotNull;
 
 import io.everitoken.sdk.java.dto.NodeInfo;
 import io.everitoken.sdk.java.exceptions.ApiResponseException;
 import io.everitoken.sdk.java.param.RequestParams;
+import okhttp3.Request;
 
-public class Info extends ApiResource {
+public class Info extends OkhttpApi {
     private static final String uri = "/v1/chain/get_info";
     private static final String method = "GET";
+
+    // public static void main(String[] args) {
+    // NetParams netParams = new TestNetNetParams();
+    // NodeInfo info = new (netParams).getInfo();
+    // System.out.println(info.getHeadBlockTime());
+    // }
 
     public Info() {
         super(uri, method, null);
@@ -24,12 +28,12 @@ public class Info extends ApiResource {
     }
 
     @Override
-    protected GetRequest buildRequest(RequestParams requestParams) {
-        return Unirest.get(getUrl(requestParams.getNetParams()));
+    protected Request buildRequest(RequestParams requestParams) {
+        return new Request.Builder().url(getUrl(requestParams.getNetParams())).build();
     }
 
-    public NodeInfo request(RequestParams requestParams) throws ApiResponseException {
-        JsonNode res = super.makeRequest(requestParams);
-        return JSON.parseObject(res.getObject().toString(), NodeInfo.class);
+    public NodeInfo request(RequestParams requestParams) throws ApiResponseException  {
+        String res = super.makeRequest(requestParams);
+        return JSON.parseObject(res, NodeInfo.class);
     }
 }
