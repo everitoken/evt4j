@@ -28,7 +28,8 @@ public class TokenDetailData implements Meta {
 
         for (int i = 0; i < owner.length(); i++) {
             try {
-                this.owner.add(PublicKey.of((String) owner.get(i)));
+                PublicKey publicKey = PublicKey.of((String) owner.get(i));
+                this.owner.add(publicKey);
             } catch (InvalidPublicKeyException ex) {
             }
         }
