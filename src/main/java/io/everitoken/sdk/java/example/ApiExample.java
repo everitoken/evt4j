@@ -9,14 +9,13 @@ import io.everitoken.sdk.java.Address;
 import io.everitoken.sdk.java.Api;
 import io.everitoken.sdk.java.Asset;
 import io.everitoken.sdk.java.PublicKey;
-import io.everitoken.sdk.java.apiResource.ApiResource;
+import io.everitoken.sdk.java.apiResource.ApiRequestConfig;
 import io.everitoken.sdk.java.dto.ActionData;
 import io.everitoken.sdk.java.dto.DomainDetailData;
 import io.everitoken.sdk.java.dto.FungibleCreated;
 import io.everitoken.sdk.java.dto.FungibleDetailData;
 import io.everitoken.sdk.java.dto.GroupDetailData;
 import io.everitoken.sdk.java.dto.NameableResource;
-import io.everitoken.sdk.java.dto.NodeInfo;
 import io.everitoken.sdk.java.dto.TokenDetailData;
 import io.everitoken.sdk.java.dto.TokenDomain;
 import io.everitoken.sdk.java.dto.TransactionDetail;
@@ -24,6 +23,7 @@ import io.everitoken.sdk.java.exceptions.ApiResponseException;
 import io.everitoken.sdk.java.param.ActionQueryParams;
 import io.everitoken.sdk.java.param.MainNetNetParams;
 import io.everitoken.sdk.java.param.NetParams;
+import io.everitoken.sdk.java.param.NetParams.NET;
 import io.everitoken.sdk.java.param.PublicKeysParams;
 import io.everitoken.sdk.java.param.TestNetNetParams;
 import io.everitoken.sdk.java.param.TransactionDetailParams;
@@ -33,10 +33,13 @@ public class ApiExample {
         try {
             // replace this with method you want to test
             // getTransactionDetailById("93e0aa6bed4b2b768ce461jcc2cb66319aaef87bdc413cbb7148cc4690bc799f");
-            // getDomainDetail();
-            NetParams netParams = new TestNetNetParams();
-            NodeInfo info = new Api(netParams).getInfo();
-            System.out.println(info.getHeadBlockTime());
+            // getGroupDetail();
+            getTransactionsDetailOfPublicKeys(); // test
+            // getCreatedDomain();
+            // getCreatedFungibles();
+            // NetParams netParams = new TestNetNetParams();
+            // JSONObject state = new Api(netParams).getHeadBlockHeaderState();
+            // System.out.println(state.toString());
         } catch (ApiResponseException ex) {
             System.out.println(ex.getRaw());
         }
@@ -103,7 +106,7 @@ public class ApiExample {
 
     static void getToken() throws ApiResponseException {
         NetParams netParams = new TestNetNetParams();
-        TokenDetailData res = new Api(netParams, ApiResource.ApiRequestConfig.of(10000)).getToken("test1122", "t2");
+        TokenDetailData res = new Api(netParams, ApiRequestConfig.of(10000)).getToken("test1122", "t2");
         System.out.println(res.getName());
         res.getOwner().forEach(publicKey -> System.out.println(publicKey.toString()));
     }
@@ -122,7 +125,7 @@ public class ApiExample {
     }
 
     static void getFungibleBalance() throws ApiResponseException {
-        NetParams netParams = new TestNetNetParams();
+        NetParams netParams = new MainNetNetParams(NET.MAINNET1);
         List<Asset> res = new Api(netParams)
                 .getFungibleBalance(Address.of("EVT8aNw4NTvjBL1XR6hgy4zcA9jzh1JLjMuAw85mSbW68vYzw2f9H"));
         res.forEach(balance -> System.out.println(balance.toString()));

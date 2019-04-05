@@ -1,19 +1,17 @@
 package io.everitoken.sdk.java.apiResource;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
-import com.mashape.unirest.http.JsonNode;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import io.everitoken.sdk.java.dto.ActionData;
 import io.everitoken.sdk.java.exceptions.ApiResponseException;
 import io.everitoken.sdk.java.param.RequestParams;
 
-public class FungibleAction extends ApiResource {
+public class FungibleAction extends OkhttpApi {
     private static final String uri = "/v1/history/get_fungible_actions";
 
     public FungibleAction() {
@@ -25,9 +23,14 @@ public class FungibleAction extends ApiResource {
     }
 
     public List<ActionData> request(RequestParams requestParams) throws ApiResponseException {
-        JsonNode res = super.makeRequest(requestParams);
+        String res = super.makeRequest(requestParams);
+        JSONArray array = new JSONArray(res);
+        List<ActionData> list = new ArrayList<>(array.length());
 
-        return StreamSupport.stream(res.getArray().spliterator(), true).map(raw -> ActionData.create((JSONObject) raw))
-                .collect(Collectors.toList());
+        for (int i = 0; i < array.length(); i++) {
+            list.add(ActionData.create((JSONObject) array.get(i)));
+        }
+
+        return list;
     }
 }

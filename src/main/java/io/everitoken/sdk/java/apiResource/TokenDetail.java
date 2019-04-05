@@ -1,14 +1,13 @@
 package io.everitoken.sdk.java.apiResource;
 
-import com.mashape.unirest.http.JsonNode;
-
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONObject;
 
 import io.everitoken.sdk.java.dto.TokenDetailData;
 import io.everitoken.sdk.java.exceptions.ApiResponseException;
 import io.everitoken.sdk.java.param.RequestParams;
 
-public class TokenDetail extends ApiResource {
+public class TokenDetail extends OkhttpApi {
     private static final String uri = "/v1/evt/get_token";
 
     public TokenDetail() {
@@ -20,7 +19,7 @@ public class TokenDetail extends ApiResource {
     }
 
     public TokenDetailData request(RequestParams requestParams) throws ApiResponseException {
-        JsonNode res = super.makeRequest(requestParams);
-        return TokenDetailData.create(res.getObject());
+        String res = super.makeRequest(requestParams);
+        return TokenDetailData.create(new JSONObject(res));
     }
 }

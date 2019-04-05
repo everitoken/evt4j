@@ -1,14 +1,13 @@
 package io.everitoken.sdk.java.apiResource;
 
-import com.mashape.unirest.http.JsonNode;
-
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
+import org.json.JSONObject;
 
 import io.everitoken.sdk.java.exceptions.ApiResponseException;
 import io.everitoken.sdk.java.param.RequestParams;
 
-public class RequiredSuspendedKeys extends ApiResource {
+public class RequiredSuspendedKeys extends OkhttpApi {
     private static final String uri = "/v1/chain/get_suspend_required_keys";
 
     public RequiredSuspendedKeys() {
@@ -20,7 +19,7 @@ public class RequiredSuspendedKeys extends ApiResource {
     }
 
     public JSONArray request(RequestParams requestParams) throws ApiResponseException {
-        JsonNode res = super.makeRequest(requestParams);
-        return res.getObject().getJSONArray("required_keys");
+        String res = super.makeRequest(requestParams);
+        return new JSONObject(res).getJSONArray("required_keys");
     }
 }

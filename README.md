@@ -29,7 +29,7 @@ In project `pom.xml` file
     <dependency>
         <groupId>io.everitoken.sdk</groupId>
         <artifactId>chain-sdk</artifactId>
-        <version>1.0.0-rc1</version>
+        <version>1.0.0-rc2</version>
     </dependency>
 </dependencies>
 ```

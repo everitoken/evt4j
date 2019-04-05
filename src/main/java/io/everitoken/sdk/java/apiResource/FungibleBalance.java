@@ -1,18 +1,16 @@
 package io.everitoken.sdk.java.apiResource;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
-import com.mashape.unirest.http.JsonNode;
 
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONArray;
 
 import io.everitoken.sdk.java.Asset;
 import io.everitoken.sdk.java.exceptions.ApiResponseException;
 import io.everitoken.sdk.java.param.RequestParams;
 
-public class FungibleBalance extends ApiResource {
+public class FungibleBalance extends OkhttpApi {
     private static final String uri = "/v1/history/get_fungibles_balance";
 
     public FungibleBalance() {
@@ -24,8 +22,14 @@ public class FungibleBalance extends ApiResource {
     }
 
     public List<Asset> request(RequestParams requestParams) throws ApiResponseException {
-        JsonNode res = super.makeRequest(requestParams);
-        return StreamSupport.stream(res.getArray().spliterator(), true)
-                .map(balance -> Asset.parseFromRawBalance((String) balance)).collect(Collectors.toList());
+        String res = super.makeRequest(requestParams);
+        JSONArray array = new JSONArray(res);
+        List<Asset> list = new ArrayList<>(array.length());
+
+        for (int i = 0; i < array.length(); i++) {
+            list.add(Asset.parseFromRawBalance((String) array.get(i)));
+        }
+
+        return list;
     }
 }

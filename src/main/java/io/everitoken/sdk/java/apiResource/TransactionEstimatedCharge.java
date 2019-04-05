@@ -1,14 +1,13 @@
 package io.everitoken.sdk.java.apiResource;
 
-import com.mashape.unirest.http.JsonNode;
-
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONObject;
 
 import io.everitoken.sdk.java.dto.Charge;
 import io.everitoken.sdk.java.exceptions.ApiResponseException;
 import io.everitoken.sdk.java.param.RequestParams;
 
-public class TransactionEstimatedCharge extends ApiResource {
+public class TransactionEstimatedCharge extends OkhttpApi {
     private static final String uri = "/v1/chain/get_charge";
 
     public TransactionEstimatedCharge() {
@@ -20,7 +19,7 @@ public class TransactionEstimatedCharge extends ApiResource {
     }
 
     public Charge request(RequestParams requestParams) throws ApiResponseException {
-        JsonNode res = super.makeRequest(requestParams);
-        return Charge.ofRaw(res.getObject());
+        String res = super.makeRequest(requestParams);
+        return Charge.ofRaw(new JSONObject(res));
     }
 }

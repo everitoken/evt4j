@@ -64,4 +64,12 @@ class UtilsTest {
             assertEquals(4165007754L, Utils.getLastIrreversibleBlockPrefix(input));
         });
     }
+
+    @Test
+    void isJsonEmptyArray() {
+        Assertions.assertFalse(Utils.isJsonEmptyArray("everitoken"));
+        Assertions.assertFalse(Utils.isJsonEmptyArray("{}"));
+        Assertions.assertFalse(Utils.isJsonEmptyArray("[\"everitoken\"]"));
+        Assertions.assertTrue(Utils.isJsonEmptyArray("[]"));
+    }
 }

@@ -1,14 +1,13 @@
 package io.everitoken.sdk.java.apiResource;
 
-import com.mashape.unirest.http.JsonNode;
-
 import org.jetbrains.annotations.NotNull;
+import org.json.JSONObject;
 
 import io.everitoken.sdk.java.Utils;
 import io.everitoken.sdk.java.exceptions.ApiResponseException;
 import io.everitoken.sdk.java.param.RequestParams;
 
-public class SignableDigest extends ApiResource {
+public class SignableDigest extends OkhttpApi {
     private static final String uri = "/v1/chain/trx_json_to_digest";
 
     public SignableDigest() {
@@ -20,7 +19,7 @@ public class SignableDigest extends ApiResource {
     }
 
     public byte[] request(RequestParams requestParams) throws ApiResponseException {
-        JsonNode res = super.makeRequest(requestParams);
-        return Utils.HEX.decode(res.getObject().getString("digest"));
+        String res = super.makeRequest(requestParams);
+        return Utils.HEX.decode(new JSONObject(res).getString("digest"));
     }
 }
