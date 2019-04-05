@@ -20,7 +20,7 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 class OkhttpApi {
-    public static final MediaType JSON_TYPE = MediaType.get("application/json; charset=utf-8");
+    public static final MediaType JSON_TYPE = MediaType.parse("application/json; charset=utf-8");
 
     private final OkHttpClient client;
     private final String uri;
