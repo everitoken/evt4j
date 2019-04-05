@@ -1,10 +1,14 @@
 package io.everitoken.sdk.java.apiResource;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import io.everitoken.sdk.java.exceptions.ApiResponseException;
 import io.everitoken.sdk.java.param.NetParams;
@@ -25,7 +29,6 @@ class OkhttpApi {
     public OkhttpApi(String uri, String method, @Nullable ApiRequestConfig apiRequestConfig) {
         this.uri = uri;
         this.method = method;
-        this.client = new OkHttpClient();
 
         ApiRequestConfig localApiReqConfig = new ApiRequestConfig();
 
@@ -33,8 +36,11 @@ class OkhttpApi {
             localApiReqConfig = apiRequestConfig;
         }
 
-        // TODO add timeout support
         int timeout = localApiReqConfig.getTimeout();
+
+        this.client = new OkHttpClient.Builder().connectTimeout(timeout, TimeUnit.MILLISECONDS)
+                .writeTimeout(timeout, TimeUnit.MILLISECONDS).readTimeout(timeout, TimeUnit.MILLISECONDS).build();
+
     }
 
     protected OkhttpApi(String uri) {
@@ -54,10 +60,11 @@ class OkhttpApi {
     protected String makeRequest(RequestParams requestParams) throws ApiResponseException {
         Request request = buildRequest(requestParams);
 
-        Response response;
         try {
-            response = this.client.newCall(request).execute();
-            return response.body().string();
+            Response response = this.client.newCall(request).execute();
+            String body = response.body().string();
+            checkResponseError(body);
+            return body;
         } catch (IOException ex) {
             throw new ApiResponseException(ex.getMessage(), ex);
         }
@@ -77,7 +84,24 @@ class OkhttpApi {
         return netParams.getEndpointUrl() + getUri();
     }
 
-    public static void main(String[] args) {
-    }
+    private void checkResponseError(@NotNull String body) throws ApiResponseException {
+        boolean isArray = false;
+        JSONObject res = new JSONObject();
 
+        try {
+            new JSONArray(body);
+            res = new JSONObject(body);
+            isArray = true;
+        } catch (JSONException ex) {
+            isArray = false;
+        }
+
+        if (isArray) {
+            return;
+        }
+
+        if (res.has("error")) {
+            throw new ApiResponseException(String.format("Response Error for '%s'", uri), res);
+        }
+    }
 }
