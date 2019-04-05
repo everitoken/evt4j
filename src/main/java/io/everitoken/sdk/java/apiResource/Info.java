@@ -13,12 +13,6 @@ public class Info extends OkhttpApi {
     private static final String uri = "/v1/chain/get_info";
     private static final String method = "GET";
 
-    // public static void main(String[] args) {
-    // NetParams netParams = new TestNetNetParams();
-    // NodeInfo info = new (netParams).getInfo();
-    // System.out.println(info.getHeadBlockTime());
-    // }
-
     public Info() {
         super(uri, method, null);
     }
@@ -32,7 +26,7 @@ public class Info extends OkhttpApi {
         return new Request.Builder().url(getUrl(requestParams.getNetParams())).build();
     }
 
-    public NodeInfo request(RequestParams requestParams) throws ApiResponseException  {
+    public NodeInfo request(RequestParams requestParams) throws ApiResponseException {
         String res = super.makeRequest(requestParams);
         return JSON.parseObject(res, NodeInfo.class);
     }
