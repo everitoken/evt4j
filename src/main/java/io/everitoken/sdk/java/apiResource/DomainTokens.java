@@ -1,8 +1,7 @@
 package io.everitoken.sdk.java.apiResource;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
@@ -23,11 +22,23 @@ public class DomainTokens extends OkhttpApi {
         super(uri, apiRequestConfig);
     }
 
+    private ArrayList<Object> toCollection(JSONArray array) {
+        ArrayList<Object> local = new ArrayList<>(array.length());
+        for (Object obj : array) {
+            local.add(obj);
+        }
+        return local;
+    }
+
     public List<TokenDetailData> request(RequestParams requestParams) throws ApiResponseException {
         String res = super.makeRequest(requestParams);
         JSONArray array = new JSONArray(res);
+        List<TokenDetailData> list = new ArrayList<>(array.length());
 
-        return StreamSupport.stream(array.spliterator(), true).map(raw -> TokenDetailData.create((JSONObject) raw))
-                .collect(Collectors.toList());
+        for (Object raw : array) {
+            list.add(TokenDetailData.create((JSONObject) raw));
+        }
+
+        return list;
     }
 }

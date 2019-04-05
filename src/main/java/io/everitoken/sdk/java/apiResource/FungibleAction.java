@@ -1,8 +1,7 @@
 package io.everitoken.sdk.java.apiResource;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
@@ -26,8 +25,12 @@ public class FungibleAction extends OkhttpApi {
     public List<ActionData> request(RequestParams requestParams) throws ApiResponseException {
         String res = super.makeRequest(requestParams);
         JSONArray array = new JSONArray(res);
+        List<ActionData> list = new ArrayList<>(array.length());
 
-        return StreamSupport.stream(array.spliterator(), true).map(raw -> ActionData.create((JSONObject) raw))
-                .collect(Collectors.toList());
+        for (Object raw : array) {
+            list.add(ActionData.create((JSONObject) raw));
+        }
+
+        return list;
     }
 }

@@ -1,8 +1,7 @@
 package io.everitoken.sdk.java.apiResource;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
@@ -24,8 +23,14 @@ public class FungibleBalance extends OkhttpApi {
 
     public List<Asset> request(RequestParams requestParams) throws ApiResponseException {
         String res = super.makeRequest(requestParams);
+        JSONArray array = new JSONArray(res);
 
-        return StreamSupport.stream(new JSONArray(res).spliterator(), true)
-                .map(balance -> Asset.parseFromRawBalance((String) balance)).collect(Collectors.toList());
+        List<Asset> list = new ArrayList<>(array.length());
+
+        for (Object raw : array) {
+            list.add(Asset.parseFromRawBalance((String) raw));
+        }
+
+        return list;
     }
 }
