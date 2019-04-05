@@ -21,6 +21,7 @@ import okhttp3.Response;
 
 class OkhttpApi {
     public static final MediaType JSON_TYPE = MediaType.parse("application/json; charset=utf-8");
+    private static final String CUSTOM_REQUEST_HEADER = "X-EVERITOKEN-EVT4J";
 
     private final OkHttpClient client;
     private final String uri;
@@ -54,7 +55,8 @@ class OkhttpApi {
     protected Request buildRequest(RequestParams requestParams) {
         RequestBody body = RequestBody.create(JSON_TYPE, requestParams.getApiParams().asBody());
 
-        return new Request.Builder().url(getUrl(requestParams.getNetParams())).post(body).build();
+        return new Request.Builder().header(CUSTOM_REQUEST_HEADER, "1.0.0-rc2")
+                .url(getUrl(requestParams.getNetParams())).post(body).build();
     }
 
     protected String makeRequest(RequestParams requestParams) throws ApiResponseException {
