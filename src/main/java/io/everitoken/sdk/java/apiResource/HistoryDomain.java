@@ -1,8 +1,7 @@
 package io.everitoken.sdk.java.apiResource;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
@@ -24,8 +23,13 @@ public class HistoryDomain extends OkhttpApi {
 
     public List<NameableResource> request(RequestParams requestParams) throws ApiResponseException {
         String res = super.makeRequest(requestParams);
+        JSONArray array = new JSONArray(res);
+        List<NameableResource> list = new ArrayList<>(array.length());
 
-        return StreamSupport.stream(new JSONArray(res).spliterator(), true)
-                .map(name -> NameableResource.create((String) name)).collect(Collectors.toList());
+        for (int i = 0; i < array.length(); i++) {
+            list.add(NameableResource.create((String) array.get(i)));
+        }
+
+        return list;
     }
 }

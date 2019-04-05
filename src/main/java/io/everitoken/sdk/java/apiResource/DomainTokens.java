@@ -22,21 +22,13 @@ public class DomainTokens extends OkhttpApi {
         super(uri, apiRequestConfig);
     }
 
-    private ArrayList<Object> toCollection(JSONArray array) {
-        ArrayList<Object> local = new ArrayList<>(array.length());
-        for (Object obj : array) {
-            local.add(obj);
-        }
-        return local;
-    }
-
     public List<TokenDetailData> request(RequestParams requestParams) throws ApiResponseException {
         String res = super.makeRequest(requestParams);
         JSONArray array = new JSONArray(res);
         List<TokenDetailData> list = new ArrayList<>(array.length());
 
-        for (Object raw : array) {
-            list.add(TokenDetailData.create((JSONObject) raw));
+        for (int i = 0; i < array.length(); i++) {
+            list.add(TokenDetailData.create((JSONObject) array.get(i)));
         }
 
         return list;

@@ -8,6 +8,7 @@ import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import io.everitoken.sdk.java.Utils;
 import io.everitoken.sdk.java.dto.TokenDomain;
 import io.everitoken.sdk.java.exceptions.ApiResponseException;
 import io.everitoken.sdk.java.param.RequestParams;
@@ -25,6 +26,11 @@ public class HistoryToken extends OkhttpApi {
 
     public List<TokenDomain> request(RequestParams requestParams) throws ApiResponseException {
         String res = super.makeRequest(requestParams);
+
+        if (Utils.isJsonEmptyArray(res)) {
+            return new ArrayList<>();
+        }
+
         JSONObject payload = new JSONObject(res);
 
         List<TokenDomain> tokens = new ArrayList<>();

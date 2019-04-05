@@ -30,16 +30,14 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Duration;
 import org.joda.time.LocalDateTime;
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.spongycastle.crypto.digests.RIPEMD160Digest;
 
 import io.everitoken.sdk.java.exceptions.Base58CheckException;
 
 public class Utils {
     public static final BaseEncoding HEX = BaseEncoding.base16().lowerCase();
-
-    public static void main(String[] args) {
-        System.out.println(HEX.encode(hash("helloworld".getBytes())));
-    }
 
     private static byte[] ripemd160(byte[] data) {
         RIPEMD160Digest digest = new RIPEMD160Digest();
@@ -135,6 +133,15 @@ public class Utils {
         byte[] values = new byte[32];
         random.nextBytes(values);
         return values;
+    }
+
+    public static boolean isJsonEmptyArray(String string) {
+        try {
+            JSONArray array = new JSONArray(string);
+            return array.length() == 0;
+        } catch (JSONException ex) {
+            return false;
+        }
     }
 
     public static byte[] hash(byte[] data) {

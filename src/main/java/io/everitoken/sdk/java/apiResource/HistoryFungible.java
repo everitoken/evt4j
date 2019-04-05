@@ -1,8 +1,7 @@
 package io.everitoken.sdk.java.apiResource;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
@@ -24,9 +23,12 @@ public class HistoryFungible extends OkhttpApi {
 
     public FungibleCreated request(RequestParams requestParams) throws ApiResponseException {
         String res = super.makeRequest(requestParams);
+        JSONArray array = new JSONArray(res);
+        List<Integer> ids = new ArrayList<>(array.length());
 
-        List<Integer> ids = StreamSupport.stream(new JSONArray(res).spliterator(), true).map(id -> (int) id)
-                .collect(Collectors.toList());
+        for (int i = 0; i < array.length(); i++) {
+            ids.add((int) array.get(i));
+        }
 
         return new FungibleCreated(ids);
     }

@@ -1,8 +1,7 @@
 package io.everitoken.sdk.java.apiResource;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
@@ -25,7 +24,12 @@ public class SigningRequiredKeys extends OkhttpApi {
     public List<String> request(RequestParams requestParams) throws ApiResponseException {
         String res = super.makeRequest(requestParams);
         JSONArray array = new JSONObject(res).getJSONArray("required_keys");
+        List<String> list = new ArrayList<>(array.length());
 
-        return StreamSupport.stream(array.spliterator(), true).map(key -> (String) key).collect(Collectors.toList());
+        for (int i = 0; i < array.length(); i++) {
+            list.add((String) array.get(i));
+        }
+
+        return list;
     }
 }

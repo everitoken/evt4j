@@ -24,11 +24,10 @@ public class FungibleBalance extends OkhttpApi {
     public List<Asset> request(RequestParams requestParams) throws ApiResponseException {
         String res = super.makeRequest(requestParams);
         JSONArray array = new JSONArray(res);
-
         List<Asset> list = new ArrayList<>(array.length());
 
-        for (Object raw : array) {
-            list.add(Asset.parseFromRawBalance((String) raw));
+        for (int i = 0; i < array.length(); i++) {
+            list.add(Asset.parseFromRawBalance((String) array.get(i)));
         }
 
         return list;

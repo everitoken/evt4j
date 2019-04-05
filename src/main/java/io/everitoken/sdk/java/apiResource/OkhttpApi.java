@@ -86,19 +86,19 @@ class OkhttpApi {
 
     private void checkResponseError(@NotNull String body) throws ApiResponseException {
         boolean isArray = false;
-        JSONObject res = new JSONObject();
 
         try {
             new JSONArray(body);
-            res = new JSONObject(body);
             isArray = true;
         } catch (JSONException ex) {
-            isArray = false;
         }
 
         if (isArray) {
             return;
         }
+
+        JSONObject res = new JSONObject();
+        res = new JSONObject(body);
 
         if (res.has("error")) {
             throw new ApiResponseException(String.format("Response Error for '%s'", uri), res);

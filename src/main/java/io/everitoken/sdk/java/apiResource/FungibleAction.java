@@ -27,8 +27,8 @@ public class FungibleAction extends OkhttpApi {
         JSONArray array = new JSONArray(res);
         List<ActionData> list = new ArrayList<>(array.length());
 
-        for (Object raw : array) {
-            list.add(ActionData.create((JSONObject) raw));
+        for (int i = 0; i < array.length(); i++) {
+            list.add(ActionData.create((JSONObject) array.get(i)));
         }
 
         return list;

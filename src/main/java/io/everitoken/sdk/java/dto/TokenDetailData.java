@@ -1,9 +1,8 @@
 package io.everitoken.sdk.java.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -15,7 +14,7 @@ import io.everitoken.sdk.java.PublicKey;
 import io.everitoken.sdk.java.exceptions.InvalidPublicKeyException;
 
 public class TokenDetailData implements Meta {
-    private final List<PublicKey> owner;
+    private List<PublicKey> owner = new ArrayList<>();
     private final JSONArray metas;
     private String name;
     private String domain;
@@ -26,13 +25,13 @@ public class TokenDetailData implements Meta {
         metas = raw.getJSONArray("metas");
 
         JSONArray owner = raw.getJSONArray("owner");
-        this.owner = StreamSupport.stream(owner.spliterator(), true).map(publicKey -> {
+
+        for (int i = 0; i < owner.length(); i++) {
             try {
-                return PublicKey.of((String) publicKey);
+                this.owner.add(PublicKey.of((String) owner.get(i)));
             } catch (InvalidPublicKeyException ex) {
-                return null;
             }
-        }).filter(key -> !Objects.isNull(key)).collect(Collectors.toList());
+        }
     }
 
     @NotNull

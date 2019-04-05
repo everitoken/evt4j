@@ -34,7 +34,9 @@ public class ApiExample {
             // replace this with method you want to test
             // getTransactionDetailById("93e0aa6bed4b2b768ce461jcc2cb66319aaef87bdc413cbb7148cc4690bc799f");
             // getGroupDetail();
-            getFungibleBalance();
+            getTransactionsDetailOfPublicKeys(); // test
+            // getCreatedDomain();
+            // getCreatedFungibles();
             // NetParams netParams = new TestNetNetParams();
             // JSONObject state = new Api(netParams).getHeadBlockHeaderState();
             // System.out.println(state.toString());

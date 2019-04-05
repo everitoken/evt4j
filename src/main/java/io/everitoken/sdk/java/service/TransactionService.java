@@ -1,11 +1,11 @@
 package io.everitoken.sdk.java.service;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import com.alibaba.fastjson.JSON;
 
@@ -177,9 +177,12 @@ public class TransactionService {
         List<String> publicKeys = keyProvider.get().stream().map(PrivateKey::toPublicKey).map(PublicKey::toString)
                 .collect(Collectors.toList());
 
-        List<String> suspendRequiredKeys = StreamSupport
-                .stream(api.getSuspendRequiredKeys(proposalName, publicKeys).spliterator(), true)
-                .map(publicKey -> (String) publicKey).collect(Collectors.toList());
+        JSONArray suspendRequiredArray = api.getSuspendRequiredKeys(proposalName, publicKeys);
+        List<String> suspendRequiredKeys = new ArrayList<>();
+
+        for (int i = 0; i < suspendRequiredArray.length(); i++) {
+            suspendRequiredKeys.add((String) suspendRequiredArray.get(i));
+        }
 
         // sign it to get the signatures
         return keyProvider.get().stream().filter(privateKey -> {
