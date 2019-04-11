@@ -10,7 +10,7 @@ class FungibleActionParamsTest {
     @Test
     @DisplayName("Serialization should be correct")
     void asJSONString() {
-        FungibleActionParams params = new FungibleActionParams("address", "testSymbol");
+        FungibleActionParams params = FungibleActionParams.of("address", "testSymbol");
         JSONObject json = JSONObject.parseObject(params.asBody());
 
         Assertions.assertEquals("address", json.getString("addr"));

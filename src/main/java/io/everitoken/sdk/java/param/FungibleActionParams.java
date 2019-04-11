@@ -16,8 +16,12 @@ public class FungibleActionParams implements ApiParams, Paginatable {
         this.take = take;
     }
 
-    FungibleActionParams(String address, String symbolId) {
-        this(address, symbolId, 0, 10);
+    public static FungibleActionParams of(String address, String symbolId) {
+        return new FungibleActionParams(address, symbolId, 0, 10);
+    }
+
+    public static FungibleActionParams of(String address, String symbolId, int skip, int take) {
+        return new FungibleActionParams(address, symbolId, skip, take);
     }
 
     @Override
