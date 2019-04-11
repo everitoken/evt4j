@@ -56,7 +56,7 @@ class OkhttpApi {
     protected Request buildRequest(RequestParams requestParams) {
         RequestBody body = RequestBody.create(JSON_TYPE, requestParams.getApiParams().asBody());
 
-        return new Request.Builder().header(CUSTOM_REQUEST_HEADER, "1.0.0-rc2")
+        return new Request.Builder().header(CUSTOM_REQUEST_HEADER, "1.0.0-rc3")
                 .url(getUrl(requestParams.getNetParams())).post(body).build();
     }
 
