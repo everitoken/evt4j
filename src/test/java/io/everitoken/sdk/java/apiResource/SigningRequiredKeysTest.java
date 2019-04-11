@@ -2,7 +2,8 @@ package io.everitoken.sdk.java.apiResource;
 
 import java.util.List;
 
-import org.json.JSONObject;
+import com.alibaba.fastjson.JSONObject;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
@@ -26,7 +27,7 @@ class SigningRequiredKeysTest {
 
             List<String> res = signingRequiredKeys.request(RequestParams.of(netParams, () -> {
                 JSONObject json = new JSONObject();
-                json.put("transaction", new JSONObject(transaction));
+                json.put("transaction", JSONObject.parseObject(transaction));
                 json.put("available_keys", publicKeys);
                 return json.toString();
             }));

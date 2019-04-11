@@ -3,12 +3,13 @@ package io.everitoken.sdk.java.apiResource;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONException;
+import com.alibaba.fastjson.JSONObject;
+
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import io.everitoken.sdk.java.exceptions.ApiResponseException;
 import io.everitoken.sdk.java.param.NetParams;
@@ -90,7 +91,7 @@ class OkhttpApi {
         boolean isArray = false;
 
         try {
-            new JSONArray(body);
+            JSONArray.parseArray(body);
             isArray = true;
         } catch (JSONException ex) {
         }
@@ -99,10 +100,9 @@ class OkhttpApi {
             return;
         }
 
-        JSONObject res = new JSONObject();
-        res = new JSONObject(body);
+        JSONObject res = JSONObject.parseObject(body);
 
-        if (res.has("error")) {
+        if (res.containsKey("error")) {
             throw new ApiResponseException(String.format("Response Error for '%s'", uri), res);
         }
     }

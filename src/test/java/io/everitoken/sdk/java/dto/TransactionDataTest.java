@@ -1,6 +1,7 @@
 package io.everitoken.sdk.java.dto;
 
-import org.json.JSONObject;
+import com.alibaba.fastjson.JSONObject;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -17,7 +18,7 @@ class TransactionDataTest {
 
     @Test
     void createObj() {
-        JSONObject raw = new JSONObject(sampleRes);
+        JSONObject raw = JSONObject.parseObject(sampleRes);
         Assertions.assertDoesNotThrow(() -> {
             TransactionData transactionData = TransactionData.ofRaw(raw);
             Assertions.assertEquals(transactionData.getTrxId(), transactionData.getProcessed().getString("id"));

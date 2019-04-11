@@ -1,10 +1,10 @@
 package io.everitoken.sdk.java.abi;
 
+import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.annotation.JSONField;
 
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
-import org.json.JSONObject;
 
 import io.everitoken.sdk.java.Asset;
 import io.everitoken.sdk.java.PublicKey;

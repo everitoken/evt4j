@@ -1,6 +1,6 @@
 package io.everitoken.sdk.java.abi;
 
-import org.json.JSONObject;
+import com.alibaba.fastjson.JSONObject;
 
 public class Action {
     private final String name;

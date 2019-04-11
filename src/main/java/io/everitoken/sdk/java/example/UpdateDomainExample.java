@@ -2,7 +2,7 @@ package io.everitoken.sdk.java.example;
 
 import java.util.Arrays;
 
-import org.json.JSONObject;
+import com.alibaba.fastjson.JSONObject;
 
 import io.everitoken.sdk.java.PublicKey;
 import io.everitoken.sdk.java.abi.UpdateDomainAction;
@@ -21,7 +21,7 @@ public class UpdateDomainExample {
                 + "EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND\",\"weight\":1},{\"ref\":\"[A] "
                 + "EVT5cd4a3RyaVoubc4w3j3Z3YvCJgtKZPRdJHDdk7wVsMbc3yEH5U\",\"weight\":1}]},\"name\":\"test1123\"}";
 
-        final JSONObject json = new JSONObject(data);
+        final JSONObject json = JSONObject.parseObject(data);
         final UpdateDomainAction updateDomainAction = UpdateDomainAction.ofRaw(json.getString("name"), null, null,
                 json.getJSONObject("manage"));
 

@@ -8,14 +8,14 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import io.everitoken.sdk.java.Api;
 import io.everitoken.sdk.java.EvtLink;
@@ -108,8 +108,10 @@ public class TransactionService {
         return new TransactionCommit().request(RequestParams.of(netParams, () -> {
             JSONObject payload = new JSONObject();
             payload.put("compression", "none");
-            payload.put("transaction", new JSONObject(JSON.toJSONString(rawTx)));
-            payload.put("signatures", new JSONArray(trxConfig.getSignProvider().sign(digest).toString()));
+            payload.put("transaction", JSONObject.parseObject(JSON.toJSONString(rawTx)));
+            payload.put("signatures", trxConfig.getSignProvider().sign(digest).stream().map(Signature::toString)
+                    .collect(Collectors.toList()));
+            System.out.println(payload.toJSONString());
             return payload.toString();
         }));
     }
@@ -118,7 +120,7 @@ public class TransactionService {
             List<PublicKey> availablePublicKeys) throws ApiResponseException {
         Transaction rawTx = buildRawTransaction(trxConfig, actions);
 
-        JSONObject txObj = new JSONObject(JSON.toJSONString(rawTx));
+        JSONObject txObj = JSONObject.parseObject(JSON.toJSONString(rawTx));
         List<String> requiredKeys = new SigningRequiredKeys().request(RequestParams.of(netParams, () -> {
             JSONObject json = new JSONObject();
             json.put("transaction", txObj);
@@ -168,7 +170,7 @@ public class TransactionService {
         Api api = new Api(netParams);
 
         String suspendedProposalRaw = api.getSuspendedProposal(proposalName);
-        JSONObject trxRaw = (new JSONObject(suspendedProposalRaw)).getJSONObject("trx");
+        JSONObject trxRaw = JSONObject.parseObject(suspendedProposalRaw).getJSONObject("trx");
 
         // get the signable digest
         byte[] trxSignableDigest = api.getSignableDigest(trxRaw.toString());
@@ -180,7 +182,7 @@ public class TransactionService {
         JSONArray suspendRequiredArray = api.getSuspendRequiredKeys(proposalName, publicKeys);
         List<String> suspendRequiredKeys = new ArrayList<>();
 
-        for (int i = 0; i < suspendRequiredArray.length(); i++) {
+        for (int i = 0; i < suspendRequiredArray.size(); i++) {
             suspendRequiredKeys.add((String) suspendRequiredArray.get(i));
         }
 

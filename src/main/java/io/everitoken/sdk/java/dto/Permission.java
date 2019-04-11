@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.annotation.JSONField;
 
 import org.jetbrains.annotations.NotNull;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 public class Permission implements Namable {
     private final String name;
@@ -25,11 +25,11 @@ public class Permission implements Namable {
     public static Permission ofRaw(@NotNull JSONObject raw) {
         Objects.requireNonNull(raw);
         String name = raw.getString("name");
-        int threshold = raw.getInt("threshold");
+        int threshold = raw.getInteger("threshold");
         List<AuthorizerWeight> authorizers = new ArrayList<>();
         JSONArray authorizersArray = raw.getJSONArray("authorizers");
 
-        for (int i = 0; i < authorizersArray.length(); i++) {
+        for (int i = 0; i < authorizersArray.size(); i++) {
             authorizers.add(AuthorizerWeight.ofRaw((JSONObject) authorizersArray.get(i)));
         }
 

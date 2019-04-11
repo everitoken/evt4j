@@ -13,12 +13,13 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
+import com.alibaba.fastjson.JSONException;
+import com.alibaba.fastjson.JSONObject;
+
 import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joda.time.DateTime;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import io.everitoken.sdk.java.apiResource.EvtLinkStatus;
 import io.everitoken.sdk.java.dto.TokenDomain;
@@ -421,11 +422,11 @@ public class EvtLink {
 
                 isOnline = true;
 
-                if (json.getString("trx_id") != null && json.getInt("block_num") > 0) {
+                if (json.getString("trx_id") != null && json.getInteger("block_num") > 0) {
                     rst.put("pending", "false");
                     rst.put("success", "true");
                     rst.put("trx_id", json.getString("trx_id"));
-                    rst.put("block_num", Integer.toString(json.getInt("block_num")));
+                    rst.put("block_num", Integer.toString(json.getInteger("block_num")));
                     return rst;
                 }
             } catch (Exception ex) {

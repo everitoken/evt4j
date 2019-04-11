@@ -1,8 +1,8 @@
 package io.everitoken.sdk.java.dto;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 
-import org.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,7 +15,7 @@ class PermissionTest {
     @DisplayName("Deserialize successful")
     void deserialize() {
         Assertions.assertDoesNotThrow(() -> {
-            Permission permission = Permission.ofRaw(new JSONObject(raw));
+            Permission permission = Permission.ofRaw(JSONObject.parseObject(raw));
             Assertions.assertEquals(raw, JSON.toJSONString(permission));
             Assertions.assertEquals("issue", permission.getName());
             Assertions.assertEquals(1, permission.getThreshold());

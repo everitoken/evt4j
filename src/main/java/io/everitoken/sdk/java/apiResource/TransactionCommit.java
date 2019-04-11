@@ -1,7 +1,8 @@
 package io.everitoken.sdk.java.apiResource;
 
+import com.alibaba.fastjson.JSONObject;
+
 import org.jetbrains.annotations.NotNull;
-import org.json.JSONObject;
 
 import io.everitoken.sdk.java.dto.TransactionData;
 import io.everitoken.sdk.java.exceptions.ApiResponseException;
@@ -20,6 +21,6 @@ public class TransactionCommit extends OkhttpApi {
 
     public TransactionData request(RequestParams requestParams) throws ApiResponseException {
         String res = super.makeRequest(requestParams);
-        return TransactionData.ofRaw(new JSONObject(res));
+        return TransactionData.ofRaw(JSONObject.parseObject(res));
     }
 }

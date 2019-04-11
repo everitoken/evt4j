@@ -2,11 +2,11 @@ package io.everitoken.sdk.java.abi;
 
 import java.util.Objects;
 
+import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.annotation.JSONField;
 
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
-import org.json.JSONObject;
 
 import io.everitoken.sdk.java.PublicKey;
 import io.everitoken.sdk.java.dto.Permission;

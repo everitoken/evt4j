@@ -1,7 +1,8 @@
 package io.everitoken.sdk.java.apiResource;
 
+import com.alibaba.fastjson.JSONObject;
+
 import org.jetbrains.annotations.NotNull;
-import org.json.JSONObject;
 
 import io.everitoken.sdk.java.Utils;
 import io.everitoken.sdk.java.exceptions.ApiResponseException;
@@ -20,6 +21,6 @@ public class SignableDigest extends OkhttpApi {
 
     public byte[] request(RequestParams requestParams) throws ApiResponseException {
         String res = super.makeRequest(requestParams);
-        return Utils.HEX.decode(new JSONObject(res).getString("digest"));
+        return Utils.HEX.decode(JSONObject.parseObject(res).getString("digest"));
     }
 }

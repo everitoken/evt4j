@@ -1,6 +1,7 @@
 package io.everitoken.sdk.java.abi;
 
-import org.json.JSONObject;
+import com.alibaba.fastjson.JSONObject;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -40,7 +41,7 @@ class RemoteAbiSerialisationProviderInterfaceTest {
         Assertions.assertDoesNotThrow(() -> {
             NetParams netParams = new TestNetNetParams();
             RemoteAbiSerialisationProvider provider = new RemoteAbiSerialisationProvider(netParams);
-            new JSONObject(provider.serialize(data));
+            JSONObject.parseObject(provider.serialize(data));
         });
     }
 
@@ -50,7 +51,7 @@ class RemoteAbiSerialisationProviderInterfaceTest {
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
             NetParams netParams = new TestNetNetParams();
             RemoteAbiSerialisationProvider provider = new RemoteAbiSerialisationProvider(netParams);
-            new JSONObject(provider.serialize(""));
+            JSONObject.parseObject(provider.serialize(""));
         });
     }
 
@@ -60,7 +61,7 @@ class RemoteAbiSerialisationProviderInterfaceTest {
         Throwable throwable = Assertions.assertThrows(AbiSerialisationFailureException.class, () -> {
             NetParams netParams = new TestNetNetParams();
             RemoteAbiSerialisationProvider provider = new RemoteAbiSerialisationProvider(netParams);
-            new JSONObject(provider.serialize("{\"action\":\"newgroup\", \"args\": {}}\""));
+            JSONObject.parseObject(provider.serialize("{\"action\":\"newgroup\", \"args\": {}}\""));
         });
         Assertions.assertTrue(throwable.getMessage().contains("Failed to serialize Abi"));
     }

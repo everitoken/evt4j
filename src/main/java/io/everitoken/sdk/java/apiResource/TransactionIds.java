@@ -1,7 +1,8 @@
 package io.everitoken.sdk.java.apiResource;
 
+import com.alibaba.fastjson.JSONArray;
+
 import org.jetbrains.annotations.NotNull;
-import org.json.JSONArray;
 
 import io.everitoken.sdk.java.exceptions.ApiResponseException;
 import io.everitoken.sdk.java.param.RequestParams;
@@ -18,6 +19,6 @@ public class TransactionIds extends OkhttpApi {
     }
 
     public JSONArray request(RequestParams requestParams) throws ApiResponseException {
-        return new JSONArray(super.makeRequest(requestParams));
+        return JSONArray.parseArray(super.makeRequest(requestParams));
     }
 }

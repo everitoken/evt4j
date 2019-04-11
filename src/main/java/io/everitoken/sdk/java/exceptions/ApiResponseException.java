@@ -1,6 +1,6 @@
 package io.everitoken.sdk.java.exceptions;
 
-import org.json.JSONObject;
+import com.alibaba.fastjson.JSONObject;
 
 public class ApiResponseException extends Exception implements EvtException {
     private JSONObject raw;

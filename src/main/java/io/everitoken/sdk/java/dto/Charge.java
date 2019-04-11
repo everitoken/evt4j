@@ -2,9 +2,10 @@ package io.everitoken.sdk.java.dto;
 
 import java.util.Objects;
 
+import com.alibaba.fastjson.JSONObject;
+
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
-import org.json.JSONObject;
 
 public class Charge {
     private final int charge;
@@ -23,7 +24,7 @@ public class Charge {
     @NotNull
     public static Charge ofRaw(@NotNull JSONObject raw) {
         Objects.requireNonNull(raw);
-        int charge = raw.getInt("charge");
+        int charge = raw.getInteger("charge");
         return new Charge(charge);
     }
 

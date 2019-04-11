@@ -3,8 +3,9 @@ package io.everitoken.sdk.java.apiResource;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.alibaba.fastjson.JSONArray;
+
 import org.jetbrains.annotations.NotNull;
-import org.json.JSONArray;
 
 import io.everitoken.sdk.java.dto.FungibleCreated;
 import io.everitoken.sdk.java.exceptions.ApiResponseException;
@@ -23,10 +24,10 @@ public class HistoryFungible extends OkhttpApi {
 
     public FungibleCreated request(RequestParams requestParams) throws ApiResponseException {
         String res = super.makeRequest(requestParams);
-        JSONArray array = new JSONArray(res);
-        List<Integer> ids = new ArrayList<>(array.length());
+        JSONArray array =  JSONArray.parseArray(res);
+        List<Integer> ids = new ArrayList<>(array.size());
 
-        for (int i = 0; i < array.length(); i++) {
+        for (int i = 0; i < array.size(); i++) {
             ids.add((int) array.get(i));
         }
 

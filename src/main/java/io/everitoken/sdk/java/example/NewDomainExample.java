@@ -2,7 +2,7 @@ package io.everitoken.sdk.java.example;
 
 import java.util.Arrays;
 
-import org.json.JSONObject;
+import com.alibaba.fastjson.JSONObject;
 
 import io.everitoken.sdk.java.PublicKey;
 import io.everitoken.sdk.java.abi.NewDomainAction;
@@ -26,7 +26,7 @@ public class NewDomainExample {
                 + "\"authorizers\":[{\"ref\":\"[A]"
                 + " EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND\",\"weight\":1}]}}";
 
-        final JSONObject json = new JSONObject(data);
+        final JSONObject json = JSONObject.parseObject(data);
         final NewDomainAction newDomainAction = NewDomainAction.ofRaw(json.getString("name"), json.getString("creator"),
                 json.getJSONObject("issue"), json.getJSONObject("transfer"), json.getJSONObject("manage"));
 

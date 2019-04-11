@@ -3,9 +3,10 @@ package io.everitoken.sdk.java;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+
 import org.jetbrains.annotations.Nullable;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import io.everitoken.sdk.java.apiResource.ApiRequestConfig;
 import io.everitoken.sdk.java.apiResource.DomainDetail;

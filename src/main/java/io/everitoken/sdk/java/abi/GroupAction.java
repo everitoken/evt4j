@@ -1,8 +1,8 @@
 package io.everitoken.sdk.java.abi;
 
+import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.annotation.JSONField;
 
-import org.json.JSONObject;
 
 public class GroupAction extends Abi {
     @JSONField(deserialize = false, serialize = false)

@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 
 import io.everitoken.sdk.java.Address;
 import io.everitoken.sdk.java.Api;
@@ -32,11 +33,13 @@ public class ApiExample {
     public static void main(String[] args) {
         try {
             // replace this with method you want to test
-            // getTransactionDetailById("93e0aa6bed4b2b768ce461jcc2cb66319aaef87bdc413cbb7148cc4690bc799f");
+            // getTransactionDetailById("93e0aa6bed4b2b768ce4617cc2cb66319aaef87bdc413cbb7148cc4690bc799f");
             // getGroupDetail();
-            getTransactionsDetailOfPublicKeys(); // test
+            getOwnedTokens();
+            // getTransactionsDetailOfPublicKeys(); // test
             // getCreatedDomain();
             // getCreatedFungibles();
+
             // NetParams netParams = new TestNetNetParams();
             // JSONObject state = new Api(netParams).getHeadBlockHeaderState();
             // System.out.println(state.toString());
@@ -147,8 +150,8 @@ public class ApiExample {
 
     static void getTransactionsDetailOfPublicKeys() throws ApiResponseException {
         NetParams netParams = new TestNetNetParams();
-        org.json.JSONArray res = new Api(netParams).getTransactionsDetailOfPublicKeys(
-                Arrays.asList(PublicKey.of("EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND")), 1, 1, "asc");
+        JSONArray res = new Api(netParams).getTransactionsDetailOfPublicKeys(
+                Arrays.asList(PublicKey.of("EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND")), 0, 2, "asc");
         System.out.println(res);
     }
 }

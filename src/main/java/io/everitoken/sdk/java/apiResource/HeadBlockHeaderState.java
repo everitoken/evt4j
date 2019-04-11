@@ -1,7 +1,8 @@
 package io.everitoken.sdk.java.apiResource;
 
+import com.alibaba.fastjson.JSONObject;
+
 import org.jetbrains.annotations.NotNull;
-import org.json.JSONObject;
 
 import io.everitoken.sdk.java.exceptions.ApiResponseException;
 import io.everitoken.sdk.java.param.RequestParams;
@@ -26,6 +27,6 @@ public class HeadBlockHeaderState extends OkhttpApi {
 
     public JSONObject request(RequestParams requestParams) throws ApiResponseException {
         String res = super.makeRequest(requestParams);
-        return new JSONObject(res);
+        return  JSONObject.parseObject(res);
     }
 }

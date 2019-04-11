@@ -16,7 +16,7 @@ public class DestroyTokenExample {
     public static void main(String[] args) {
         NetParams netParam = new TestNetNetParams();
 
-        DestroyTokenAction destroyTokenAction = DestroyTokenAction.of("test1123", "t3");
+        DestroyTokenAction destroyTokenAction = DestroyTokenAction.of("test1123", "t6");
 
         try {
             TransactionService transactionService = TransactionService.of(netParam);

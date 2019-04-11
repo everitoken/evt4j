@@ -2,7 +2,7 @@ package io.everitoken.sdk.java.example;
 
 import java.util.Arrays;
 
-import org.json.JSONObject;
+import com.alibaba.fastjson.JSONObject;
 
 import io.everitoken.sdk.java.PublicKey;
 import io.everitoken.sdk.java.Symbol;
@@ -21,9 +21,9 @@ public class NewFungibleExample {
 
         NewFungibleAction newFungibleAction = NewFungibleAction.of(Symbol.of(20, 5), ".JAVA",
                 "EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND",
-                new JSONObject("{\"name\":\"issue\",\"threshold\":1,\"authorizers\":[{\"ref\":\"[A] "
+                JSONObject.parseObject("{\"name\":\"issue\",\"threshold\":1,\"authorizers\":[{\"ref\":\"[A] "
                         + "EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND\",\"weight\":" + "1}]}"),
-                new JSONObject("{\"name\":\"manage\",\"threshold\":1,\"authorizers\":[{\"ref\":\"[A] "
+                JSONObject.parseObject("{\"name\":\"manage\",\"threshold\":1,\"authorizers\":[{\"ref\":\"[A] "
                         + "EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND\",\"weight\":" + "1}]}"),
                 "20000.00000 S#20");
         try {
