@@ -29,7 +29,8 @@ public class Signer implements ECConstants, DSA {
     /**
      * Configuration with an alternate, possibly deterministic calculator of K.
      *
-     * @param kCalculator a K value calculator.
+     * @param kCalculator
+     *                        a K value calculator.
      */
     public Signer(DSAKCalculator kCalculator) {
         this.kCalculator = kCalculator;
@@ -83,7 +84,8 @@ public class Signer implements ECConstants, DSA {
      * with. For conventional DSA the message should be a SHA-1 hash of the message
      * of interest.
      *
-     * @param message the message that will be verified later.
+     * @param message
+     *                    the message that will be verified later.
      */
     @Override
     public BigInteger[] generateSignature(byte[] message) {
@@ -102,6 +104,7 @@ public class Signer implements ECConstants, DSA {
 
         ECMultiplier basePointMultiplier = createBasePointMultiplier();
 
+        int sLen = 0;
         // 5.3.2
         do // generate s
         {
@@ -116,10 +119,11 @@ public class Signer implements ECConstants, DSA {
                 // 5.3.3
                 r = p.getAffineXCoord().toBigInteger().mod(n);
                 rLen = r.toByteArray().length;
-            } while (r.equals(ZERO) || rLen == 33); // make sure that length of r is 32 bytes
+            } while (r.equals(ZERO) || rLen != 32); // make sure that length of r is 32 bytes
 
             s = k.modInverse(n).multiply(e.add(d.multiply(r))).mod(n);
-        } while (s.equals(ZERO));
+            sLen = s.toByteArray().length;
+        } while (s.equals(ZERO) || sLen != 32);
 
         return new BigInteger[] { r, s };
     }
