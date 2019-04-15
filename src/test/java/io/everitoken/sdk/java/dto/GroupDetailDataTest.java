@@ -1,8 +1,9 @@
 package io.everitoken.sdk.java.dto;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONException;
+import com.alibaba.fastjson.JSONObject;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,7 +16,7 @@ class GroupDetailDataTest {
     @DisplayName("Throw JSON exception if can't parse json")
     void throwJSONException() {
         Assertions.assertThrows(JSONException.class, () -> {
-            GroupDetailData.create(new JSONObject());
+            GroupDetailData.create(JSONObject.parseObject("["));
         });
     }
 

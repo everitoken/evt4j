@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 
 import io.everitoken.sdk.java.Address;
 import io.everitoken.sdk.java.Api;
@@ -21,9 +22,9 @@ import io.everitoken.sdk.java.dto.TokenDomain;
 import io.everitoken.sdk.java.dto.TransactionDetail;
 import io.everitoken.sdk.java.exceptions.ApiResponseException;
 import io.everitoken.sdk.java.param.ActionQueryParams;
+import io.everitoken.sdk.java.param.FungibleActionParams;
 import io.everitoken.sdk.java.param.MainNetNetParams;
 import io.everitoken.sdk.java.param.NetParams;
-import io.everitoken.sdk.java.param.NetParams.NET;
 import io.everitoken.sdk.java.param.PublicKeysParams;
 import io.everitoken.sdk.java.param.TestNetNetParams;
 import io.everitoken.sdk.java.param.TransactionDetailParams;
@@ -32,14 +33,22 @@ public class ApiExample {
     public static void main(String[] args) {
         try {
             // replace this with method you want to test
-            // getTransactionDetailById("93e0aa6bed4b2b768ce461jcc2cb66319aaef87bdc413cbb7148cc4690bc799f");
+            // getTransactionDetailById("93e0aa6bed4b2b768ce4617cc2cb66319aaef87bdc413cbb7148cc4690bc799f");
             // getGroupDetail();
-            getTransactionsDetailOfPublicKeys(); // test
+            // getOwnedTokens();
+            // testDomainTokens();
+            // getFungibleBalance(); // test
+            // getActions();
+            // getFungibleSymbolDetail();
+            // getFungibleActionsByAddress();
+            getTransactionsDetailOfPublicKeys();
+            // getManagedGroups();
             // getCreatedDomain();
             // getCreatedFungibles();
+
             // NetParams netParams = new TestNetNetParams();
-            // JSONObject state = new Api(netParams).getHeadBlockHeaderState();
-            // System.out.println(state.toString());
+            // NodeInfo state = new Api(netParams).getInfo();
+            // System.out.println(JSON.toJSONString(state));
         } catch (ApiResponseException ex) {
             System.out.println(ex.getRaw());
         }
@@ -47,7 +56,7 @@ public class ApiExample {
 
     static void testDomainTokens() throws ApiResponseException {
         NetParams netParams = new TestNetNetParams();
-        List<TokenDetailData> domainTokens = new Api(netParams).getDomainTokens("test1122", 10, 0);
+        List<TokenDetailData> domainTokens = new Api(netParams).getDomainTokens("test1123", 10, 0);
         domainTokens.stream().forEach(tokenDetailData -> {
             System.out.println(tokenDetailData.getName());
         });
@@ -97,7 +106,7 @@ public class ApiExample {
 
     static void getActions() throws ApiResponseException {
         NetParams netParams = new TestNetNetParams();
-        ActionQueryParams actionParams = new ActionQueryParams("testdomainfei1", null,
+        ActionQueryParams actionParams = new ActionQueryParams("test1123", null,
                 new String[] { "issuetoken", "transfer" });
 
         List<ActionData> res = new Api(netParams).getActions(actionParams);
@@ -125,10 +134,10 @@ public class ApiExample {
     }
 
     static void getFungibleBalance() throws ApiResponseException {
-        NetParams netParams = new MainNetNetParams(NET.MAINNET1);
+        NetParams netParams = new TestNetNetParams();
         List<Asset> res = new Api(netParams)
                 .getFungibleBalance(Address.of("EVT8aNw4NTvjBL1XR6hgy4zcA9jzh1JLjMuAw85mSbW68vYzw2f9H"));
-        res.forEach(balance -> System.out.println(balance.toString()));
+        System.out.println(JSON.toJSONString(res));
     }
 
     static void getTransactionDetailById(String trxId) throws ApiResponseException {
@@ -142,13 +151,23 @@ public class ApiExample {
     static void getFungibleSymbolDetail() throws ApiResponseException {
         NetParams netParams = new TestNetNetParams();
         FungibleDetailData res = new Api(netParams).getFungibleSymbolDetail(1);
+        System.out.println(JSON.toJSONString(res));
         System.out.println(res.getCreator());
     }
 
     static void getTransactionsDetailOfPublicKeys() throws ApiResponseException {
         NetParams netParams = new TestNetNetParams();
-        org.json.JSONArray res = new Api(netParams).getTransactionsDetailOfPublicKeys(
-                Arrays.asList(PublicKey.of("EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND")), 1, 1, "asc");
+        JSONArray res = new Api(netParams).getTransactionsDetailOfPublicKeys(
+                Arrays.asList(PublicKey.of("EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND")), 0, 2, "asc");
         System.out.println(res);
+    }
+
+    static void getFungibleActionsByAddress() throws ApiResponseException {
+        NetParams netParams = new TestNetNetParams();
+        FungibleActionParams params = FungibleActionParams.of("EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND",
+                "20");
+
+        List<ActionData> res = new Api(netParams).getFungibleActionsByAddress(params);
+        System.out.println(JSON.toJSONString(res));
     }
 }

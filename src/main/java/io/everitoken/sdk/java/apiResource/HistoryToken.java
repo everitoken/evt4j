@@ -1,12 +1,13 @@
 package io.everitoken.sdk.java.apiResource;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
+
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 
 import org.jetbrains.annotations.NotNull;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import io.everitoken.sdk.java.Utils;
 import io.everitoken.sdk.java.dto.TokenDomain;
@@ -31,16 +32,16 @@ public class HistoryToken extends OkhttpApi {
             return new ArrayList<>();
         }
 
-        JSONObject payload = new JSONObject(res);
+        JSONObject payload = JSONObject.parseObject(res);
+        System.out.println(payload);
 
         List<TokenDomain> tokens = new ArrayList<>();
 
-        Iterator<String> domains = payload.keys();
+        Set<String> domains = payload.keySet();
 
-        while (domains.hasNext()) {
-            String domainName = domains.next();
-            JSONArray tokensInDomain = payload.getJSONArray(domainName);
-            tokensInDomain.forEach(tokenInDomain -> tokens.add(new TokenDomain((String) tokenInDomain, domainName)));
+        for (String key : domains) {
+            JSONArray tokensInDomain = payload.getJSONArray(key);
+            tokensInDomain.forEach(tokenInDomain -> tokens.add(new TokenDomain((String) tokenInDomain, key)));
         }
 
         return tokens;

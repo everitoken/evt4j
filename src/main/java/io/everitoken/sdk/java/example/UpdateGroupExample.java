@@ -2,7 +2,7 @@ package io.everitoken.sdk.java.example;
 
 import java.util.Arrays;
 
-import org.json.JSONObject;
+import com.alibaba.fastjson.JSONObject;
 
 import io.everitoken.sdk.java.PublicKey;
 import io.everitoken.sdk.java.abi.UpdateGroupAction;
@@ -28,7 +28,7 @@ public class UpdateGroupExample {
                 + "        \"key\": \"EVT8MGU4aKiVzqMtWi9zLpu8KuTHZWjQQrX475ycSxEkLd6aBpraX\",\n"
                 + "        \"weight\": 3\n" + "      }\n" + "    ]\n" + "  }\n" + "}";
 
-        final JSONObject json = new JSONObject(data);
+        final JSONObject json = JSONObject.parseObject(data);
         final UpdateGroupAction updateGroupAction = UpdateGroupAction.ofRaw("feitestgroup2", json);
 
         try {

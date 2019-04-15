@@ -3,10 +3,10 @@ package io.everitoken.sdk.java.dto;
 import java.util.Objects;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
-import org.json.JSONObject;
 
 import io.everitoken.sdk.java.PublicKey;
 
@@ -23,7 +23,7 @@ public class AuthorizerWeight {
     @Contract("_ -> new")
     public static AuthorizerWeight ofRaw(@NotNull JSONObject raw) {
         Objects.requireNonNull(raw);
-        return new AuthorizerWeight(raw.getString("ref"), raw.getInt("weight"));
+        return new AuthorizerWeight(raw.getString("ref"), raw.getInteger("weight"));
     }
 
     @NotNull

@@ -3,9 +3,10 @@ package io.everitoken.sdk.java.apiResource;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+
 import org.jetbrains.annotations.NotNull;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import io.everitoken.sdk.java.dto.TokenDetailData;
 import io.everitoken.sdk.java.exceptions.ApiResponseException;
@@ -24,10 +25,10 @@ public class DomainTokens extends OkhttpApi {
 
     public List<TokenDetailData> request(RequestParams requestParams) throws ApiResponseException {
         String res = super.makeRequest(requestParams);
-        JSONArray array = new JSONArray(res);
-        List<TokenDetailData> list = new ArrayList<>(array.length());
+        JSONArray array = JSONArray.parseArray(res);
+        List<TokenDetailData> list = new ArrayList<>(array.size());
 
-        for (int i = 0; i < array.length(); i++) {
+        for (int i = 0; i < array.size(); i++) {
             list.add(TokenDetailData.create((JSONObject) array.get(i)));
         }
 

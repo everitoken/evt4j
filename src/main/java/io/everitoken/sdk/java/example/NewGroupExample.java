@@ -2,7 +2,7 @@ package io.everitoken.sdk.java.example;
 
 import java.util.Arrays;
 
-import org.json.JSONObject;
+import com.alibaba.fastjson.JSONObject;
 
 import io.everitoken.sdk.java.PublicKey;
 import io.everitoken.sdk.java.abi.NewGroupAction;
@@ -26,7 +26,7 @@ public class NewGroupExample {
                 + "\"weight\":3,\"nodes\":[{\"key\":\"EVT6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV\","
                 + "\"weight\":1},{\"key\":\"EVT8MGU4aKiVzqMtWi9zLpu8KuTHZWjQQrX475ycSxEkLd6aBpraX\",\"weight\":1}]}]}}";
 
-        final JSONObject json = new JSONObject(data);
+        final JSONObject json = JSONObject.parseObject(data);
         final NewGroupAction newGroupAction = NewGroupAction.ofRaw("feitestgroup2", json);
 
         try {

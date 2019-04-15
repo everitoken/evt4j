@@ -1,6 +1,7 @@
 package io.everitoken.sdk.java.dto;
 
-import org.json.JSONObject;
+import com.alibaba.fastjson.JSONObject;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,7 +19,7 @@ class FungibleDetailDataTest {
     @DisplayName("Deserialize should be correct")
     void deserialize() {
         Assertions.assertDoesNotThrow(() -> {
-            FungibleDetailData.ofRaw(new JSONObject(raw));
+            FungibleDetailData.ofRaw(JSONObject.parseObject(raw));
         });
     }
 }

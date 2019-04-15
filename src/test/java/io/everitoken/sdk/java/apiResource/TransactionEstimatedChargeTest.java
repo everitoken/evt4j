@@ -1,6 +1,7 @@
 package io.everitoken.sdk.java.apiResource;
 
-import org.json.JSONObject;
+import com.alibaba.fastjson.JSONObject;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
@@ -23,7 +24,7 @@ class TransactionEstimatedChargeTest {
 
             Charge res = transactionEstimatedCharge.request(RequestParams.of(netParams, () -> {
                 JSONObject json = new JSONObject();
-                json.put("transaction", new JSONObject(transaction));
+                json.put("transaction", JSONObject.parseObject(transaction));
                 json.put("sign_num", 1);
                 return json.toString();
             }));

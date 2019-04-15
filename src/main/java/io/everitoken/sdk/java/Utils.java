@@ -10,6 +10,8 @@ import java.util.Base64;
 import java.util.Hashtable;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.google.common.io.BaseEncoding;
 import com.google.zxing.BarcodeFormat;
@@ -30,8 +32,6 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Duration;
 import org.joda.time.LocalDateTime;
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.spongycastle.crypto.digests.RIPEMD160Digest;
 
 import io.everitoken.sdk.java.exceptions.Base58CheckException;
@@ -137,8 +137,8 @@ public class Utils {
 
     public static boolean isJsonEmptyArray(String string) {
         try {
-            JSONArray array = new JSONArray(string);
-            return array.length() == 0;
+            JSONArray array = JSONArray.parseArray(string);
+            return array.size() == 0;
         } catch (JSONException ex) {
             return false;
         }

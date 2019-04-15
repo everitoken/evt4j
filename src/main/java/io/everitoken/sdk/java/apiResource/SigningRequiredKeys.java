@@ -3,9 +3,10 @@ package io.everitoken.sdk.java.apiResource;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+
 import org.jetbrains.annotations.NotNull;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import io.everitoken.sdk.java.exceptions.ApiResponseException;
 import io.everitoken.sdk.java.param.RequestParams;
@@ -23,10 +24,10 @@ public class SigningRequiredKeys extends OkhttpApi {
 
     public List<String> request(RequestParams requestParams) throws ApiResponseException {
         String res = super.makeRequest(requestParams);
-        JSONArray array = new JSONObject(res).getJSONArray("required_keys");
-        List<String> list = new ArrayList<>(array.length());
+        JSONArray array = JSONObject.parseObject(res).getJSONArray("required_keys");
+        List<String> list = new ArrayList<>(array.size());
 
-        for (int i = 0; i < array.length(); i++) {
+        for (int i = 0; i < array.size(); i++) {
             list.add((String) array.get(i));
         }
 

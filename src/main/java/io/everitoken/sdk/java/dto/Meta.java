@@ -1,6 +1,6 @@
 package io.everitoken.sdk.java.dto;
 
-import org.json.JSONArray;
+import com.alibaba.fastjson.JSONArray;
 
 public interface Meta {
     // TODO implement according to abi reference

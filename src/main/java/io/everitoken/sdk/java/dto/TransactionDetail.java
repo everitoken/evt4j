@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONException;
+import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.annotation.JSONField;
 
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import io.everitoken.sdk.java.Signature;
 
@@ -24,13 +24,13 @@ public class TransactionDetail {
     private final String blockId;
 
     private TransactionDetail(@NotNull JSONObject raw) throws JSONException {
-        blockNum = raw.getInt("block_num");
+        blockNum = raw.getInteger("block_num");
         packedTrx = raw.getString("packed_trx");
         id = raw.getString("id");
         compression = raw.getString("compression");
         JSONArray signaturesArray = raw.getJSONArray("signatures");
 
-        for (int i = 0; i < signaturesArray.length(); i++) {
+        for (int i = 0; i < signaturesArray.size(); i++) {
             signatures.add(Signature.of((String) signaturesArray.get(i)));
         }
 

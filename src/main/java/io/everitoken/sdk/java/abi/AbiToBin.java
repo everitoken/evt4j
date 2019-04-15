@@ -1,9 +1,9 @@
 package io.everitoken.sdk.java.abi;
 
+import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.annotation.JSONField;
 
 import org.jetbrains.annotations.NotNull;
-import org.json.JSONObject;
 
 class AbiToBin<T> {
     private final String action;

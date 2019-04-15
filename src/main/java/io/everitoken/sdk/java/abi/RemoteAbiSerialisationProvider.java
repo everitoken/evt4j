@@ -1,7 +1,7 @@
 package io.everitoken.sdk.java.abi;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.alibaba.fastjson.JSONException;
+import com.alibaba.fastjson.JSONObject;
 
 import io.everitoken.sdk.java.apiResource.AbiBin;
 import io.everitoken.sdk.java.exceptions.AbiSerialisationFailureException;

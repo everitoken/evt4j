@@ -90,7 +90,7 @@ class SignatureTest {
             String message = "helloworld";
             PrivateKey key = PrivateKey.of("5JV1kctxPzU3BdRENgRyDcUWQSqqzeckzjKXJWSkBoxXmXUCqKB");
             Signature sig = Signature.sign((message.getBytes()), key);
-            assertEquals(1, sig.getRecId());
+            assertEquals(0, sig.getRecId());
         });
     }
 
@@ -138,5 +138,16 @@ class SignatureTest {
                     Utils.HEX.encode(signature.getS().toByteArray()));
             assertEquals(1, signature.getRecId());
         });
+    }
+
+    @Test
+    @DisplayName("Edge case")
+    void testEdgeCase() {
+        String target = "SIG_K1_KiQbpiJSi9f3MUDP9xnkHF6m3Fpj7um7kvXAvmjEqMuKctB1pupPyxHPNNZQ3MGGnjqpXP69rSoL8auvoZC7rQ6HtGU8CQ";
+        PrivateKey key = PrivateKey.of("5J7KoMB4P9cQCD2P529Zmscz3sH3oNVRQ1ZnHXVk68Y15uByTNe");
+
+        Signature sig = Signature.sign(String.valueOf(45).getBytes(), key);
+
+        assertEquals(target, sig.toString());
     }
 }

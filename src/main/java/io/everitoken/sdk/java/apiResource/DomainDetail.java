@@ -1,7 +1,8 @@
 package io.everitoken.sdk.java.apiResource;
 
+import com.alibaba.fastjson.JSONObject;
+
 import org.jetbrains.annotations.NotNull;
-import org.json.JSONObject;
 
 import io.everitoken.sdk.java.dto.DomainDetailData;
 import io.everitoken.sdk.java.exceptions.ApiResponseException;
@@ -20,6 +21,6 @@ public class DomainDetail extends OkhttpApi {
 
     public DomainDetailData request(RequestParams requestParams) throws ApiResponseException {
         String res = super.makeRequest(requestParams);
-        return DomainDetailData.of(new JSONObject(res));
+        return DomainDetailData.of(JSONObject.parseObject(res));
     }
 }

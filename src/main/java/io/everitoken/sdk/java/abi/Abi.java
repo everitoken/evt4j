@@ -1,10 +1,10 @@
 package io.everitoken.sdk.java.abi;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 
-import org.json.JSONObject;
 
 public abstract class Abi implements AbiActionInterface {
     private final String name;
