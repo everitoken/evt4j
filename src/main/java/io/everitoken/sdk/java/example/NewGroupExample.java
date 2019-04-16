@@ -17,7 +17,7 @@ import io.everitoken.sdk.java.service.TransactionService;
 public class NewGroupExample {
     public static void main(String[] args) {
         final NetParams netParam = new TestNetNetParams();
-        final String data = "{\"name\":\"feitestgroup2\","
+        final String data = "{\"name\":\"feitestgroup3\","
                 + "\"key\":\"EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND\",\"root\":{\"threshold\":6,"
                 + "\"weight\":0,\"nodes\":[{\"threshold\":1,\"weight\":3,"
                 + "\"nodes\":[{\"key\":\"EVT6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV\",\"weight\":1},"
@@ -27,7 +27,7 @@ public class NewGroupExample {
                 + "\"weight\":1},{\"key\":\"EVT8MGU4aKiVzqMtWi9zLpu8KuTHZWjQQrX475ycSxEkLd6aBpraX\",\"weight\":1}]}]}}";
 
         final JSONObject json = JSONObject.parseObject(data);
-        final NewGroupAction newGroupAction = NewGroupAction.ofRaw("feitestgroup2", json);
+        final NewGroupAction newGroupAction = NewGroupAction.ofRaw("feitestgroup3", json);
 
         try {
             TransactionService transactionService = TransactionService.of(netParam);

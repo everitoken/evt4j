@@ -25,13 +25,4 @@ class AuthorizerWeightTest {
                 String.format("%s %s", "[A]", "EVT76uLwUD5t6fkob9Rbc9UxHgdTVshNceyv2hmppw4d82j2zYRpa"));
         Assertions.assertEquals(1, (int) json1.getInteger("weight"));
     }
-
-    @Test
-    @DisplayName("JSON parse from string")
-    void toObjectFromJson() {
-        AuthorizerWeight authorizerWeight = JSON.parseObject("{\"ref\":\"[G] .OWNER\",\"weight\":2}",
-                AuthorizerWeight.class);
-        Assertions.assertEquals("[G] .OWNER", authorizerWeight.getRef());
-        Assertions.assertEquals(2, authorizerWeight.getWeight());
-    }
 }

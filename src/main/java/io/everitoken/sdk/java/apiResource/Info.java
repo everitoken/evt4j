@@ -1,6 +1,7 @@
 package io.everitoken.sdk.java.apiResource;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -28,6 +29,12 @@ public class Info extends OkhttpApi {
 
     public NodeInfo request(RequestParams requestParams) throws ApiResponseException {
         String res = super.makeRequest(requestParams);
-        return JSON.parseObject(res, NodeInfo.class);
+        JSONObject obj = JSON.parseObject(res);
+
+        return new NodeInfo(obj.getString("head_block_producer"), obj.getString("evt_api_version"),
+                obj.getIntValue("head_block_num"), obj.getString("chain_id"),
+                obj.getString("last_irreversible_block_id"), obj.getString("head_block_time"),
+                obj.getIntValue("last_irreversible_block_num"), obj.getString("server_version"),
+                obj.getString("head_block_id"), obj.getString("server_version_string"));
     }
 }

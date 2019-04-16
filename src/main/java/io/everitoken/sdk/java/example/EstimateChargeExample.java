@@ -19,7 +19,7 @@ import io.everitoken.sdk.java.service.TransactionService;
 public class EstimateChargeExample {
     public static void main(String[] args) {
         NetParams netParam = new TestNetNetParams();
-        IssueTokenAction issueTokenAction = IssueTokenAction.of("test1119", Arrays.asList("t3"),
+        IssueTokenAction issueTokenAction = IssueTokenAction.of("test1123", Arrays.asList("t3"),
                 Collections.singletonList(Address.of("EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND")));
 
         try {

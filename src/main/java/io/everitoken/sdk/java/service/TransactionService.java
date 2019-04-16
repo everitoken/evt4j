@@ -87,18 +87,26 @@ public class TransactionService {
 
     public Map<String, String> pushEveriPayAction(TransactionConfiguration trxConfig, EveriPayAction action)
             throws ApiResponseException {
-        push(trxConfig, Collections.singletonList(action));
+        pushActions(trxConfig, Collections.singletonList(action), false);
         return new EvtLink(netParams).getStatusOfEvtLink(EvtLinkStatusParam.of(action.getLinkId()));
     }
 
     public TransactionData push(TransactionConfiguration trxConfig, List<? extends Abi> actions)
             throws ApiResponseException {
+        return pushActions(trxConfig, actions, true);
+    }
+
+    private TransactionData pushActions(TransactionConfiguration trxConfig, List<? extends Abi> actions,
+            boolean checkEveriPay) throws ApiResponseException {
         Transaction rawTx = buildRawTransaction(trxConfig, actions);
 
         // get signable digest from node
         byte[] digest = SignProvider.getSignableDigest(netParams, rawTx);
+        boolean hasEveryPay = false;
 
-        boolean hasEveryPay = actions.stream().anyMatch(action -> action.getName().equals("everipay"));
+        if (checkEveriPay) {
+            hasEveryPay = actions.stream().anyMatch(action -> action.getName().equals("everipay"));
+        }
 
         if (hasEveryPay) {
             throw new IllegalArgumentException("EveriPay action is found in this action list, use "
@@ -111,7 +119,6 @@ public class TransactionService {
             payload.put("transaction", JSONObject.parseObject(JSON.toJSONString(rawTx)));
             payload.put("signatures", trxConfig.getSignProvider().sign(digest).stream().map(Signature::toString)
                     .collect(Collectors.toList()));
-            System.out.println(payload.toJSONString());
             return payload.toString();
         }));
     }

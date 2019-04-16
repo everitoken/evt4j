@@ -33,7 +33,6 @@ public class HistoryToken extends OkhttpApi {
         }
 
         JSONObject payload = JSONObject.parseObject(res);
-        System.out.println(payload);
 
         List<TokenDomain> tokens = new ArrayList<>();
 
