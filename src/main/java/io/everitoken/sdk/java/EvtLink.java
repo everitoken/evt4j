@@ -329,7 +329,7 @@ public class EvtLink {
         return ArrayUtils.addAll(new byte[leadingZerosCount], resultBn.toByteArray());
     }
 
-    public static String getEvtLinkForPayeeCode(@NotNull final EveriLinkPayeeCodeParam param) {
+    public String getEvtLinkForPayeeCode(@NotNull final EveriLinkPayeeCodeParam param) {
         int flag = 1 + 16;
         byte[] addressBytes = createSegment(95, param.getAddress().getBytes());
         byte[] fungibleIdBytes = {};
@@ -343,7 +343,11 @@ public class EvtLink {
             amountBytes = createSegment(96, param.getAmount().getBytes());
         }
 
-        return generateQRCode(flag, Arrays.asList(addressBytes, fungibleIdBytes, amountBytes), null);
+        if (param.getFungibleId() != null && param.getAmount() != null) {
+            return generateQRCode(flag, Arrays.asList(addressBytes, fungibleIdBytes, amountBytes), null);
+        }
+
+        return generateQRCode(flag, Arrays.asList(addressBytes), null);
     }
 
     public static long getUnsignedInt(final byte[] bytes) {
