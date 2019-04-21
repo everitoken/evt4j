@@ -577,7 +577,7 @@ public class EvtLink {
         }
     }
 
-    static class EveriLinkPayeeCodeParam {
+    public static class EveriLinkPayeeCodeParam {
         private Integer fungibleId;
         private Address address;
         private String amount;
