@@ -56,8 +56,8 @@ class OkhttpApi {
     protected Request buildRequest(RequestParams requestParams) {
         RequestBody body = RequestBody.create(JSON_TYPE, requestParams.getApiParams().asBody());
 
-        return new Request.Builder().header(CUSTOM_REQUEST_HEADER, "1.0.0-rc4")
-                .url(getUrl(requestParams.getNetParams())).post(body).build();
+        return new Request.Builder().header(CUSTOM_REQUEST_HEADER, "1.0.0").url(getUrl(requestParams.getNetParams()))
+                .post(body).build();
     }
 
     protected String makeRequest(RequestParams requestParams) throws ApiResponseException {
