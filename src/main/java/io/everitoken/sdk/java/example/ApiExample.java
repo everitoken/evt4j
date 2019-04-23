@@ -37,11 +37,11 @@ public class ApiExample {
             // getGroupDetail();
             // getOwnedTokens();
             // testDomainTokens();
-            // getFungibleBalance(); // test
+            getFungibleBalance();
             // getActions();
             // getFungibleSymbolDetail();
             // getFungibleActionsByAddress();
-            getTransactionsDetailOfPublicKeys();
+            // getTransactionsDetailOfPublicKeys();
             // getManagedGroups();
             // getCreatedDomain();
             // getCreatedFungibles();
@@ -150,9 +150,8 @@ public class ApiExample {
 
     static void getFungibleSymbolDetail() throws ApiResponseException {
         NetParams netParams = new TestNetNetParams();
-        FungibleDetailData res = new Api(netParams).getFungibleSymbolDetail(1);
+        FungibleDetailData res = new Api(netParams).getFungibleSymbolDetail(345);
         System.out.println(JSON.toJSONString(res));
-        System.out.println(res.getCreator());
     }
 
     static void getTransactionsDetailOfPublicKeys() throws ApiResponseException {

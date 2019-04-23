@@ -47,6 +47,11 @@ public class Utils {
         return out;
     }
 
+    public static void main(String[] args) {
+        System.out.println((int) 1_000_000_000);
+        System.out.println(Integer.MAX_VALUE);
+    }
+
     public static String base58Check(byte[] key) {
         return base58Check(key, null);
     }

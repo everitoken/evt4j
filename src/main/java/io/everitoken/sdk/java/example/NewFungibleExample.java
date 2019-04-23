@@ -19,13 +19,13 @@ public class NewFungibleExample {
     public static void main(String[] args) {
         NetParams netParam = new TestNetNetParams();
 
-        NewFungibleAction newFungibleAction = NewFungibleAction.of(Symbol.of(21, 5), ".JAVA",
+        NewFungibleAction newFungibleAction = NewFungibleAction.of(Symbol.of(345, 5), ".JAVA",
                 "EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND",
                 JSONObject.parseObject("{\"name\":\"issue\",\"threshold\":1,\"authorizers\":[{\"ref\":\"[A] "
                         + "EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND\",\"weight\":" + "1}]}"),
                 JSONObject.parseObject("{\"name\":\"manage\",\"threshold\":1,\"authorizers\":[{\"ref\":\"[A] "
                         + "EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND\",\"weight\":" + "1}]}"),
-                "20000.00000 S#21");
+                "10000000000.00000 S#345");
         try {
             TransactionService transactionService = TransactionService.of(netParam);
             TransactionConfiguration trxConfig = new TransactionConfiguration(1000000,

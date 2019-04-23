@@ -16,7 +16,7 @@ public class IssueFungibleExample {
     public static void main(String[] args) {
         NetParams netParam = new TestNetNetParams();
 
-        IssueFungibleAction issueFungibleAction = IssueFungibleAction.of("200.00000 S#20",
+        IssueFungibleAction issueFungibleAction = IssueFungibleAction.of("1000000000.00000 S#345",
                 "EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND", "test from java");
 
         try {

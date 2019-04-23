@@ -29,7 +29,7 @@ In project `pom.xml` file
     <dependency>
         <groupId>io.everitoken.sdk</groupId>
         <artifactId>chain-sdk</artifactId>
-        <version>1.0.0</version>
+        <version>1.0.1</version>
     </dependency>
 </dependencies>
 ```
@@ -43,7 +43,7 @@ In project `build.gradle` file
 ```gradle
 dependencies {
     // other dependencies
-    implementation 'io.everitoken.sdk:chain-sdk:1.0.0'
+    implementation 'io.everitoken.sdk:chain-sdk:1.0.1'
 }
 ```
 

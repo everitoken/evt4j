@@ -1,5 +1,7 @@
 package io.everitoken.sdk.java;
 
+import java.math.BigDecimal;
+
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -8,17 +10,17 @@ import org.spongycastle.util.Strings;
 import io.everitoken.sdk.java.exceptions.InvalidFungibleBalanceException;
 
 public class Asset {
-    private final int balance;
+    private final BigDecimal balance;
     private final Symbol symbol;
 
-    private Asset(Symbol symbol, int balance) {
+    private Asset(Symbol symbol, BigDecimal balance) {
         this.symbol = symbol;
         this.balance = balance;
     }
 
     @NotNull
     @Contract("_, _ -> new")
-    public static Asset of(Symbol symbol, int balance) {
+    private static Asset of(Symbol symbol, BigDecimal balance) {
         return new Asset(symbol, balance);
     }
 
@@ -61,9 +63,9 @@ public class Asset {
             localSymbol = Symbol.of(id, precision);
         }
 
-        float balanceInFloat = Float.parseFloat(parts[0]) * (int) Math.pow(10.0, localSymbol.getPrecision());
+        BigDecimal balanceInFloat = new BigDecimal(parts[0]);
 
-        return Asset.of(localSymbol, (int) balanceInFloat);
+        return Asset.of(localSymbol, balanceInFloat);
     }
 
     public Symbol getSymbol() {
@@ -72,7 +74,6 @@ public class Asset {
 
     @Override
     public String toString() {
-        double balanceInDouble = (double) balance / (int) Math.pow(10.0, symbol.getPrecision());
-        return String.format("%." + symbol.getPrecision() + "f S#%d", balanceInDouble, symbol.getId());
+        return String.format("%." + symbol.getPrecision() + "f S#%d", balance, symbol.getId());
     }
 }
