@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 
 import org.jetbrains.annotations.NotNull;
 
-import io.everitoken.sdk.java.Utils;
+import io.everitoken.sdk.java.dto.TransactionDigest;
 import io.everitoken.sdk.java.exceptions.ApiResponseException;
 import io.everitoken.sdk.java.param.RequestParams;
 
@@ -19,8 +19,8 @@ public class SignableDigest extends OkhttpApi {
         super(uri, apiRequestConfig);
     }
 
-    public byte[] request(RequestParams requestParams) throws ApiResponseException {
+    public TransactionDigest request(RequestParams requestParams) throws ApiResponseException {
         String res = super.makeRequest(requestParams);
-        return Utils.HEX.decode(JSONObject.parseObject(res).getString("digest"));
+        return TransactionDigest.of(JSONObject.parseObject(res));
     }
 }

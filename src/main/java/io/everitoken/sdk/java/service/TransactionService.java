@@ -101,7 +101,7 @@ public class TransactionService {
         Transaction rawTx = buildRawTransaction(trxConfig, actions);
 
         // get signable digest from node
-        byte[] digest = SignProvider.getSignableDigest(netParams, rawTx);
+        byte[] digest = SignProvider.getSignableDigest(netParams, rawTx).getDigest();
         boolean hasEveryPay = false;
 
         if (checkEveriPay) {

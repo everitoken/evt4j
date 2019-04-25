@@ -13,6 +13,7 @@ import io.everitoken.sdk.java.PrivateKey;
 import io.everitoken.sdk.java.Signature;
 import io.everitoken.sdk.java.apiResource.SignableDigest;
 import io.everitoken.sdk.java.dto.Transaction;
+import io.everitoken.sdk.java.dto.TransactionDigest;
 import io.everitoken.sdk.java.exceptions.ApiResponseException;
 import io.everitoken.sdk.java.param.NetParams;
 import io.everitoken.sdk.java.param.RequestParams;
@@ -31,7 +32,7 @@ public class SignProvider implements SignProviderInterface {
         return new SignProvider(keyProvider);
     }
 
-    public static byte[] getSignableDigest(final NetParams netParams, final Transaction tx)
+    public static TransactionDigest getSignableDigest(final NetParams netParams, final Transaction tx)
             throws ApiResponseException {
         return (new SignableDigest()).request(RequestParams.of(netParams, () -> JSON.toJSONString(tx)));
     }

@@ -176,7 +176,7 @@ public class Api {
     }
 
     public byte[] getSignableDigest(String data) throws ApiResponseException {
-        return new SignableDigest(apiRequestConfig).request(RequestParams.of(netParams, () -> data));
+        return new SignableDigest(apiRequestConfig).request(RequestParams.of(netParams, () -> data)).getDigest();
     }
 
     public JSONArray getSuspendRequiredKeys(String name, List<String> keys) throws ApiResponseException {
