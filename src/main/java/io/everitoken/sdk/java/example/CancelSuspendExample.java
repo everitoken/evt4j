@@ -19,7 +19,7 @@ public class CancelSuspendExample {
         KeyProvider keyProvider = KeyProvider.of("5J1by7KRQujRdXrurEsvEr2zQGcdPaMJRjewER6XsAR2eCcpt3D");
 
         try {
-            CancelSuspendAction action = CancelSuspendAction.of("testProposal13");
+            CancelSuspendAction action = CancelSuspendAction.of("tp17");
 
             TransactionConfiguration trxConfig = new TransactionConfiguration(1000000,
                     PublicKey.of("EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND"), keyProvider);

@@ -1,14 +1,16 @@
 package io.everitoken.sdk.java.abi;
 
-import com.alibaba.fastjson.annotation.JSONField;
-
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
+
+import com.alibaba.fastjson.annotation.JSONField;
 
 public class CancelSuspendAction extends Abi {
 
     @JSONField(deserialize = false, serialize = false)
     private static final String domain = ".suspend";
+
+    @JSONField(deserialize = false, serialize = false)
     private static final String name = "cancelsuspend";
 
     private CancelSuspendAction(String proposalName) {

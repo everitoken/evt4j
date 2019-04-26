@@ -27,7 +27,7 @@ public class NewSuspendExample {
                 KeyProvider.of("5J1by7KRQujRdXrurEsvEr2zQGcdPaMJRjewER6XsAR2eCcpt3D"));
         try {
             Transaction trx = transactionService.buildRawTransaction(trxConfig, Arrays.asList(evt2PevtAction), false);
-            NewSuspendAction action = NewSuspendAction.of("tp16",
+            NewSuspendAction action = NewSuspendAction.of("tp17",
                     "EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND", trx);
 
             TransactionData push = transactionService.push(trxConfig, Arrays.asList(action));

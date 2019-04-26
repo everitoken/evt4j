@@ -24,7 +24,7 @@ public class ApiExample {
             // getGroupDetail();
             // getOwnedTokens();
             // testDomainTokens();
-            getFungibleBalance();
+            // getFungibleBalance();
             // getActions();
             // getFungibleSymbolDetail();
             // getFungibleActionsByAddress();
@@ -50,7 +50,7 @@ public class ApiExample {
 
     static void getSuspendedProposalByName() throws ApiResponseException {
         NetParams netParams = new TestNetNetParams();
-        String suspendedProposal = new Api(netParams).getSuspendedProposal("tp15");
+        String suspendedProposal = new Api(netParams).getSuspendedProposal("tp17");
         System.out.println(suspendedProposal);
     }
 
