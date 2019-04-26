@@ -20,7 +20,7 @@ public class UpdateFungibleExample {
         NetParams netParam = new TestNetNetParams();
 
         UpdateFungibleAction updateFungibleAction = UpdateFungibleAction.of(Symbol.of(20, 5),
-                JSONObject.parseObject("{\"name\":\"issue\",\"threshold\":1,\"authorizers\":[{\"ref\":\"[A] "
+                JSONObject.parseObject("{\"name\":\"issue\",\"threshold\":2,\"authorizers\":[{\"ref\":\"[A] "
                         + "EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND\",\"weight\":" + "1}, {\"ref\":\"[A] "
                         + "EVT8aNw4NTvjBL1XR6hgy4zcA9jzh1JLjMuAw85mSbW68vYzw2f9H\",\"weight\":" + "1}]}"),
                 null);

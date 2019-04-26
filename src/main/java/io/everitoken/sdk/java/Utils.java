@@ -9,6 +9,18 @@ import java.security.SecureRandom;
 import java.util.Base64;
 import java.util.Hashtable;
 
+import org.apache.commons.lang3.ArrayUtils;
+import org.bitcoinj.core.AddressFormatException;
+import org.bitcoinj.core.Base58;
+import org.bitcoinj.core.Sha256Hash;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.Duration;
+import org.joda.time.LocalDateTime;
+import org.spongycastle.crypto.digests.RIPEMD160Digest;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONException;
@@ -22,18 +34,6 @@ import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 
-import org.apache.commons.lang3.ArrayUtils;
-import org.bitcoinj.core.AddressFormatException;
-import org.bitcoinj.core.Base58;
-import org.bitcoinj.core.Sha256Hash;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
-import org.joda.time.Duration;
-import org.joda.time.LocalDateTime;
-import org.spongycastle.crypto.digests.RIPEMD160Digest;
-
 import io.everitoken.sdk.java.exceptions.Base58CheckException;
 
 public class Utils {
@@ -45,11 +45,6 @@ public class Utils {
         byte[] out = new byte[20];
         digest.doFinal(out, 0);
         return out;
-    }
-
-    public static void main(String[] args) {
-        System.out.println((int) 1_000_000_000);
-        System.out.println(Integer.MAX_VALUE);
     }
 
     public static String base58Check(byte[] key) {

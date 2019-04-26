@@ -3,10 +3,10 @@ package io.everitoken.sdk.java.abi;
 import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
-import com.alibaba.fastjson.annotation.JSONField;
-
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
+
+import com.alibaba.fastjson.annotation.JSONField;
 
 import io.everitoken.sdk.java.EvtLink;
 import io.everitoken.sdk.java.exceptions.EvtLinkException;
@@ -22,7 +22,7 @@ public class EveriPassAction extends Abi {
         this.link = link;
     }
 
-    @Contract("_, _, _ -> new")
+    @Contract("_ -> new")
     @NotNull
     public static EveriPassAction of(String link) {
         EvtLink.ParsedLink parsedLink = EvtLink.parseLink(link, false);

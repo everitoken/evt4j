@@ -130,7 +130,6 @@ public class TransactionService {
             boolean checkEveriPay) throws ApiResponseException {
         List<String> serializedActions = actions.stream().map(action -> action.serialize(actionSerializeProvider))
                 .collect(Collectors.toList());
-        System.out.println(JSON.toJSONString(serializedActions));
 
         boolean hasEveriPay = actions.stream().anyMatch(action -> action.getName().equals("everipay"));
 

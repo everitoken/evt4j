@@ -17,7 +17,7 @@ import io.everitoken.sdk.java.service.TransactionService;
 public class NewDomainExample {
     public static void main(String[] args) {
         final NetParams netParam = new TestNetNetParams();
-        final String data = "{\"name\":\"test1125\","
+        final String data = "{\"name\":\"test1126\","
                 + "\"creator\":\"EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND\",\"issue\":{\"name\":\"issue\","
                 + "\"threshold\":1,\"authorizers\":[{\"ref\":\"[A] "
                 + "EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND\","

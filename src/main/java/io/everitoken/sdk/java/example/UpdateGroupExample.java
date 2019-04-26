@@ -19,7 +19,7 @@ public class UpdateGroupExample {
         final NetParams netParam = new TestNetNetParams();
         final String data = "{\n" + "  \"name\": \"feitestgroup2\",\n"
                 + "  \"key\": \"EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND\",\n" + "  \"root\": {\n"
-                + "    \"threshold\": 3,\n" + "    \"weight\": 0,\n" + "    \"nodes\": [\n" + "      {\n"
+                + "    \"threshold\": 4,\n" + "    \"weight\": 0,\n" + "    \"nodes\": [\n" + "      {\n"
                 + "        \"threshold\": 1,\n" + "        \"weight\": 3,\n" + "        \"nodes\": [\n"
                 + "          {\n" + "            \"key\": \"EVT6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV\",\n"
                 + "            \"weight\": 1\n" + "          },\n" + "          {\n"

@@ -19,14 +19,14 @@ public class ApiExample {
     public static void main(String[] args) {
         try {
             // replace this with method you want to test
-            getSuspendedProposalByName();
+            // getSuspendedProposalByName();
             // getTransactionDetailById("d9c54f23b4358219018d508bb41507a3dc6efb759a519c08e130c434ebf37be4");
             // getGroupDetail();
             // getOwnedTokens();
             // testDomainTokens();
             // getFungibleBalance();
             // getActions();
-            // getFungibleSymbolDetail();
+            getFungibleSymbolDetail();
             // getFungibleActionsByAddress();
             // getTransactionsDetailOfPublicKeys();
             // getManagedGroups();
@@ -42,10 +42,9 @@ public class ApiExample {
 
     static void testDomainTokens() throws ApiResponseException {
         NetParams netParams = new TestNetNetParams();
-        List<TokenDetailData> domainTokens = new Api(netParams).getDomainTokens("test1123", 10, 0);
-        domainTokens.stream().forEach(tokenDetailData -> {
-            System.out.println(tokenDetailData.getName());
-        });
+        List<TokenDetailData> domainTokens = new Api(netParams).getDomainTokens("test1126", 10, 0);
+        domainTokens.stream()
+                .forEach(detail -> System.out.println(String.format("%s: %s", detail.getDomain(), detail.getName())));
     }
 
     static void getSuspendedProposalByName() throws ApiResponseException {
@@ -122,7 +121,7 @@ public class ApiExample {
     static void getFungibleBalance() throws ApiResponseException {
         NetParams netParams = new TestNetNetParams();
         List<Asset> res = new Api(netParams)
-                .getFungibleBalance(Address.of("EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND"));
+                .getFungibleBalance(Address.of("EVT8aNw4NTvjBL1XR6hgy4zcA9jzh1JLjMuAw85mSbW68vYzw2f9H"));
 
         res.forEach(asset -> System.out.println(asset.toString()));
     }
@@ -137,7 +136,7 @@ public class ApiExample {
 
     static void getFungibleSymbolDetail() throws ApiResponseException {
         NetParams netParams = new TestNetNetParams();
-        FungibleDetailData res = new Api(netParams).getFungibleSymbolDetail(345);
+        FungibleDetailData res = new Api(netParams).getFungibleSymbolDetail(20);
         System.out.println(JSON.toJSONString(res));
     }
 

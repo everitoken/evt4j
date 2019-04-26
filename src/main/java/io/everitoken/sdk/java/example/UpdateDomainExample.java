@@ -17,7 +17,7 @@ import io.everitoken.sdk.java.service.TransactionService;
 public class UpdateDomainExample {
     public static void main(String[] args) {
         final NetParams netParam = new TestNetNetParams();
-        final String data = "{\"manage\":{\"name\":\"manage\",\"threshold\":1,\"authorizers\":[{\"ref\":\"[A] "
+        final String data = "{\"manage\":{\"name\":\"manage\",\"threshold\":2,\"authorizers\":[{\"ref\":\"[A] "
                 + "EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND\",\"weight\":1},{\"ref\":\"[A] "
                 + "EVT5cd4a3RyaVoubc4w3j3Z3YvCJgtKZPRdJHDdk7wVsMbc3yEH5U\",\"weight\":1}]},\"name\":\"test1123\"}";
 

@@ -15,7 +15,7 @@ import io.everitoken.sdk.java.service.TransactionService;
 public class TransferExample {
     public static void main(String[] args) {
         NetParams netParam = new TestNetNetParams();
-        TransferAction transferAction = TransferAction.of("test1125", "t10",
+        TransferAction transferAction = TransferAction.of("test1126", "t1",
                 Arrays.asList("EVT8aNw4NTvjBL1XR6hgy4zcA9jzh1JLjMuAw85mSbW68vYzw2f9H"), "");
 
         try {

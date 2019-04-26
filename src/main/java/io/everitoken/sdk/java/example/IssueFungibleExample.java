@@ -2,6 +2,8 @@ package io.everitoken.sdk.java.example;
 
 import java.util.Arrays;
 
+import com.alibaba.fastjson.JSON;
+
 import io.everitoken.sdk.java.PublicKey;
 import io.everitoken.sdk.java.abi.IssueFungibleAction;
 import io.everitoken.sdk.java.dto.TransactionData;
@@ -16,8 +18,10 @@ public class IssueFungibleExample {
     public static void main(String[] args) {
         NetParams netParam = new TestNetNetParams();
 
-        IssueFungibleAction issueFungibleAction = IssueFungibleAction.of("1000000000.00000 S#345",
+        IssueFungibleAction issueFungibleAction = IssueFungibleAction.of("100.00000 S#345",
                 "EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND", "test from java");
+
+        System.out.println(JSON.toJSONString((issueFungibleAction)));
 
         try {
             TransactionService transactionService = TransactionService.of(netParam);

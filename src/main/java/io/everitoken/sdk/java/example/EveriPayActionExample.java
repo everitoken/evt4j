@@ -2,6 +2,8 @@ package io.everitoken.sdk.java.example;
 
 import java.util.Map;
 
+import com.alibaba.fastjson.JSON;
+
 import io.everitoken.sdk.java.EvtLink;
 import io.everitoken.sdk.java.PublicKey;
 import io.everitoken.sdk.java.abi.EveriPayAction;
@@ -29,6 +31,7 @@ public class EveriPayActionExample {
 
         EveriPayAction action = EveriPayAction.of(payText, "0.00001 " + "S#1",
                 "EVT5cd4a3RyaVoubc4w3j3Z3YvCJgtKZPRdJHDdk7wVsMbc3yEH5U");
+        System.out.println(String.format("%s: %s", "everipayAction", JSON.toJSONString(action)));
 
         try {
             TransactionService transactionService = TransactionService.of(netParams);
