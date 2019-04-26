@@ -3,12 +3,15 @@ package io.everitoken.sdk.java.abi;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.annotation.JSONField;
-import com.alibaba.fastjson.serializer.SerializerFeature;
-
 
 public abstract class Abi implements AbiActionInterface {
+    @JSONField(deserialize = false, serialize = false)
     private final String name;
+
+    @JSONField(deserialize = false, serialize = false)
     private final String key;
+
+    @JSONField(deserialize = false, serialize = false)
     private final String domain;
 
     Abi(String name, String key, String domain) {
@@ -40,7 +43,6 @@ public abstract class Abi implements AbiActionInterface {
     }
 
     public String getData(AbiSerialisationProviderInterface provider) {
-        return provider
-                .serialize(JSON.toJSONString(new AbiToBin<>(getName(), this), SerializerFeature.WriteNullListAsEmpty));
+        return provider.serialize(JSON.toJSONString(new AbiToBin<>(getName(), this)));
     }
 }

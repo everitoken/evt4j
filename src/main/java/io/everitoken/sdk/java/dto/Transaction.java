@@ -4,12 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.jetbrains.annotations.Nullable;
+
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.annotation.JSONField;
 
 import io.everitoken.sdk.java.abi.Action;
+import io.everitoken.sdk.java.service.TransactionConfiguration;
 
 public class Transaction {
+    @JSONField(serialize = false, deserialize = false)
+    private final TransactionConfiguration trxConfig;
+
     private final List<Action> actions;
     private final String expiration;
     private final int refBlockNumber;
@@ -18,8 +24,12 @@ public class Transaction {
     private final String payer;
     private final List<String> transactionExtensions = new ArrayList<>();
 
+    @JSONField(serialize = false, deserialize = false)
+    private TransactionDigest transactionDigest;
+
     public Transaction(final List<String> actions, final String expiration, final int refBlockNumber,
-            final long refBlockPrefix, final int maxCharge, final String payer) {
+            final long refBlockPrefix, final int maxCharge, final String payer,
+            @Nullable TransactionConfiguration trxConfig) {
 
         this.actions = actions.stream().map(JSONObject::parseObject).map(Action::ofRaw).collect(Collectors.toList());
         this.expiration = expiration;
@@ -27,6 +37,7 @@ public class Transaction {
         this.refBlockPrefix = refBlockPrefix;
         this.maxCharge = maxCharge;
         this.payer = payer;
+        this.trxConfig = trxConfig;
     }
 
     @JSONField(name = "actions")
@@ -57,8 +68,20 @@ public class Transaction {
         return payer;
     }
 
+    public TransactionDigest getTransactionDigest() {
+        return transactionDigest;
+    }
+
+    public void setTransactionDigest(TransactionDigest transactionDigest) {
+        this.transactionDigest = transactionDigest;
+    }
+
     @JSONField(name = "transaction_extensions")
     public List<String> getTransactionExtensions() {
         return transactionExtensions;
+    }
+
+    public TransactionConfiguration getTrxConfig() {
+        return trxConfig;
     }
 }

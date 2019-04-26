@@ -3,17 +3,18 @@ package io.everitoken.sdk.java.abi;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.alibaba.fastjson.annotation.JSONField;
-
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
+
+import com.alibaba.fastjson.annotation.JSONField;
 
 import io.everitoken.sdk.java.Signature;
 
 public class ApproveSuspendAction extends Abi {
 
-    @JSONField(deserialize = false, serialize = false)
     private static final String domain = ".suspend";
+
+    @JSONField(deserialize = false, serialize = false)
     private static final String name = "aprvsuspend";
 
     private final List<Signature> signatures;

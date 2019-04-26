@@ -1,8 +1,8 @@
 package io.everitoken.sdk.java.abi;
 
-import com.alibaba.fastjson.annotation.JSONField;
-
 import org.jetbrains.annotations.NotNull;
+
+import com.alibaba.fastjson.annotation.JSONField;
 
 import io.everitoken.sdk.java.PublicKey;
 
@@ -30,6 +30,12 @@ public class ExecuteSuspendAction extends Abi {
     @JSONField(name = "name")
     public String getKey() {
         return super.getKey();
+    }
+
+    @Override
+    @JSONField(name = "key")
+    public String getName() {
+        return super.getName();
     }
 
     public String getExecutor() {

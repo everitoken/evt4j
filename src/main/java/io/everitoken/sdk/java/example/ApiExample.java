@@ -11,29 +11,16 @@ import io.everitoken.sdk.java.Api;
 import io.everitoken.sdk.java.Asset;
 import io.everitoken.sdk.java.PublicKey;
 import io.everitoken.sdk.java.apiResource.ApiRequestConfig;
-import io.everitoken.sdk.java.dto.ActionData;
-import io.everitoken.sdk.java.dto.DomainDetailData;
-import io.everitoken.sdk.java.dto.FungibleCreated;
-import io.everitoken.sdk.java.dto.FungibleDetailData;
-import io.everitoken.sdk.java.dto.GroupDetailData;
-import io.everitoken.sdk.java.dto.NameableResource;
-import io.everitoken.sdk.java.dto.TokenDetailData;
-import io.everitoken.sdk.java.dto.TokenDomain;
-import io.everitoken.sdk.java.dto.TransactionDetail;
+import io.everitoken.sdk.java.dto.*;
 import io.everitoken.sdk.java.exceptions.ApiResponseException;
-import io.everitoken.sdk.java.param.ActionQueryParams;
-import io.everitoken.sdk.java.param.FungibleActionParams;
-import io.everitoken.sdk.java.param.MainNetNetParams;
-import io.everitoken.sdk.java.param.NetParams;
-import io.everitoken.sdk.java.param.PublicKeysParams;
-import io.everitoken.sdk.java.param.TestNetNetParams;
-import io.everitoken.sdk.java.param.TransactionDetailParams;
+import io.everitoken.sdk.java.param.*;
 
 public class ApiExample {
     public static void main(String[] args) {
         try {
             // replace this with method you want to test
-            // getTransactionDetailById("93e0aa6bed4b2b768ce4617cc2cb66319aaef87bdc413cbb7148cc4690bc799f");
+            getSuspendedProposalByName();
+            // getTransactionDetailById("d9c54f23b4358219018d508bb41507a3dc6efb759a519c08e130c434ebf37be4");
             // getGroupDetail();
             // getOwnedTokens();
             // testDomainTokens();
@@ -45,7 +32,6 @@ public class ApiExample {
             // getManagedGroups();
             // getCreatedDomain();
             // getCreatedFungibles();
-
             // NetParams netParams = new TestNetNetParams();
             // NodeInfo state = new Api(netParams).getInfo();
             // System.out.println(JSON.toJSONString(state));
@@ -64,7 +50,7 @@ public class ApiExample {
 
     static void getSuspendedProposalByName() throws ApiResponseException {
         NetParams netParams = new TestNetNetParams();
-        String suspendedProposal = new Api(netParams).getSuspendedProposal("testProposal13");
+        String suspendedProposal = new Api(netParams).getSuspendedProposal("tp15");
         System.out.println(suspendedProposal);
     }
 
@@ -136,16 +122,17 @@ public class ApiExample {
     static void getFungibleBalance() throws ApiResponseException {
         NetParams netParams = new TestNetNetParams();
         List<Asset> res = new Api(netParams)
-                .getFungibleBalance(Address.of("EVT8aNw4NTvjBL1XR6hgy4zcA9jzh1JLjMuAw85mSbW68vYzw2f9H"));
-        System.out.println(JSON.toJSONString(res));
+                .getFungibleBalance(Address.of("EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND"));
+
+        res.forEach(asset -> System.out.println(asset.toString()));
     }
 
     static void getTransactionDetailById(String trxId) throws ApiResponseException {
         // 93e0aa6bed4b2b768ce4617cc2cb66319aaef87bdc413cbb7148cc4690bc799f
-        MainNetNetParams netParams = new MainNetNetParams(NetParams.NET.MAINNET1);
+        NetParams netParams = new TestNetNetParams();
         TransactionDetailParams transactionDetailParams = new TransactionDetailParams(trxId);
         TransactionDetail res = new Api(netParams).getTransactionDetailById(transactionDetailParams);
-        res.getSignatures().forEach((signature) -> System.out.println(signature.toString()));
+        System.out.println(JSON.toJSONString(res));
     }
 
     static void getFungibleSymbolDetail() throws ApiResponseException {

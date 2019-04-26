@@ -34,7 +34,7 @@ class TransactionServiceTest {
                     KeyProvider.of("5J1by7KRQujRdXrurEsvEr2zQGcdPaMJRjewER6XsAR2eCcpt3D"),
                     DateTime.now().toString().substring(0, 19));
 
-            transactionService.buildRawTransaction(trxConfig, Arrays.asList(action));
+            transactionService.buildRawTransaction(trxConfig, Arrays.asList(action), false);
         });
     }
 }

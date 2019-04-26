@@ -1,12 +1,14 @@
-package io.everitoken.sdk.java.example;
+package io.everitoken.sdk.java.abi;
 
 import java.util.Arrays;
 
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
+import com.alibaba.fastjson.JSON;
+
 import io.everitoken.sdk.java.PublicKey;
-import io.everitoken.sdk.java.abi.Evt2PevtAction;
-import io.everitoken.sdk.java.abi.NewSuspendAction;
 import io.everitoken.sdk.java.dto.Transaction;
-import io.everitoken.sdk.java.dto.TransactionData;
 import io.everitoken.sdk.java.exceptions.ApiResponseException;
 import io.everitoken.sdk.java.param.NetParams;
 import io.everitoken.sdk.java.param.TestNetNetParams;
@@ -14,8 +16,10 @@ import io.everitoken.sdk.java.provider.KeyProvider;
 import io.everitoken.sdk.java.service.TransactionConfiguration;
 import io.everitoken.sdk.java.service.TransactionService;
 
-public class NewSuspendExample {
-    public static void main(String[] args) {
+class NewSuspendActionTest {
+
+    @Test
+    void serializationTest() {
         NetParams netParam = new TestNetNetParams();
         Evt2PevtAction evt2PevtAction = Evt2PevtAction.of("0.00001 S#1",
                 "EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND",
@@ -24,16 +28,16 @@ public class NewSuspendExample {
         TransactionService transactionService = TransactionService.of(netParam);
         TransactionConfiguration trxConfig = new TransactionConfiguration(1000000,
                 PublicKey.of("EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND"),
-                KeyProvider.of("5J1by7KRQujRdXrurEsvEr2zQGcdPaMJRjewER6XsAR2eCcpt3D"));
+                KeyProvider.of("5J1by7KRQujRdXrurEsvEr2zQGcdPaMJRjewER6XsAR2eCcpt3D"), "2019-04-26T02:04:43");
         try {
             Transaction trx = transactionService.buildRawTransaction(trxConfig, Arrays.asList(evt2PevtAction), false);
-            NewSuspendAction action = NewSuspendAction.of("tp16",
+            NewSuspendAction action = NewSuspendAction.of("tp15",
                     "EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND", trx);
 
-            TransactionData push = transactionService.push(trxConfig, Arrays.asList(action));
-            System.out.println(push.getTrxId());
+            Assertions.assertTrue(JSON.toJSONString(action)
+                    .contains("\"domain\":\".suspend\",\"key\":\"newsuspend\"," + "\"name\":\"tp15\","));
         } catch (ApiResponseException ex) {
-            System.out.println(ex.getRaw());
+            Assertions.assertTrue(false);
         }
     }
 }

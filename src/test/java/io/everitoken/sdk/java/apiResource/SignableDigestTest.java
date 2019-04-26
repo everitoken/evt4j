@@ -2,7 +2,6 @@ package io.everitoken.sdk.java.apiResource;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 
 import io.everitoken.sdk.java.Utils;
 import io.everitoken.sdk.java.dto.TransactionDigest;
@@ -12,7 +11,6 @@ import io.everitoken.sdk.java.param.TestNetNetParams;
 
 class SignableDigestTest {
     @Test
-    @EnabledIfEnvironmentVariable(named = "SINGLE_RUN_TEST", matches = "SignableDigestTest")
     void test() {
         Assertions.assertDoesNotThrow(() -> {
             String refDigest = "b046185545b5c85a87dbf416d103403d913d74cdc1b6615646fc02fd6c0ee8ec";
