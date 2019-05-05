@@ -21,7 +21,7 @@ public class RequestParams {
     @NotNull
     @Contract("_ -> new")
     public static RequestParams of(NetParams netParams) {
-        return new RequestParams(netParams);
+        return new RequestParams(netParams, () -> "{}");
     }
 
     @NotNull
