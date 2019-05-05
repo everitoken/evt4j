@@ -3,50 +3,15 @@ package io.everitoken.sdk.java;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.jetbrains.annotations.Nullable;
+
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
-import org.jetbrains.annotations.Nullable;
-
-import io.everitoken.sdk.java.apiResource.ApiRequestConfig;
-import io.everitoken.sdk.java.apiResource.DomainDetail;
-import io.everitoken.sdk.java.apiResource.DomainTokens;
-import io.everitoken.sdk.java.apiResource.FungibleAction;
-import io.everitoken.sdk.java.apiResource.FungibleBalance;
-import io.everitoken.sdk.java.apiResource.FungibleDetail;
-import io.everitoken.sdk.java.apiResource.GroupDetail;
-import io.everitoken.sdk.java.apiResource.HeadBlockHeaderState;
-import io.everitoken.sdk.java.apiResource.HistoryAction;
-import io.everitoken.sdk.java.apiResource.HistoryDomain;
-import io.everitoken.sdk.java.apiResource.HistoryFungible;
-import io.everitoken.sdk.java.apiResource.HistoryGroup;
-import io.everitoken.sdk.java.apiResource.HistoryToken;
-import io.everitoken.sdk.java.apiResource.HistoryTransactionDetail;
-import io.everitoken.sdk.java.apiResource.Info;
-import io.everitoken.sdk.java.apiResource.RequiredSuspendedKeys;
-import io.everitoken.sdk.java.apiResource.SignableDigest;
-import io.everitoken.sdk.java.apiResource.SuspendedProposal;
-import io.everitoken.sdk.java.apiResource.TokenDetail;
-import io.everitoken.sdk.java.apiResource.TransactionDetailsOfPublicKeys;
-import io.everitoken.sdk.java.apiResource.TransactionIds;
-import io.everitoken.sdk.java.dto.ActionData;
-import io.everitoken.sdk.java.dto.DomainDetailData;
-import io.everitoken.sdk.java.dto.FungibleCreated;
-import io.everitoken.sdk.java.dto.FungibleDetailData;
-import io.everitoken.sdk.java.dto.GroupDetailData;
-import io.everitoken.sdk.java.dto.NameableResource;
-import io.everitoken.sdk.java.dto.NodeInfo;
-import io.everitoken.sdk.java.dto.TokenDetailData;
-import io.everitoken.sdk.java.dto.TokenDomain;
-import io.everitoken.sdk.java.dto.TransactionDetail;
+import io.everitoken.sdk.java.apiResource.*;
+import io.everitoken.sdk.java.dto.*;
 import io.everitoken.sdk.java.exceptions.ApiResponseException;
-import io.everitoken.sdk.java.param.ActionQueryParams;
-import io.everitoken.sdk.java.param.FungibleActionParams;
-import io.everitoken.sdk.java.param.NetParams;
-import io.everitoken.sdk.java.param.PublicKeysParams;
-import io.everitoken.sdk.java.param.RequestParams;
-import io.everitoken.sdk.java.param.TestNetNetParams;
-import io.everitoken.sdk.java.param.TransactionDetailParams;
+import io.everitoken.sdk.java.param.*;
 
 public class Api {
     private final NetParams netParams;
@@ -94,6 +59,10 @@ public class Api {
 
     public List<ActionData> getActions(ActionQueryParams actionQueryParams) throws ApiResponseException {
         return new HistoryAction(apiRequestConfig).request(RequestParams.of(netParams, actionQueryParams));
+    }
+
+    public JSONArray getFungibleIds() throws ApiResponseException {
+        return new HistoryFungibleIds(apiRequestConfig).request(RequestParams.of(netParams));
     }
 
     public JSONArray getTransactionIdsInBlock(String blockId) throws ApiResponseException {

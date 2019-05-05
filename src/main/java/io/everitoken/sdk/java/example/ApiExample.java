@@ -18,6 +18,7 @@ import io.everitoken.sdk.java.param.*;
 public class ApiExample {
     public static void main(String[] args) {
         try {
+            getFungibleIds();
             // replace this with method you want to test
             // getSuspendedProposalByName();
             // getTransactionDetailById("d9c54f23b4358219018d508bb41507a3dc6efb759a519c08e130c434ebf37be4");
@@ -26,7 +27,7 @@ public class ApiExample {
             // testDomainTokens();
             // getFungibleBalance();
             // getActions();
-            getFungibleSymbolDetail();
+            // getFungibleSymbolDetail();
             // getFungibleActionsByAddress();
             // getTransactionsDetailOfPublicKeys();
             // getManagedGroups();
@@ -51,6 +52,12 @@ public class ApiExample {
         NetParams netParams = new TestNetNetParams();
         String suspendedProposal = new Api(netParams).getSuspendedProposal("tp17");
         System.out.println(suspendedProposal);
+    }
+
+    static void getFungibleIds() throws ApiResponseException {
+        NetParams netParams = new TestNetNetParams();
+        JSONArray fungibleIds = new Api(netParams).getFungibleIds();
+        System.out.println(fungibleIds);
     }
 
     static void getCreatedDomain() throws ApiResponseException {
