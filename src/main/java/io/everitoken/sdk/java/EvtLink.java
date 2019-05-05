@@ -4,22 +4,15 @@ import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-
-import com.alibaba.fastjson.JSONException;
-import com.alibaba.fastjson.JSONObject;
+import java.util.*;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.joda.time.DateTime;
+
+import com.alibaba.fastjson.JSONException;
+import com.alibaba.fastjson.JSONObject;
 
 import io.everitoken.sdk.java.apiResource.EvtLinkStatus;
 import io.everitoken.sdk.java.dto.TokenDomain;
@@ -329,6 +322,10 @@ public class EvtLink {
         return ArrayUtils.addAll(new byte[leadingZerosCount], resultBn.toByteArray());
     }
 
+    public static long getUnsignedInt(final byte[] bytes) {
+        return Long.parseUnsignedLong(Utils.HEX.encode(bytes), 16);
+    }
+
     public String getEvtLinkForPayeeCode(@NotNull final EveriLinkPayeeCodeParam param) {
         int flag = 1 + 16;
         byte[] addressBytes = createSegment(95, param.getAddress().getBytes());
@@ -348,10 +345,6 @@ public class EvtLink {
         }
 
         return generateQRCode(flag, Arrays.asList(addressBytes), null);
-    }
-
-    public static long getUnsignedInt(final byte[] bytes) {
-        return Long.parseUnsignedLong(Utils.HEX.encode(bytes), 16);
     }
 
     public String getEvtLinkForEveriPay(@NotNull final EveriPayParam param,
@@ -530,8 +523,6 @@ public class EvtLink {
         private final long maxAmount;
 
         public EveriPayParam(final int symbol, @NotNull final String linkId, final long maxAmount) {
-            Objects.requireNonNull(linkId);
-
             if (linkId.length() != 32) {
                 throw new EvtLinkException(String.format("LinkId must be with length 32, \"%s\" passed", linkId));
             }
@@ -559,10 +550,7 @@ public class EvtLink {
         private final String domain;
         private final String token;
 
-        public EveriPassParam(final boolean autoDestroy, final String domain, final String token) {
-            Objects.requireNonNull(domain);
-            Objects.requireNonNull(token);
-
+        public EveriPassParam(final boolean autoDestroy, @NotNull final String domain, @NotNull final String token) {
             this.autoDestroy = autoDestroy;
             this.domain = domain;
             this.token = token;
@@ -586,8 +574,8 @@ public class EvtLink {
         private Address address;
         private String amount;
 
-        public EveriLinkPayeeCodeParam(Address address, @Nullable Integer fungibleId, @Nullable String amount) {
-            Objects.requireNonNull(address);
+        public EveriLinkPayeeCodeParam(@NotNull Address address, @Nullable Integer fungibleId,
+                @Nullable String amount) {
 
             if (amount != null) {
                 Objects.requireNonNull(fungibleId);
