@@ -12,6 +12,8 @@ import org.junit.jupiter.api.Test;
 import io.everitoken.sdk.java.param.MainNetNetParams;
 import io.everitoken.sdk.java.param.NetParams;
 import io.everitoken.sdk.java.param.TestNetNetParams;
+import io.everitoken.sdk.java.provider.KeyProvider;
+import io.everitoken.sdk.java.provider.SignProvider;
 
 class EvtLinkTest {
     static void createSegment40To90() {
@@ -33,6 +35,15 @@ class EvtLinkTest {
     void createSegment90() {
         Assertions.assertEquals("5b0a68656c6c6f776f726c64",
                 Utils.HEX.encode(EvtLink.createSegment(91, "helloworld".getBytes())));
+    }
+
+    @Test
+    void createSegment90ExceedLimit() {
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            EvtLink.createSegment(98,
+                    "helloworldhelloworldhelloworldhelloworldhelloworldhelloworldhelloworldhelloworldhelloworldhelloworldhelloworldhelloworldhelloworldhelloworldhelloworldhelloworldhelloworldhelloworldhelloworldhelloworldhelloworldhelloworldhelloworldhelloworldhelloworldhelloworld"
+                            .getBytes());
+        });
     }
 
     @Test
@@ -236,4 +247,26 @@ class EvtLinkTest {
                 "https://evt.li/022Y5C1$TY/8T8O6QT:V:C+H$HHLWK7XC4FEJ-J8JXWNB1VBAP0BIM+DZYRIJCEK0RH*K+HOJA2$UF:U3AOK-V7CF6REB4QSZ*A",
                 evtlink.getEvtLinkForPayeeCode(params));
     }
+
+    @Test
+    void getEvtLinkForEveriPassWithMemo() {
+        NetParams netParams = new TestNetNetParams();
+        EvtLink evtlink = new EvtLink(netParams);
+        EvtLink.EveriPassParam param = new EvtLink.EveriPassParam(true, "domain", "token", "memo");
+
+        String link = evtlink.getEvtLinkForEveriPass(param,
+                SignProvider.of(KeyProvider.of("5J1by7KRQujRdXrurEsvEr2zQGcdPaMJRjewER6XsAR2eCcpt3D")));
+
+        EvtLink.ParsedLink parsedLink = EvtLink.parseLink(link, false);
+        Assertions.assertTrue(EvtLink.ParsedLink.isEveriPass(parsedLink));
+        Assertions.assertEquals("domain",
+                new String(parsedLink.getSegments().get(1).getContent(), StandardCharsets.UTF_8));
+        Assertions.assertEquals("token",
+                new String(parsedLink.getSegments().get(2).getContent(), StandardCharsets.UTF_8));
+        Assertions.assertEquals("memo",
+                new String(parsedLink.getSegments().get(3).getContent(), StandardCharsets.UTF_8));
+
+        System.out.println(link);
+    }
+
 }

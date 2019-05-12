@@ -61,8 +61,13 @@ public class Api {
         return new HistoryAction(apiRequestConfig).request(RequestParams.of(netParams, actionQueryParams));
     }
 
-    public JSONArray getFungibleIds() throws ApiResponseException {
-        return new HistoryFungibleIds(apiRequestConfig).request(RequestParams.of(netParams));
+    public JSONArray getFungibleIds(int take, int skip) throws ApiResponseException {
+        return new HistoryFungibleIds(apiRequestConfig).request(RequestParams.of(netParams, () -> {
+            JSONObject body = new JSONObject();
+            body.put("take", take);
+            body.put("skip", skip);
+            return body.toString();
+        }));
     }
 
     public JSONArray getTransactionIdsInBlock(String blockId) throws ApiResponseException {

@@ -244,6 +244,9 @@ public class EvtLink {
             b.put(content, 0, 4);
             return b.array();
         } else if (type <= 155) {
+            if (content.length > 255) {
+                throw new IllegalArgumentException("value exceeds limit (255)");
+            }
             final ByteBuffer b = ByteBuffer.wrap(new byte[2]);
             b.put((byte) type);
             b.put((byte) content.length);
@@ -386,6 +389,13 @@ public class EvtLink {
 
         final byte[] domainBytes = createSegment(91, param.getDomain().getBytes());
         final byte[] tokenBytes = createSegment(92, param.getToken().getBytes());
+
+        if (param.hasMemo()) {
+            byte[] memoBytes = createSegment(98, param.getMemo().getBytes());
+
+            return generateQRCode(flag, Arrays.asList(timestampBytes, domainBytes, tokenBytes, memoBytes),
+                    signProvider);
+        }
 
         return generateQRCode(flag, Arrays.asList(timestampBytes, domainBytes, tokenBytes), signProvider);
     }
@@ -549,15 +559,33 @@ public class EvtLink {
         private final boolean autoDestroy;
         private final String domain;
         private final String token;
+        private final String memo;
+
+        public EveriPassParam(final boolean autoDestroy, @NotNull final String domain, @NotNull final String token,
+                @Nullable String memo) {
+            this.autoDestroy = autoDestroy;
+            this.domain = domain;
+            this.token = token;
+            this.memo = memo;
+        }
 
         public EveriPassParam(final boolean autoDestroy, @NotNull final String domain, @NotNull final String token) {
             this.autoDestroy = autoDestroy;
             this.domain = domain;
             this.token = token;
+            this.memo = null;
         }
 
         public boolean isAutoDestroy() {
             return autoDestroy;
+        }
+
+        public boolean hasMemo() {
+            return memo != null;
+        }
+
+        public String getMemo() {
+            return memo;
         }
 
         public String getDomain() {

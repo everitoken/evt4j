@@ -56,7 +56,7 @@ public class ApiExample {
 
     static void getFungibleIds() throws ApiResponseException {
         NetParams netParams = new TestNetNetParams();
-        JSONArray fungibleIds = new Api(netParams).getFungibleIds();
+        JSONArray fungibleIds = new Api(netParams).getFungibleIds(100, 0);
         System.out.println(fungibleIds);
     }
 
