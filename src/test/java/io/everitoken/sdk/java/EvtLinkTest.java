@@ -265,8 +265,6 @@ class EvtLinkTest {
                 new String(parsedLink.getSegments().get(2).getContent(), StandardCharsets.UTF_8));
         Assertions.assertEquals("memo",
                 new String(parsedLink.getSegments().get(3).getContent(), StandardCharsets.UTF_8));
-
-        System.out.println(link);
     }
 
 }
