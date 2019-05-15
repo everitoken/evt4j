@@ -8,12 +8,12 @@ import io.everitoken.sdk.java.provider.SignProvider;
 import io.everitoken.sdk.java.provider.SignProviderInterface;
 
 public class TransactionConfiguration {
-    private final int maxCharge;
+    private final long maxCharge;
     private final PublicKey payer;
     private final SignProviderInterface signProvider;
     private String expiration;
 
-    public TransactionConfiguration(final int maxCharge, final PublicKey payer, SignProviderInterface signProvider,
+    public TransactionConfiguration(final long maxCharge, final PublicKey payer, SignProviderInterface signProvider,
             @Nullable String expiration) {
         this.maxCharge = maxCharge;
         this.payer = payer;
@@ -21,16 +21,16 @@ public class TransactionConfiguration {
         this.expiration = expiration;
     }
 
-    public TransactionConfiguration(final int maxCharge, final PublicKey payer, KeyProviderInterface keyProvider) {
+    public TransactionConfiguration(final long maxCharge, final PublicKey payer, KeyProviderInterface keyProvider) {
         this(maxCharge, payer, SignProvider.of(keyProvider), null);
     }
 
-    public TransactionConfiguration(final int maxCharge, final PublicKey payer, KeyProviderInterface keyProvider,
+    public TransactionConfiguration(final long maxCharge, final PublicKey payer, KeyProviderInterface keyProvider,
             String expiration) {
         this(maxCharge, payer, SignProvider.of(keyProvider), expiration);
     }
 
-    public int getMaxCharge() {
+    public long getMaxCharge() {
         return maxCharge;
     }
 

@@ -22,7 +22,7 @@ public class TransferFungibleExample {
 
         try {
             TransactionService transactionService = TransactionService.of(netParam);
-            TransactionConfiguration trxConfig = new TransactionConfiguration(1000000,
+            TransactionConfiguration trxConfig = new TransactionConfiguration(1000000000000000L,
                     PublicKey.of("EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND"),
                     KeyProvider.of("5J1by7KRQujRdXrurEsvEr2zQGcdPaMJRjewER6XsAR2eCcpt3D"));
 

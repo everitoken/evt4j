@@ -20,7 +20,7 @@ public class Transaction {
     private final String expiration;
     private final int refBlockNumber;
     private final long refBlockPrefix;
-    private final int maxCharge;
+    private final long maxCharge;
     private final String payer;
     private final List<String> transactionExtensions = new ArrayList<>();
 
@@ -28,7 +28,7 @@ public class Transaction {
     private TransactionDigest transactionDigest;
 
     public Transaction(final List<String> actions, final String expiration, final int refBlockNumber,
-            final long refBlockPrefix, final int maxCharge, final String payer,
+            final long refBlockPrefix, final long maxCharge, final String payer,
             @Nullable TransactionConfiguration trxConfig) {
 
         this.actions = actions.stream().map(JSONObject::parseObject).map(Action::ofRaw).collect(Collectors.toList());
@@ -60,7 +60,7 @@ public class Transaction {
     }
 
     @JSONField(name = "max_charge")
-    public int getMaxCharge() {
+    public long getMaxCharge() {
         return maxCharge;
     }
 
