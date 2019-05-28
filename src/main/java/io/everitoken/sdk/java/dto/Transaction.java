@@ -4,21 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.jetbrains.annotations.Nullable;
-
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.annotation.JSONField;
 
 import io.everitoken.sdk.java.abi.Action;
-import io.everitoken.sdk.java.service.TransactionConfiguration;
 
 public class Transaction {
-    @JSONField(serialize = false, deserialize = false)
-    private final TransactionConfiguration trxConfig;
-
     private final List<Action> actions;
     private final String expiration;
-    private final int refBlockNumber;
+    private final long refBlockNumber;
     private final long refBlockPrefix;
     private final long maxCharge;
     private final String payer;
@@ -27,9 +21,8 @@ public class Transaction {
     @JSONField(serialize = false, deserialize = false)
     private TransactionDigest transactionDigest;
 
-    public Transaction(final List<String> actions, final String expiration, final int refBlockNumber,
-            final long refBlockPrefix, final long maxCharge, final String payer,
-            @Nullable TransactionConfiguration trxConfig) {
+    public Transaction(final List<String> actions, final String expiration, final long refBlockNumber,
+            final long refBlockPrefix, final long maxCharge, final String payer) {
 
         this.actions = actions.stream().map(JSONObject::parseObject).map(Action::ofRaw).collect(Collectors.toList());
         this.expiration = expiration;
@@ -37,7 +30,6 @@ public class Transaction {
         this.refBlockPrefix = refBlockPrefix;
         this.maxCharge = maxCharge;
         this.payer = payer;
-        this.trxConfig = trxConfig;
     }
 
     @JSONField(name = "actions")
@@ -50,7 +42,7 @@ public class Transaction {
     }
 
     @JSONField(name = "ref_block_num")
-    public int getRefBlockNumber() {
+    public long getRefBlockNumber() {
         return refBlockNumber;
     }
 
@@ -79,9 +71,5 @@ public class Transaction {
     @JSONField(name = "transaction_extensions")
     public List<String> getTransactionExtensions() {
         return transactionExtensions;
-    }
-
-    public TransactionConfiguration getTrxConfig() {
-        return trxConfig;
     }
 }
