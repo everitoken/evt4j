@@ -179,4 +179,20 @@ public class Api {
             return body.toString();
         }));
     }
+
+    private JSONObject getBlockDetailByNumberOrId(String numberOrId) throws ApiResponseException {
+        return new BlockDetail(apiRequestConfig).request(RequestParams.of(netParams, () -> {
+            JSONObject body = new JSONObject();
+            body.put("block_num_or_id", numberOrId);
+            return body.toString();
+        }));
+    }
+
+    public JSONObject getBlockDetail(long blockNumber) throws ApiResponseException {
+        return getBlockDetailByNumberOrId(String.valueOf(blockNumber));
+    }
+
+    public JSONObject getBlockDetail(String blockId) throws ApiResponseException {
+        return getBlockDetailByNumberOrId(String.valueOf(blockId));
+    }
 }

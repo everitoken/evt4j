@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 
 import io.everitoken.sdk.java.Address;
 import io.everitoken.sdk.java.Api;
@@ -18,6 +19,7 @@ import io.everitoken.sdk.java.param.*;
 public class ApiExample {
     public static void main(String[] args) {
         try {
+            // getBlockDetail();
             getFungibleIds();
             // replace this with method you want to test
             // getSuspendedProposalByName();
@@ -151,6 +153,13 @@ public class ApiExample {
         NetParams netParams = new TestNetNetParams();
         JSONArray res = new Api(netParams).getTransactionsDetailOfPublicKeys(
                 Arrays.asList(PublicKey.of("EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND")), 0, 2, "asc");
+        System.out.println(res);
+    }
+
+    static void getBlockDetail() throws ApiResponseException {
+        NetParams netParams = new MainNetNetParams(NetParams.NET.MAINNET1);
+        JSONObject res = new Api(netParams)
+                .getBlockDetail("030f5454f21f319936edb0270d06ca575060c83dbdddc14befc34fb448f8d8b9");
         System.out.println(res);
     }
 

@@ -1,8 +1,8 @@
 package io.everitoken.sdk.java.apiResource;
 
-import com.alibaba.fastjson.JSONObject;
-
 import org.jetbrains.annotations.NotNull;
+
+import com.alibaba.fastjson.JSONObject;
 
 import io.everitoken.sdk.java.dto.TokenDetailData;
 import io.everitoken.sdk.java.exceptions.ApiResponseException;

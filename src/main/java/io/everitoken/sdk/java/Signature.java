@@ -29,7 +29,8 @@ public class Signature {
     }
 
     /**
-     * @param signatureBytes Signature in bytes
+     * @param signatureBytes
+     *            Signature in bytes
      * @return {@link Signature}
      */
     public static Signature of(byte[] signatureBytes) {
@@ -44,7 +45,8 @@ public class Signature {
     }
 
     /**
-     * @param signature Signature in string
+     * @param signature
+     *            Signature in string
      * @return {@link Signature}
      */
     public static Signature of(String signature) {
@@ -91,8 +93,10 @@ public class Signature {
     /**
      * Sign 32 bits hash with private key and store the recId into signature
      *
-     * @param data Data hash with 32 bits
-     * @param key  PrivateKey
+     * @param data
+     *            Data hash with 32 bits
+     * @param key
+     *            PrivateKey
      * @return {@link Signature}
      */
     public static Signature sign(byte[] data, @NotNull PrivateKey key) {
@@ -122,9 +126,12 @@ public class Signature {
     /**
      * Verify hash message with signature and public key
      *
-     * @param data      Data hash with 32 bits
-     * @param signature Signature object
-     * @param publicKey PublicKey object
+     * @param data
+     *            Data hash with 32 bits
+     * @param signature
+     *            Signature object
+     * @param publicKey
+     *            PublicKey object
      * @return boolean
      */
     public static boolean verify(byte[] data, @NotNull Signature signature, @NotNull PublicKey publicKey) {
@@ -149,8 +156,10 @@ public class Signature {
      * need to compare the public key recovered from signature match with whe
      * reference public key
      *
-     * @param data      original data signed by the private key
-     * @param signature signature from sign method
+     * @param data
+     *            original data signed by the private key
+     * @param signature
+     *            signature from sign method
      * @return {@link PublicKey}
      */
     @NotNull
