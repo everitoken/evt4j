@@ -7,6 +7,7 @@ import org.joda.time.Duration;
 
 import io.everitoken.sdk.java.PublicKey;
 import io.everitoken.sdk.java.Utils;
+import io.everitoken.sdk.java.dto.NodeInfo;
 
 public class TransactionConfiguration {
     private final long maxCharge;
@@ -15,7 +16,7 @@ public class TransactionConfiguration {
     private final PublicKey payer;
     private String expiration;
 
-    public TransactionConfiguration(final long blockNum, final long blockPrefix, final String blockTime,
+    private TransactionConfiguration(final long blockNum, final long blockPrefix, final String blockTime,
             final long maxCharge, final PublicKey payer, final boolean hasEveriPay, @Nullable String expiration) {
         this.blockNum = blockNum;
         this.blockPrefix = blockPrefix;
@@ -27,6 +28,27 @@ public class TransactionConfiguration {
         } else {
             this.expiration = expiration;
         }
+    }
+
+    public static TransactionConfiguration of(NodeInfo info, final long maxCharge, final PublicKey payer) {
+        return TransactionConfiguration.of(info, maxCharge, payer, false, null);
+    }
+
+    public static TransactionConfiguration of(final long blockNum, final long blockPrefix, final String blockTime,
+            final long maxCharge, final PublicKey payer, final boolean hasEveriPay, @Nullable String expiration) {
+        return new TransactionConfiguration(blockNum, blockPrefix, blockTime, maxCharge, payer, hasEveriPay,
+                expiration);
+    }
+
+    public static TransactionConfiguration of(NodeInfo info, final long maxCharge, final PublicKey payer,
+            final boolean hasEveriPay, @Nullable String expiration) {
+
+        int blockNum = Utils.getNumHash(info.getLastIrreversibleBlockId());
+        long blockPrefix = Utils.getLastIrreversibleBlockPrefix(info.getLastIrreversibleBlockId());
+        String blockTime = info.getHeadBlockTime();
+
+        return new TransactionConfiguration(blockNum, blockPrefix, blockTime, maxCharge, payer, hasEveriPay,
+                expiration);
     }
 
     public static String getExpirationTime(@NotNull String referenceTime, @Nullable String type) {

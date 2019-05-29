@@ -1,8 +1,6 @@
 package io.everitoken.sdk.java.service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import org.jetbrains.annotations.Contract;
@@ -13,16 +11,14 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
 import io.everitoken.sdk.java.*;
-import io.everitoken.sdk.java.abi.Abi;
-import io.everitoken.sdk.java.abi.AbiSerialisationProviderInterface;
-import io.everitoken.sdk.java.abi.RemoteAbiSerialisationProvider;
-import io.everitoken.sdk.java.abi.TransferFungibleAction;
+import io.everitoken.sdk.java.abi.*;
 import io.everitoken.sdk.java.apiResource.Info;
 import io.everitoken.sdk.java.apiResource.SigningRequiredKeys;
 import io.everitoken.sdk.java.apiResource.TransactionCommit;
 import io.everitoken.sdk.java.apiResource.TransactionEstimatedCharge;
 import io.everitoken.sdk.java.dto.*;
 import io.everitoken.sdk.java.exceptions.ApiResponseException;
+import io.everitoken.sdk.java.param.EvtLinkStatusParam;
 import io.everitoken.sdk.java.param.NetParams;
 import io.everitoken.sdk.java.param.RequestParams;
 import io.everitoken.sdk.java.param.TestNetNetParams;
@@ -43,21 +39,20 @@ public class TransactionService {
     public static void main(String[] args) throws ApiResponseException {
         // build raw transaction
         NetParams netParams = new TestNetNetParams();
+        NodeInfo nodeInfo = (new Info()).request(RequestParams.of(netParams));
+
         TransactionService transactionService = TransactionService.of(netParams);
-        NodeInfo res = (new Info()).request(RequestParams.of(netParams));
         TransferFungibleAction transferFungibleAction = TransferFungibleAction.of("1.00000 S#20",
                 "EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND",
                 "EVT8aNw4NTvjBL1XR6hgy4zcA9jzh1JLjMuAw85mSbW68vYzw2f9H", "test java");
 
-        int refBlockNumber = Utils.getNumHash(res.getLastIrreversibleBlockId());
-        long refBlockPrefix = Utils.getLastIrreversibleBlockPrefix(res.getLastIrreversibleBlockId());
-        TransactionConfiguration trxConfig = new TransactionConfiguration(refBlockNumber, refBlockPrefix,
-                res.getHeadBlockTime(), 1000000, PublicKey.of("EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND"),
-                false, null);
+        TransactionConfiguration trxConfig = TransactionConfiguration.of(nodeInfo, 1000000,
+                PublicKey.of("EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND"), false, null);
+
         Transaction rawTrx = transactionService.buildRawTransaction(trxConfig, Arrays.asList(transferFungibleAction),
                 true);
 
-        TransactionDigest digest = TransactionService.getTransactionSigableDigest(netParams, rawTrx);
+        TransactionDigest digest = TransactionService.getTransactionSignableDigest(netParams, rawTrx);
         List<String> signatures = TransactionService.signTransaction(digest.getDigest(),
                 SignProvider.of(KeyProvider.of("5J1by7KRQujRdXrurEsvEr2zQGcdPaMJRjewER6XsAR2eCcpt3D")));
 
@@ -81,9 +76,21 @@ public class TransactionService {
         return signProvider.sign(trxDigest).stream().map(Signature::toString).collect(Collectors.toList());
     }
 
-    public static TransactionDigest getTransactionSigableDigest(NetParams netParams, Transaction trx)
+    public static TransactionDigest getTransactionSignableDigest(NetParams netParams, Transaction trx)
             throws ApiResponseException {
         return SignProvider.getSignableDigest(netParams, trx);
+    }
+
+    public Map<String, String> pushEveriPayAction(TransactionConfiguration trxConfig, EveriPayAction action,
+            KeyProviderInterface keyProvider) throws ApiResponseException {
+        push(trxConfig, Collections.singletonList(action), false, keyProvider);
+        return new EvtLink(netParams).getStatusOfEvtLink(EvtLinkStatusParam.of(action.getLinkId()));
+    }
+
+    public Map<String, String> pushEveriPayAction(TransactionConfiguration trxConfig, EveriPayAction action,
+            SignProviderInterface signProvider) throws ApiResponseException {
+        push(trxConfig, Collections.singletonList(action), false, signProvider);
+        return new EvtLink(netParams).getStatusOfEvtLink(EvtLinkStatusParam.of(action.getLinkId()));
     }
 
     public TransactionData push(Transaction trx, List<String> signatures) throws ApiResponseException {
@@ -94,6 +101,21 @@ public class TransactionService {
             payload.put("signatures", signatures);
             return payload.toString();
         }));
+    }
+
+    public TransactionData push(TransactionConfiguration trxConfig, List<? extends Abi> actions, boolean checkEveriPay,
+            KeyProviderInterface keyProvider) throws ApiResponseException {
+        return push(trxConfig, actions, checkEveriPay, SignProvider.of(keyProvider));
+    }
+
+    public TransactionData push(TransactionConfiguration trxConfig, List<? extends Abi> actions, boolean checkEveriPay,
+            SignProviderInterface signProvider) throws ApiResponseException {
+
+        Transaction rawTrx = buildRawTransaction(trxConfig, actions, checkEveriPay);
+        TransactionDigest digest = getTransactionSignableDigest(netParams, rawTrx);
+        List<String> signatures = TransactionService.signTransaction(digest.getDigest(), signProvider);
+
+        return push(rawTrx, signatures);
     }
 
     public Transaction buildRawTransaction(TransactionConfiguration trxConfig, List<? extends Abi> actions,
@@ -107,11 +129,6 @@ public class TransactionService {
         if (checkEveriPay && hasEveriPay) {
             throw new IllegalArgumentException("EveriPay action is found in this action list, use "
                     + "\"pushEveriPayAction\" for everipay action instead.");
-        }
-
-        if (hasEveriPay && trxConfig.getExpiration() != null) {
-            throw new IllegalArgumentException("Expiration can not be set in a transaction including a everipay "
-                    + "action, the expiration must be set automatically by SDK");
         }
 
         return new Transaction(serializedActions, trxConfig.getExpiration(), trxConfig.getBlockNum(),

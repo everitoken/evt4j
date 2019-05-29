@@ -20,9 +20,9 @@ public class ApiExample {
     public static void main(String[] args) {
         try {
             // getBlockDetail();
-            getFungibleIds();
+            // getFungibleIds();
             // replace this with method you want to test
-            // getSuspendedProposalByName();
+            getSuspendedProposalByName();
             // getTransactionDetailById("d9c54f23b4358219018d508bb41507a3dc6efb759a519c08e130c434ebf37be4");
             // getGroupDetail();
             // getOwnedTokens();
@@ -52,7 +52,7 @@ public class ApiExample {
 
     static void getSuspendedProposalByName() throws ApiResponseException {
         NetParams netParams = new TestNetNetParams();
-        String suspendedProposal = new Api(netParams).getSuspendedProposal("tp17");
+        String suspendedProposal = new Api(netParams).getSuspendedProposal("tp19");
         System.out.println(suspendedProposal);
     }
 
