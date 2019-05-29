@@ -3,22 +3,18 @@ package io.everitoken.sdk.java.apiResource;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONException;
-import com.alibaba.fastjson.JSONObject;
-
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONException;
+import com.alibaba.fastjson.JSONObject;
+
 import io.everitoken.sdk.java.exceptions.ApiResponseException;
 import io.everitoken.sdk.java.param.NetParams;
 import io.everitoken.sdk.java.param.RequestParams;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
+import okhttp3.*;
 
 class OkhttpApi {
     public static final MediaType JSON_TYPE = MediaType.parse("application/json; charset=utf-8");
@@ -56,7 +52,7 @@ class OkhttpApi {
     protected Request buildRequest(RequestParams requestParams) {
         RequestBody body = RequestBody.create(JSON_TYPE, requestParams.getApiParams().asBody());
 
-        return new Request.Builder().header(CUSTOM_REQUEST_HEADER, "1.0.1").url(getUrl(requestParams.getNetParams()))
+        return new Request.Builder().header(CUSTOM_REQUEST_HEADER, "1.1.1").url(getUrl(requestParams.getNetParams()))
                 .post(body).build();
     }
 
