@@ -52,7 +52,7 @@ class OkhttpApi {
     protected Request buildRequest(RequestParams requestParams) {
         RequestBody body = RequestBody.create(JSON_TYPE, requestParams.getApiParams().asBody());
 
-        return new Request.Builder().header(CUSTOM_REQUEST_HEADER, "1.1.1").url(getUrl(requestParams.getNetParams()))
+        return new Request.Builder().header(CUSTOM_REQUEST_HEADER, "1.2.0").url(getUrl(requestParams.getNetParams()))
                 .post(body).build();
     }
 
