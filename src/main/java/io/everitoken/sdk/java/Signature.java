@@ -28,6 +28,11 @@ public class Signature {
         signature = new ECKey.ECDSASignature(r, s);
     }
 
+    public Signature(BigInteger r, BigInteger s, int recId) {
+        this(r, s);
+        setRecId(recId);
+    }
+
     /**
      * @param signatureBytes
      *            Signature in bytes
@@ -36,8 +41,8 @@ public class Signature {
     public static Signature of(byte[] signatureBytes) {
 
         int recId = (int) signatureBytes[0] - 4 - 27;
-        BigInteger r = new BigInteger(ArrayUtils.subarray(signatureBytes, 1, 33));
-        BigInteger s = new BigInteger(ArrayUtils.subarray(signatureBytes, 33, signatureBytes.length));
+        BigInteger r = new BigInteger(1, ArrayUtils.subarray(signatureBytes, 1, 33));
+        BigInteger s = new BigInteger(1, ArrayUtils.subarray(signatureBytes, 33, signatureBytes.length));
         Signature sig = new Signature(r, s);
         sig.setRecId(recId);
 
@@ -211,6 +216,10 @@ public class Signature {
     }
 
     public int getRecId() {
+        if (recId == null) {
+            throw new IllegalArgumentException("recId is not set");
+        }
+
         return recId;
     }
 

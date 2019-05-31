@@ -1,9 +1,8 @@
 package io.everitoken.sdk.java;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
+import java.math.BigInteger;
 import java.util.Arrays;
 
 import org.junit.jupiter.api.Assertions;
@@ -11,6 +10,17 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 class SignatureTest {
+
+    @Test
+    void testConstructor() {
+        Signature sig = new Signature(BigInteger.ZERO, BigInteger.ONE);
+        Signature sig1 = new Signature(BigInteger.ZERO, BigInteger.ONE, 0);
+
+        assertEquals(sig.getR(), sig1.getR());
+        assertEquals(sig.getS(), sig1.getS());
+        assertEquals(0, sig1.getRecId());
+        assertThrows(IllegalArgumentException.class, sig::getRecId);
+    }
 
     @Test
     @DisplayName("Sign and verify")

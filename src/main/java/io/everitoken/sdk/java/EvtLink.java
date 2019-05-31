@@ -280,7 +280,7 @@ public class EvtLink {
             prefix.append("0");
         }
 
-        BigInteger bigInteger = new BigInteger(input);
+        BigInteger bigInteger = new BigInteger(1, input);
         final BigInteger baseBn = BigInteger.valueOf(BASE);
         final StringBuilder sb = new StringBuilder();
 
