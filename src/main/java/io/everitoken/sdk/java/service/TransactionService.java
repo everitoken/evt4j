@@ -1,6 +1,9 @@
 package io.everitoken.sdk.java.service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.jetbrains.annotations.Contract;
@@ -11,18 +14,21 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 
 import io.everitoken.sdk.java.*;
-import io.everitoken.sdk.java.abi.*;
-import io.everitoken.sdk.java.apiResource.Info;
+import io.everitoken.sdk.java.abi.Abi;
+import io.everitoken.sdk.java.abi.AbiSerialisationProviderInterface;
+import io.everitoken.sdk.java.abi.EveriPayAction;
+import io.everitoken.sdk.java.abi.RemoteAbiSerialisationProvider;
 import io.everitoken.sdk.java.apiResource.SigningRequiredKeys;
 import io.everitoken.sdk.java.apiResource.TransactionCommit;
 import io.everitoken.sdk.java.apiResource.TransactionEstimatedCharge;
-import io.everitoken.sdk.java.dto.*;
+import io.everitoken.sdk.java.dto.Charge;
+import io.everitoken.sdk.java.dto.Transaction;
+import io.everitoken.sdk.java.dto.TransactionData;
+import io.everitoken.sdk.java.dto.TransactionDigest;
 import io.everitoken.sdk.java.exceptions.ApiResponseException;
 import io.everitoken.sdk.java.param.EvtLinkStatusParam;
 import io.everitoken.sdk.java.param.NetParams;
 import io.everitoken.sdk.java.param.RequestParams;
-import io.everitoken.sdk.java.param.TestNetNetParams;
-import io.everitoken.sdk.java.provider.KeyProvider;
 import io.everitoken.sdk.java.provider.KeyProviderInterface;
 import io.everitoken.sdk.java.provider.SignProvider;
 import io.everitoken.sdk.java.provider.SignProviderInterface;
@@ -34,30 +40,6 @@ public class TransactionService {
     private TransactionService(NetParams netParams, AbiSerialisationProviderInterface provider) {
         this.netParams = netParams;
         actionSerializeProvider = provider;
-    }
-
-    public static void main(String[] args) throws ApiResponseException {
-        // build raw transaction
-        NetParams netParams = new TestNetNetParams();
-        NodeInfo nodeInfo = (new Info()).request(RequestParams.of(netParams));
-
-        TransactionService transactionService = TransactionService.of(netParams);
-        TransferFungibleAction transferFungibleAction = TransferFungibleAction.of("1.00000 S#20",
-                "EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND",
-                "EVT8aNw4NTvjBL1XR6hgy4zcA9jzh1JLjMuAw85mSbW68vYzw2f9H", "test java");
-
-        TransactionConfiguration trxConfig = TransactionConfiguration.of(nodeInfo, 1000000,
-                PublicKey.of("EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND"), false, null);
-
-        Transaction rawTrx = transactionService.buildRawTransaction(trxConfig, Arrays.asList(transferFungibleAction),
-                true);
-
-        TransactionDigest digest = TransactionService.getTransactionSignableDigest(netParams, rawTrx);
-        List<String> signatures = TransactionService.signTransaction(digest.getDigest(),
-                SignProvider.of(KeyProvider.of("5J1by7KRQujRdXrurEsvEr2zQGcdPaMJRjewER6XsAR2eCcpt3D")));
-
-        TransactionData push = transactionService.push(rawTrx, signatures);
-        System.out.println(JSON.toJSONString(push));
     }
 
     @NotNull

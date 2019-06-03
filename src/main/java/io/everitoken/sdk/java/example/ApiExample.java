@@ -19,11 +19,12 @@ import io.everitoken.sdk.java.param.*;
 public class ApiExample {
     public static void main(String[] args) {
         try {
+            getCustomNetInfo();
             // getBlockDetail();
             // getFungibleIds();
             // replace this with method you want to test
-            getSuspendedProposalByName();
             // getTransactionDetailById("d9c54f23b4358219018d508bb41507a3dc6efb759a519c08e130c434ebf37be4");
+            // getSuspendedProposalByName();
             // getGroupDetail();
             // getOwnedTokens();
             // testDomainTokens();
@@ -170,5 +171,11 @@ public class ApiExample {
 
         List<ActionData> res = new Api(netParams).getFungibleActionsByAddress(params);
         System.out.println(JSON.toJSONString(res));
+    }
+
+    static void getCustomNetInfo() throws ApiResponseException {
+        NetParams netParams = new CustomNetParams("http", "127.0.0.1", 8888, 15000);
+        Api api = new Api(netParams);
+        System.out.println(JSON.toJSONString(api.getInfo()));
     }
 }
