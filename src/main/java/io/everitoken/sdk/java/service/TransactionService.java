@@ -21,6 +21,7 @@ import io.everitoken.sdk.java.abi.RemoteAbiSerialisationProvider;
 import io.everitoken.sdk.java.apiResource.SigningRequiredKeys;
 import io.everitoken.sdk.java.apiResource.TransactionCommit;
 import io.everitoken.sdk.java.apiResource.TransactionEstimatedCharge;
+import io.everitoken.sdk.java.apiResource.TransactionSignature;
 import io.everitoken.sdk.java.dto.Charge;
 import io.everitoken.sdk.java.dto.Transaction;
 import io.everitoken.sdk.java.dto.TransactionData;
@@ -56,6 +57,27 @@ public class TransactionService {
 
     public static List<String> signTransaction(byte[] trxDigest, SignProviderInterface signProvider) {
         return signProvider.sign(trxDigest).stream().map(Signature::toString).collect(Collectors.toList());
+    }
+
+    public static List<String> signTransaction(Transaction trx, List<String> keys, NetParams walletNetParams,
+            String chainId) throws ApiResponseException {
+
+        JSONObject res = new TransactionSignature().request(RequestParams.of(walletNetParams, () -> {
+            JSONArray body = new JSONArray();
+            body.add(trx);
+            body.add(keys);
+            body.add(chainId);
+            return body.toString();
+        }));
+
+        List<String> signatures = new ArrayList<>();
+
+        JSONArray signaturesList = res.getJSONArray("signatures");
+        for (int i = 0; i < signaturesList.size(); i++) {
+            signatures.add(signaturesList.getString(i));
+        }
+
+        return signatures;
     }
 
     public static TransactionDigest getTransactionSignableDigest(NetParams netParams, Transaction trx)
