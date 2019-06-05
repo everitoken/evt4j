@@ -72,6 +72,10 @@ public class Asset {
         return symbol;
     }
 
+    public String getBalance() {
+        return String.format("%." + symbol.getPrecision() + "f", balance);
+    }
+
     @Override
     public String toString() {
         return String.format("%." + symbol.getPrecision() + "f S#%d", balance, symbol.getId());

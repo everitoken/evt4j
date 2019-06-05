@@ -24,4 +24,13 @@ class AssetTest {
         assertEquals("1000000000000.123456789 S#1", asset2.toString());
         assertEquals(9, asset2.getSymbol().getPrecision());
     }
+
+    @Test
+    void getBalance() {
+        Asset asset = Asset.parseFromRawBalance("10000000000.00000 S#1");
+        assertEquals("10000000000.00000", asset.getBalance());
+
+        Asset asset1 = Asset.parseFromRawBalance("1000000000000.123456789 S#1");
+        assertEquals("1000000000000.123456789", asset1.getBalance());
+    }
 }
