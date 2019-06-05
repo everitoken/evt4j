@@ -43,7 +43,7 @@ public class TransactionServiceExample {
         NetParams netParams = new CustomNetParams("http", "127.0.0.1", 8888, 15000);
 
         // init net for wallet
-        NetParams walletParams = new CustomNetParams("http", "127.0.0.1", 9999, 15000);
+        NetParams walletNetParams = new CustomNetParams("http", "127.0.0.1", 9999, 15000);
         NodeInfo nodeInfo = new Api(netParams).getInfo();
 
         TransferFungibleAction transferFungibleAction = TransferFungibleAction.of("1.00000 S#347",
@@ -63,7 +63,7 @@ public class TransactionServiceExample {
 
         // get signatures from offline wallet rpc
         List<String> signatures = TransactionService.signTransaction(rawTrx,
-                Arrays.asList("EVT6oMRJBkeDEe5bdjoHN1fLGKARwMBp2dBfFTkzK6ii9qVxpJrQT"), walletParams,
+                Arrays.asList("EVT6oMRJBkeDEe5bdjoHN1fLGKARwMBp2dBfFTkzK6ii9qVxpJrQT"), walletNetParams,
                 nodeInfo.getChainId());
 
         // Push the raw transaction together with the signature to chain
