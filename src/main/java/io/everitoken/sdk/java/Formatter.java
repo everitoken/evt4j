@@ -3,21 +3,52 @@ package io.everitoken.sdk.java;
 import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.util.Collections;
 
 import org.jetbrains.annotations.NotNull;
 
 public class Formatter {
+    private static String CHAR_MAP = ".abcdefghijklmnopqrstuvwxyz12345";
 
     public static void main(String[] args) {
-        BigInteger name = encodeName("1");
-        System.out.println(name.toString());
+        String s = decodeName(encodeName(".eos"));
+        System.out.println(s);
+        // System.out.println(new BigInteger(1, encodeName("eos", true)));
+    }
+
+    public static String decodeName(BigInteger nameValue) {
+        Long aLong = Long.parseUnsignedLong(nameValue.toString(2), 2);
+        ByteBuffer bs = ByteBuffer.allocate(8).order(ByteOrder.LITTLE_ENDIAN).putLong(aLong);
+
+        String binaryString = new BigInteger(1, bs.array()).toString(2);
+        String pad = String.join("", Collections.nCopies(64 - binaryString.length(), "0"));
+        String paddedBinaryString = pad + binaryString;
+
+        int i = 0;
+        int step = 5;
+
+        String name = "";
+
+        while (i < paddedBinaryString.length()) {
+            if (i == 60) {
+                step = 4;
+            }
+
+            int index = Integer.parseInt(paddedBinaryString.substring(i, i + step), 2);
+            i = i + step;
+
+            if (index >= CHAR_MAP.length()) {
+                throw new IllegalArgumentException("Failed to decode name");
+            }
+
+            name = String.format("%s%s", name, CHAR_MAP.charAt(index));
+        }
+
+        // replace all the dots "." at end, in binary "00000" will result a "."
+        return name.replaceAll("\\.+$", "");
     }
 
     public static BigInteger encodeName(@NotNull String name) {
-        return encodeName(name, true);
-    }
-
-    public static BigInteger encodeName(@NotNull String name, boolean littleEndian) {
 
         if (name.length() > 13) {
             throw new IllegalArgumentException("A name can be up to 13 characters long.");
@@ -44,14 +75,13 @@ public class Formatter {
 
         // convert to BigInteger
         long parseLong = Long.parseUnsignedLong(binaryString, 2);
-        ByteBuffer bf = ByteBuffer.allocate(8).order(littleEndian ? ByteOrder.LITTLE_ENDIAN : ByteOrder.BIG_ENDIAN)
-                .putLong(parseLong);
+
+        ByteBuffer bf = ByteBuffer.allocate(8).order(ByteOrder.LITTLE_ENDIAN).putLong(parseLong);
 
         return new BigInteger(1, bf.array());
     }
 
     public static int getCharIndex(char c) {
-        String CHAR_MAP = ".abcdefghijklmnopqrstuvwxyz12345";
         int index = CHAR_MAP.indexOf(c);
 
         if (index == -1) {
