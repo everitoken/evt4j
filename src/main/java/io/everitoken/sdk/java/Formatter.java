@@ -10,15 +10,14 @@ import org.jetbrains.annotations.NotNull;
 public class Formatter {
     private static String CHAR_MAP = ".abcdefghijklmnopqrstuvwxyz12345";
 
-    public static void main(String[] args) {
-        String s = decodeName(encodeName(".eos"));
-        System.out.println(s);
-        // System.out.println(new BigInteger(1, encodeName("eos", true)));
+    public static String decodeName(BigInteger nameValue) {
+        return decodeName(nameValue, true);
     }
 
-    public static String decodeName(BigInteger nameValue) {
+    public static String decodeName(BigInteger nameValue, boolean littleEndian) {
         Long aLong = Long.parseUnsignedLong(nameValue.toString(2), 2);
-        ByteBuffer bs = ByteBuffer.allocate(8).order(ByteOrder.LITTLE_ENDIAN).putLong(aLong);
+        ByteBuffer bs = ByteBuffer.allocate(8).order(littleEndian ? ByteOrder.LITTLE_ENDIAN : ByteOrder.BIG_ENDIAN)
+                .putLong(aLong);
 
         String binaryString = new BigInteger(1, bs.array()).toString(2);
         String pad = String.join("", Collections.nCopies(64 - binaryString.length(), "0"));
@@ -49,6 +48,10 @@ public class Formatter {
     }
 
     public static BigInteger encodeName(@NotNull String name) {
+        return encodeName(name, true);
+    }
+
+    public static BigInteger encodeName(@NotNull String name, boolean littleEndian) {
 
         if (name.length() > 13) {
             throw new IllegalArgumentException("A name can be up to 13 characters long.");
@@ -76,7 +79,8 @@ public class Formatter {
         // convert to BigInteger
         long parseLong = Long.parseUnsignedLong(binaryString, 2);
 
-        ByteBuffer bf = ByteBuffer.allocate(8).order(ByteOrder.LITTLE_ENDIAN).putLong(parseLong);
+        ByteBuffer bf = ByteBuffer.allocate(8).order(littleEndian ? ByteOrder.LITTLE_ENDIAN : ByteOrder.BIG_ENDIAN)
+                .putLong(parseLong);
 
         return new BigInteger(1, bf.array());
     }
