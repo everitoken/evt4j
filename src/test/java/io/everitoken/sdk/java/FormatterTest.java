@@ -56,4 +56,18 @@ class FormatterTest {
         Assertions.assertEquals(Formatter.encodeName128("1234567890ABCDEF"), "0f44611c48a22c8279a2a9ba02000000");
         Assertions.assertEquals(Formatter.encodeName128("1234567890ABCDEFGHIJK"), "0f44611c48a22c8279a2a9bab2adfbc2");
     }
+
+    @Test
+
+    void decodeName128Test() {
+        Assertions.assertEquals(Formatter.decodeName128("0c440100"), "123");
+        Assertions.assertEquals(Formatter.decodeName128("0c44611c"), "12345");
+        Assertions.assertEquals(Formatter.decodeName128("0d44611c08000000"), "123456");
+        Assertions.assertEquals(Formatter.decodeName128("0d44611c48a22c02"), "1234567890");
+        Assertions.assertEquals(Formatter.decodeName128("0e44611c48a22c8209000000"), "1234567890A");
+        Assertions.assertEquals(Formatter.decodeName128("0ec3300cc3300cc300000000"), "11111111111");
+        Assertions.assertEquals(Formatter.decodeName128("0e44611c48a22c8279a2a90a"), "1234567890ABCDE");
+        Assertions.assertEquals(Formatter.decodeName128("0f44611c48a22c8279a2a9ba02000000"), "1234567890ABCDEF");
+        Assertions.assertEquals(Formatter.decodeName128("0f44611c48a22c8279a2a9bab2adfbc2"), "1234567890ABCDEFGHIJK");
+    }
 }

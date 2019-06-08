@@ -10,18 +10,14 @@ import org.jetbrains.annotations.NotNull;
 
 public class Formatter {
     private static String CHAR_MAP = ".abcdefghijklmnopqrstuvwxyz12345";
-
-    public static void main(String[] args) {
-        System.out.println(encodeName128("1"));
-        System.out.println(encodeName128("evt"));
-    }
+    private static String CHAR_MAP_128 = ".-0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
     public static String decodeName(BigInteger nameValue) {
         return decodeName(nameValue, true);
     }
 
     public static String decodeName(BigInteger nameValue, boolean littleEndian) {
-        Long aLong = Long.parseUnsignedLong(nameValue.toString(2), 2);
+        long aLong = Long.parseUnsignedLong(nameValue.toString(2), 2);
         ByteBuffer bs = ByteBuffer.allocate(8).order(littleEndian ? ByteOrder.LITTLE_ENDIAN : ByteOrder.BIG_ENDIAN)
                 .putLong(aLong);
 
@@ -146,6 +142,38 @@ public class Formatter {
         return String.format("%s%s", hex, pad.substring(0, cutSize * 2 - hex.length()));
     }
 
+    public static String decodeName128(String hexString) {
+        byte[] bytes = Utils.HEX.decode(hexString);
+
+        ByteBuffer bs = ByteBuffer.allocate(bytes.length).put(bytes);
+        String byteString = "";
+
+        bs.rewind();
+
+        while (bs.hasRemaining()) {
+            String binaryString = Integer.toBinaryString(bs.get() & 0xFF);
+            String pad = String.join("", Collections.nCopies(8 - binaryString.length(), "0"));
+            byteString = String.format("%s%s%s", pad, binaryString, byteString);
+        }
+
+        int length = Integer.valueOf(byteString.substring(byteString.length() - 2), 2);
+
+        byteString = byteString.substring(0, byteString.length() - 2);
+
+        String pad = String.join("", Collections.nCopies(126 - byteString.length(), "0"));
+
+        String byteStringPadded = pad + byteString;
+
+        String name = "";
+
+        for (int i = 0; i < byteStringPadded.length(); i = i + 6) {
+            int charIndex = Integer.valueOf(byteStringPadded.substring(i, i + 6), 2) % CHAR_MAP_128.length();
+            name = CHAR_MAP_128.charAt(charIndex) + name;
+        }
+
+        return name.replaceAll("\\.+$", "");
+    }
+
     public static int getCharIndex(char c) {
         int index = CHAR_MAP.indexOf(c);
 
@@ -157,7 +185,6 @@ public class Formatter {
     }
 
     public static int getCharIndexFor128(char c) {
-        String CHAR_MAP_128 = ".-0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
         int index = CHAR_MAP_128.indexOf(c);
 
         if (index == -1) {
