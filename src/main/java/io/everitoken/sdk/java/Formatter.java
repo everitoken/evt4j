@@ -5,10 +5,16 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.Collections;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.jetbrains.annotations.NotNull;
 
 public class Formatter {
     private static String CHAR_MAP = ".abcdefghijklmnopqrstuvwxyz12345";
+
+    public static void main(String[] args) {
+        System.out.println(encodeName128("1"));
+        System.out.println(encodeName128("evt"));
+    }
 
     public static String decodeName(BigInteger nameValue) {
         return decodeName(nameValue, true);
@@ -83,6 +89,61 @@ public class Formatter {
                 .putLong(parseLong);
 
         return new BigInteger(1, bf.array());
+    }
+
+    public static String encodeName128(@NotNull String name) {
+
+        if (name.length() > 21) {
+            throw new IllegalArgumentException("A name can be up to 21 characters long.");
+        }
+
+        String binaryString = "";
+        String pad = "000000";
+
+        // convert to binary string
+        for (int i = 0; i < 21; i++) {
+            // pad with 0 if name is less than 13 chars
+            int charIndex = i < name.length() ? getCharIndexFor128(name.charAt(i)) : 0;
+
+            String partBinaryString = Integer.toBinaryString(charIndex);
+
+            if (partBinaryString.length() > 6) {
+                throw new IllegalArgumentException("Invalid name");
+            }
+
+            binaryString = String.format("%s%s%s", pad.substring(0, 6 - partBinaryString.length()), partBinaryString,
+                    binaryString);
+        }
+
+        int cutSize = 4;
+        int nameLen = name.length();
+
+        if (nameLen <= 5) {
+            binaryString = binaryString + "00";
+        } else if (nameLen <= 10) {
+            binaryString = binaryString + "01";
+            cutSize = 8;
+        } else if (nameLen <= 15) {
+            binaryString = binaryString + "10";
+            cutSize = 12;
+        } else {
+            binaryString = binaryString + "11";
+            cutSize = 16;
+        }
+
+        BigInteger bigInteger = new BigInteger(binaryString, 2);
+
+        byte[] byteBufferArray = bigInteger.toByteArray();
+
+        if (byteBufferArray.length > 16) {
+            byteBufferArray = ArrayUtils.subarray(byteBufferArray, 1, byteBufferArray.length);
+            System.out.println("Warning: encodeName128 generated hex more than 32 chars");
+        }
+
+        ArrayUtils.reverse(byteBufferArray);
+
+        String hex = Utils.HEX.encode(byteBufferArray);
+        return String.format("%s%s", hex, pad.substring(0, cutSize * 2 - hex.length()));
     }
 
     public static int getCharIndex(char c) {
