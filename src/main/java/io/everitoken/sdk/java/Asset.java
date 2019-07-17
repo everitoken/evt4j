@@ -43,12 +43,14 @@ public class Asset {
 
         String[] balanceParts = Strings.split(parts[0], '.');
 
-        if (balanceParts.length != 2) {
+        if (balanceParts.length == 1) {
+            precision = 0;
+        } else if (balanceParts.length == 2) {
+            precision = balanceParts[1].length();
+        } else {
             throw new IllegalArgumentException(String.format(
                     "Failed to parse precision in balance. A \".\" is " + "expected, \"%s\" is passed in", balance));
         }
-
-        precision = balanceParts[1].length();
 
         try {
             String[] symbolArray = Strings.split(parts[1], '#');
