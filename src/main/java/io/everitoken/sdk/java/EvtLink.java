@@ -111,6 +111,30 @@ public class EvtLink {
         return segments;
     }
 
+    public static String appendSignautresToEvtLink(@NotNull String evtLink, List<Signature> signatures) {
+        if (evtLink.length() == 0) {
+            throw new IllegalArgumentException("EvtLink can not be empty.");
+        }
+
+        if (evtLink.contains("_")) {
+            throw new IllegalArgumentException("This EvtLink has already signature segment.");
+        }
+
+        if (signatures.isEmpty()) {
+            throw new IllegalArgumentException("Signature array is empty.");
+        }
+
+        byte[] signaturesBytes = new byte[] {};
+
+        for (final Signature signature : signatures) {
+            signaturesBytes = ArrayUtils.addAll(signaturesBytes, signature.getBytes());
+        }
+
+        String content = String.format("%s_%s", evtLink, encode(signaturesBytes));
+
+        return content;
+    }
+
     private static String generateQRCode(final int flag, final List<byte[]> segments,
             @Nullable final SignProviderInterface signProvider) {
 
@@ -131,7 +155,6 @@ public class EvtLink {
         }
 
         if (signProvider != null) {
-            byte[] signaturesBytes = new byte[] {};
             final List<Signature> signatures = signProvider.sign(Utils.hash(contentBytes));
 
             if (signatures.size() > 3) {
@@ -139,11 +162,7 @@ public class EvtLink {
                         String.format("Only 3 signatures are allowed, \"%d\" passed", signatures.size()));
             }
 
-            for (final Signature signature : signatures) {
-                signaturesBytes = ArrayUtils.addAll(signaturesBytes, signature.getBytes());
-            }
-
-            content = String.format("%s_%s", content, encode(signaturesBytes));
+            content = appendSignautresToEvtLink(content, signatures);
         }
 
         return content;

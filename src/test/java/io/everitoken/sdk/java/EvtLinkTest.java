@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
@@ -137,6 +139,27 @@ class EvtLinkTest {
         Assertions.assertEquals("EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND", publicKeys.get(0).toString());
         Assertions.assertEquals("EVT6MYSkiBHNDLxE6JfTmSA1FxwZCgBnBYvCo7snSQEQ2ySBtpC6s", publicKeys.get(1).toString());
         Assertions.assertEquals("EVT7bUYEdpHiKcKT9Yi794MiwKzx5tGY3cHSh4DoCrL4B2LRjRgnt", publicKeys.get(2).toString());
+    }
+
+    @Test
+    void testAppendSignature() {
+        String sig = "SIG_K1_KfdgiuhCZFSx9ggL4sNCoKnPzQwXEq1AJxEdd9Jw27GbuZ5ieoYMdh76FKpFEoxa8jVkFYMafyorxFHSutrgmFy8VbwCfD";
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            EvtLink.appendSignautresToEvtLink("link_sig", Arrays.asList(Signature.of(sig)));
+        });
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            EvtLink.appendSignautresToEvtLink("", Arrays.asList(Signature.of(sig)));
+        });
+
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            EvtLink.appendSignautresToEvtLink("link", new ArrayList<>());
+        });
+
+        String content = EvtLink.appendSignautresToEvtLink("link", Arrays.asList(Signature.of(sig)));
+        Assertions.assertEquals(
+                "link_QXXYQY$HXP+JWF8K32YW-EZPRCVMD+X6GO2*I0QQOCB*JK77O/ZDSPV2Y71APKN$0M159OCFD1741NQF4-E3:DY01+5-E2V1",
+                content);
     }
 
     @Test
