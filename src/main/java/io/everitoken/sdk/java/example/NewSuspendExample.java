@@ -2,7 +2,7 @@ package io.everitoken.sdk.java.example;
 
 import java.util.Arrays;
 
-import io.everitoken.sdk.java.PublicKey;
+import io.everitoken.sdk.java.Address;
 import io.everitoken.sdk.java.abi.Evt2PevtAction;
 import io.everitoken.sdk.java.abi.NewSuspendAction;
 import io.everitoken.sdk.java.apiResource.Info;
@@ -29,7 +29,7 @@ public class NewSuspendExample {
             NodeInfo nodeInfo = (new Info()).request(RequestParams.of(netParams));
             TransactionService transactionService = TransactionService.of(netParams);
             TransactionConfiguration trxConfig = TransactionConfiguration.of(nodeInfo, 1000000,
-                    PublicKey.of("EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND"));
+                    Address.of("EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND"));
 
             Transaction trx = transactionService.buildRawTransaction(trxConfig, Arrays.asList(evt2PevtAction), false);
             NewSuspendAction action = NewSuspendAction.of("tp19",

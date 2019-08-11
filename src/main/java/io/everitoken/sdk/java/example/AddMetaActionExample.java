@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 import com.alibaba.fastjson.JSON;
 
+import io.everitoken.sdk.java.Address;
 import io.everitoken.sdk.java.PublicKey;
 import io.everitoken.sdk.java.abi.AddMetaAction;
 import io.everitoken.sdk.java.apiResource.Info;
@@ -38,7 +39,7 @@ public class AddMetaActionExample {
                     AuthorizerRef.createAccount(PublicKey.of("EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND")));
 
             TransactionConfiguration trxConfig = TransactionConfiguration.of(nodeInfo, 1000000,
-                    PublicKey.of("EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND"));
+                    Address.of("EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND"));
 
             TransactionData txData = transactionService.push(trxConfig,
                     Arrays.asList(actionForDomainToken, actionForGroup, actionForFungible), false, keyProvider);

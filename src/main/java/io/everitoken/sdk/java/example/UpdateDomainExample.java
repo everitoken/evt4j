@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 import com.alibaba.fastjson.JSONObject;
 
-import io.everitoken.sdk.java.PublicKey;
+import io.everitoken.sdk.java.Address;
 import io.everitoken.sdk.java.abi.UpdateDomainAction;
 import io.everitoken.sdk.java.apiResource.Info;
 import io.everitoken.sdk.java.dto.NodeInfo;
@@ -33,7 +33,7 @@ public class UpdateDomainExample {
             NodeInfo nodeInfo = (new Info()).request(RequestParams.of(netParams));
             TransactionService transactionService = TransactionService.of(netParams);
             TransactionConfiguration trxConfig = TransactionConfiguration.of(nodeInfo, 1000000,
-                    PublicKey.of("EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND"));
+                    Address.of("EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND"));
             TransactionData txData = transactionService.push(trxConfig, Arrays.asList(updateDomainAction), false,
                     keyProvider);
             System.out.println(txData.getTrxId());

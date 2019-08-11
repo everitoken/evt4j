@@ -17,6 +17,7 @@ class AddressTest {
     @DisplayName("Valid and invalid addresses")
     void isValidAddress() {
         assertTrue(Address.isValidAddress("EVT00000000000000000000000000000000000000000000000000"));
+        assertTrue(Address.isValidAddress("EVT0000008T1TPuhA6gciep9YFw3vAibChMEMqJrmZxi3j5UAkgFq"));
         assertTrue(Address.isValidAddress("EVT76uLwUD5t6fkob9Rbc9UxHgdTVshNceyv2hmppw4d82j2zYRpa"));
         assertTrue(Address.isValidAddress("EVT0000005ZbVoKRDdy6N4r22sSn3WDyB4YkTcf5R1dSjAsmRnFEF"));
         assertFalse(Address.isValidAddress("EOS6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND"));

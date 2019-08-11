@@ -5,7 +5,7 @@ import org.jetbrains.annotations.Nullable;
 import org.joda.time.DateTime;
 import org.joda.time.Duration;
 
-import io.everitoken.sdk.java.PublicKey;
+import io.everitoken.sdk.java.Address;
 import io.everitoken.sdk.java.Utils;
 import io.everitoken.sdk.java.dto.NodeInfo;
 
@@ -13,11 +13,11 @@ public class TransactionConfiguration {
     private final long maxCharge;
     private final long blockNum;
     private final long blockPrefix;
-    private final PublicKey payer;
+    private final Address payer;
     private String expiration;
 
     private TransactionConfiguration(final long blockNum, final long blockPrefix, final String blockTime,
-            final long maxCharge, final PublicKey payer, final boolean hasEveriPay, @Nullable String expiration) {
+            final long maxCharge, final Address payer, final boolean hasEveriPay, @Nullable String expiration) {
         this.blockNum = blockNum;
         this.blockPrefix = blockPrefix;
         this.maxCharge = maxCharge;
@@ -30,17 +30,17 @@ public class TransactionConfiguration {
         }
     }
 
-    public static TransactionConfiguration of(NodeInfo info, final long maxCharge, final PublicKey payer) {
+    public static TransactionConfiguration of(NodeInfo info, final long maxCharge, final Address payer) {
         return TransactionConfiguration.of(info, maxCharge, payer, false, null);
     }
 
     public static TransactionConfiguration of(final long blockNum, final long blockPrefix, final String blockTime,
-            final long maxCharge, final PublicKey payer, final boolean hasEveriPay, @Nullable String expiration) {
+            final long maxCharge, final Address payer, final boolean hasEveriPay, @Nullable String expiration) {
         return new TransactionConfiguration(blockNum, blockPrefix, blockTime, maxCharge, payer, hasEveriPay,
                 expiration);
     }
 
-    public static TransactionConfiguration of(NodeInfo info, final long maxCharge, final PublicKey payer,
+    public static TransactionConfiguration of(NodeInfo info, final long maxCharge, final Address payer,
             final boolean hasEveriPay, @Nullable String expiration) {
 
         int blockNum = Utils.getNumHash(info.getLastIrreversibleBlockId());
