@@ -57,8 +57,9 @@ class BasicUsageExample {
             // init transaction service with net parameters
             TransactionService transactionService = TransactionService.of(netParams);
 
+            Address addr = Address.of(publicKey.toString());
             // init transaction configuration
-            TransactionConfiguration trxConfig = TransactionConfiguration.of(nodeInfo, 1000000, publicKey);
+            TransactionConfiguration trxConfig = TransactionConfiguration.of(nodeInfo, 1000000, addr);
 
             // push this action to the node and get back an transaction
             TransactionData txData = transactionService.push(trxConfig, Arrays.asList(transferFungibleAction), false,

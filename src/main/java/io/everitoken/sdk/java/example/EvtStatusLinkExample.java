@@ -2,8 +2,8 @@ package io.everitoken.sdk.java.example;
 
 import java.util.Map;
 
+import io.everitoken.sdk.java.Address;
 import io.everitoken.sdk.java.EvtLink;
-import io.everitoken.sdk.java.PublicKey;
 import io.everitoken.sdk.java.abi.EveriPayAction;
 import io.everitoken.sdk.java.apiResource.Info;
 import io.everitoken.sdk.java.dto.NodeInfo;
@@ -34,7 +34,7 @@ public class EvtStatusLinkExample {
             NodeInfo nodeInfo = (new Info()).request(RequestParams.of(netParams));
             TransactionService transactionService = TransactionService.of(netParams);
             TransactionConfiguration trxConfig = TransactionConfiguration.of(nodeInfo, 1000000,
-                    PublicKey.of("EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND"), true, null);
+                    Address.of("EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND"), true, null);
 
             Map<String, String> statusOfEvtLink = transactionService.pushEveriPayAction(trxConfig, action, keyProvider);
             System.out.println(statusOfEvtLink);

@@ -28,7 +28,7 @@ public class EstimateChargeExample {
             NodeInfo nodeInfo = (new Info()).request(RequestParams.of(netParams));
             TransactionService transactionService = TransactionService.of(netParams);
             TransactionConfiguration trxConfig = TransactionConfiguration.of(nodeInfo, 1000000,
-                    PublicKey.of("EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND"));
+                    Address.of("EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND"));
 
             Charge charge = transactionService.estimateCharge(trxConfig, Arrays.asList(issueTokenAction),
                     Arrays.asList(PublicKey.of("EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND")));

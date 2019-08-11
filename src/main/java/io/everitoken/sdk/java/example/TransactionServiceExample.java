@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.alibaba.fastjson.JSON;
 
+import io.everitoken.sdk.java.Address;
 import io.everitoken.sdk.java.Api;
 import io.everitoken.sdk.java.PublicKey;
 import io.everitoken.sdk.java.abi.TransferFungibleAction;
@@ -55,7 +56,7 @@ public class TransactionServiceExample {
 
         // Construct transaction configuration
         TransactionConfiguration trxConfig = TransactionConfiguration.of(nodeInfo, 1000000,
-                PublicKey.of("EVT6oMRJBkeDEe5bdjoHN1fLGKARwMBp2dBfFTkzK6ii9qVxpJrQT"), false, null);
+                Address.of("EVT6oMRJBkeDEe5bdjoHN1fLGKARwMBp2dBfFTkzK6ii9qVxpJrQT"), false, null);
 
         // Construct raw transaction
         Transaction rawTrx = transactionService.buildRawTransaction(trxConfig, Arrays.asList(transferFungibleAction),
@@ -88,7 +89,7 @@ public class TransactionServiceExample {
 
         // Construct transaction configuration
         TransactionConfiguration trxConfig = TransactionConfiguration.of(nodeInfo, 1000000,
-                PublicKey.of("EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND"), false, null);
+                Address.of("EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND"), false, null);
 
         // Construct raw transaction
         Transaction rawTrx = transactionService.buildRawTransaction(trxConfig, Arrays.asList(transferFungibleAction),
@@ -123,7 +124,7 @@ public class TransactionServiceExample {
 
         // Construct transaction configuration
         TransactionConfiguration trxConfig = TransactionConfiguration.of(nodeInfo, 1000000,
-                PublicKey.of("EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND"), false, null);
+                Address.of("EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND"), false, null);
 
         // Push the raw transaction together with the signature to chain
         TransactionData push = transactionService.push(trxConfig, Arrays.asList(transferFungibleAction), false,

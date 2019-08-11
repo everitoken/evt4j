@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 
 import com.alibaba.fastjson.JSON;
 
-import io.everitoken.sdk.java.PublicKey;
+import io.everitoken.sdk.java.Address;
 import io.everitoken.sdk.java.Signature;
 import io.everitoken.sdk.java.abi.ApproveSuspendAction;
 import io.everitoken.sdk.java.apiResource.Info;
@@ -34,7 +34,7 @@ public class ApproveSuspendExample {
                     signatures.stream().map(Signature::toString).collect(Collectors.toList()));
 
             TransactionConfiguration trxConfig = TransactionConfiguration.of(nodeInfo, 1000000,
-                    PublicKey.of("EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND"));
+                    Address.of("EVT6Qz3wuRjyN6gaU3P3XRxpnEZnM4oPxortemaWDwFRvsv2FxgND"));
 
             System.out.println(JSON.toJSONString(action));
             TransactionData txData = transactionService.push(trxConfig, Arrays.asList(action), false, keyProvider);
