@@ -394,8 +394,21 @@ public class EvtLink {
 
         final byte[] linkIdBytes = createSegment(156, Utils.HEX.decode(param.getLinkId()));
 
-        return generateQRCode(flag, Arrays.asList(timestampBytes, symbolBytes, maxAmountBytes, linkIdBytes),
-                signProvider);
+        ArrayList<byte[]> segmentList = new ArrayList<>();
+        segmentList.add(timestampBytes);
+        segmentList.add(symbolBytes);
+        segmentList.add(maxAmountBytes);
+        segmentList.add(linkIdBytes);
+
+        if (param.hasMemo()) {
+            segmentList.add(createSegment(98, param.getMemo().getBytes()));
+        }
+
+        if (param.hasRedirect()) {
+            segmentList.add(createSegment(99, param.getRedirect().getBytes()));
+        }
+
+        return generateQRCode(flag, segmentList, signProvider);
     }
 
     public String getEvtLinkForEveriPass(@NotNull final EveriPassParam param,
@@ -550,8 +563,11 @@ public class EvtLink {
         private final int symbol;
         private final String linkId;
         private final long maxAmount;
+        private final String memo;
+        private final String redirect;
 
-        public EveriPayParam(final int symbol, @NotNull final String linkId, final long maxAmount) {
+        public EveriPayParam(final int symbol, @NotNull final String linkId, final long maxAmount,
+                @Nullable String memo, @Nullable String redirect) {
             if (linkId.length() != 32) {
                 throw new EvtLinkException(String.format("LinkId must be with length 32, \"%s\" passed", linkId));
             }
@@ -559,6 +575,12 @@ public class EvtLink {
             this.symbol = symbol;
             this.linkId = linkId;
             this.maxAmount = maxAmount;
+            this.memo = memo;
+            this.redirect = redirect;
+        }
+
+        public EveriPayParam(final int symbol, @NotNull final String linkId, final long maxAmount) {
+            this(symbol, linkId, maxAmount, null, null);
         }
 
         public int getSymbol() {
@@ -571,6 +593,22 @@ public class EvtLink {
 
         public long getMaxAmount() {
             return maxAmount;
+        }
+
+        public boolean hasRedirect() {
+            return redirect != null;
+        }
+
+        public String getRedirect() {
+            return redirect;
+        }
+
+        public boolean hasMemo() {
+            return memo != null;
+        }
+
+        public String getMemo() {
+            return memo;
         }
     }
 
