@@ -37,6 +37,13 @@ class KeyProviderTest {
     }
 
     @Test
+    void testGet() {
+        String[] keyList = { validPrivateKey, validPrivateKey1 };
+        KeyProvider provider = KeyProvider.of(keyList);
+        Assertions.assertEquals(validPrivateKey, provider.get().get(0).toWif());
+    }
+
+    @Test
     @DisplayName("Multiple Invalid private key throws exception")
     void initWithMultipleInvalidPrivateKeyGetException() {
         Assertions.assertThrows(WifFormatException.class, () -> {

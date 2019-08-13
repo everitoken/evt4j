@@ -1,9 +1,9 @@
 package io.everitoken.sdk.java.provider;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -13,7 +13,12 @@ public class KeyProvider implements KeyProviderInterface {
     private final List<PrivateKey> keys;
 
     private KeyProvider(@NotNull final List<String> keys) {
-        this.keys = keys.stream().map(PrivateKey::of).collect(Collectors.toList());
+        List<PrivateKey> keyList = new ArrayList<>();
+        for (String key : keys) {
+            keyList.add(PrivateKey.of(key));
+        }
+
+        this.keys = keyList;
     }
 
     public static KeyProvider of(String key) {
