@@ -139,7 +139,11 @@ public class EvtLink {
             @Nullable final SignProviderInterface signProvider) {
 
         // sort segments based on type key
-        segments.sort(Comparator.comparingInt(a -> a[0] & 0xff));
+        Collections.sort(segments, new Comparator<byte[]>() {
+            public int compare(byte[] a, byte[] b) {
+                return (a[0] & 0xff) - (b[0] & 0xff);
+            }
+        });
 
         // put flag in first
         byte[] contentBytes = ByteBuffer.allocate(2).putShort((short) flag).array();
