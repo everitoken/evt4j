@@ -25,8 +25,13 @@ public class RemoteAbiSerialisationProvider implements AbiSerialisationProviderI
         } catch (JSONException ex) {
             throw new IllegalArgumentException(String.format("Invalid json \"%s\" passed in.", data), ex);
         } catch (ApiResponseException ex) {
-            throw new AbiSerialisationFailureException(
-                    String.format("Failed to serialize via node: %s", ex.getRaw().toString()), ex);
+            String msg = "unknown error";
+
+            if (ex.getRaw() != null) {
+                msg = ex.getRaw().toString();
+            }
+
+            throw new AbiSerialisationFailureException(String.format("Failed to serialize via node: %s", msg), ex);
         }
     }
 }
