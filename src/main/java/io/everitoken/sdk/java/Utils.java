@@ -153,7 +153,7 @@ public class Utils {
     }
 
     public static int getNumHash(String hash) {
-        return Integer.parseUnsignedInt(hash.substring(4, 8), 16);
+        return parseUnsignedInt(hash.substring(4, 8), 16);
     }
 
     public static int parseUnsignedInt(String s, int radix) throws NumberFormatException {
@@ -188,8 +188,11 @@ public class Utils {
 
     public static long getLastIrreversibleBlockPrefix(String hash) {
         byte[] input = Utils.HEX.decode(hash);
-        return Integer
-                .toUnsignedLong(ByteBuffer.wrap(input, 8, input.length - 8).order(ByteOrder.LITTLE_ENDIAN).getInt());
+        return toUnsignedLong(ByteBuffer.wrap(input, 8, input.length - 8).order(ByteOrder.LITTLE_ENDIAN).getInt());
+    }
+
+    public static long toUnsignedLong(int x) {
+        return ((long) x) & 0xffffffffL;
     }
 
     public static DateTime getCorrectedTime(String referenceTime) {
