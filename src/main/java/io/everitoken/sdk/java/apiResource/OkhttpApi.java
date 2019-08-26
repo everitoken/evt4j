@@ -20,7 +20,7 @@ class OkhttpApi {
     public static final MediaType JSON_TYPE = MediaType.parse("application/json; charset=utf-8");
     private static final String CUSTOM_REQUEST_HEADER = "X-EVERITOKEN-EVT4J";
 
-    private final OkHttpClient client;
+    private OkHttpClient client;
     private final String uri;
     private final String method;
 
@@ -36,9 +36,6 @@ class OkhttpApi {
 
         int timeout = localApiReqConfig.getTimeout();
 
-        this.client = new OkHttpClient.Builder().connectTimeout(timeout, TimeUnit.MILLISECONDS)
-                .writeTimeout(timeout, TimeUnit.MILLISECONDS).readTimeout(timeout, TimeUnit.MILLISECONDS).build();
-
     }
 
     protected OkhttpApi(String uri) {
@@ -51,6 +48,9 @@ class OkhttpApi {
 
     protected Request buildRequest(RequestParams requestParams) {
         RequestBody body = RequestBody.create(JSON_TYPE, requestParams.getApiParams().asBody());
+        int timeout = requestParams.getNetParams().getNetworkTimeout();
+        this.client = new OkHttpClient.Builder().connectTimeout(timeout, TimeUnit.MILLISECONDS)
+                .writeTimeout(timeout, TimeUnit.MILLISECONDS).readTimeout(timeout, TimeUnit.MILLISECONDS).build();
 
         return new Request.Builder().header(CUSTOM_REQUEST_HEADER, "1.4.3").url(getUrl(requestParams.getNetParams()))
                 .post(body).build();
