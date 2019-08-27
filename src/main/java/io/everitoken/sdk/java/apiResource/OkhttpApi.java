@@ -54,7 +54,7 @@ class OkhttpApi {
         this.client = new OkHttpClient.Builder().connectTimeout(timeout, TimeUnit.MILLISECONDS)
                 .writeTimeout(timeout, TimeUnit.MILLISECONDS).readTimeout(timeout, TimeUnit.MILLISECONDS).build();
 
-        return new Request.Builder().header(CUSTOM_REQUEST_HEADER, "1.4.4").url(getUrl(requestParams.getNetParams()))
+        return new Request.Builder().header(CUSTOM_REQUEST_HEADER, "1.4.5").url(getUrl(requestParams.getNetParams()))
                 .post(body).build();
     }
 
