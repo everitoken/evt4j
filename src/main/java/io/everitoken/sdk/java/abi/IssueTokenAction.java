@@ -1,7 +1,7 @@
 package io.everitoken.sdk.java.abi;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.alibaba.fastjson.annotation.JSONField;
 
@@ -44,6 +44,12 @@ public class IssueTokenAction extends Abi {
     }
 
     public List<String> getOwner() {
-        return owner.stream().map(Address::toString).collect(Collectors.toList());
+        List<String> rtn = new ArrayList<>();
+
+        for (int i = 0; i < owner.size(); i++) {
+            rtn.add(owner.get(i).getAddress());
+        }
+
+        return rtn;
     }
 }

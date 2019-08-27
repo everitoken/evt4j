@@ -1,7 +1,7 @@
 package io.everitoken.sdk.java.abi;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -27,8 +27,12 @@ public class ApproveSuspendAction extends Abi {
     @NotNull
     @Contract("_, _ -> new")
     public static ApproveSuspendAction of(String proposalName, List<String> signatures) {
-        return new ApproveSuspendAction(proposalName,
-                signatures.stream().map(Signature::of).collect(Collectors.toList()));
+        List<Signature> signatureList = new ArrayList<>();
+        for (int i = 0; i < signatures.size(); i++) {
+            signatureList.add(Signature.of(signatures.get(i)));
+        }
+
+        return new ApproveSuspendAction(proposalName, signatureList);
     }
 
     @Override
@@ -44,6 +48,12 @@ public class ApproveSuspendAction extends Abi {
     }
 
     public List<String> getSignatures() {
-        return signatures.stream().map(Signature::toString).collect(Collectors.toList());
+        List<String> rtn = new ArrayList<>();
+
+        for (int i = 0; i < signatures.size(); i++) {
+            rtn.add(signatures.get(i).toString());
+        }
+
+        return rtn;
     }
 }

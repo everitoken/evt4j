@@ -40,43 +40,54 @@ public class EvtLink {
         return validateEveriPassUnsafe(netParams, EvtLink.parseLink(link, true));
     }
 
+    public static EvtLink.Segment findSegmentByType(List<EvtLink.Segment> segments, int type) {
+        EvtLink.Segment segment = null;
+
+        for (int i = 0; i < segments.size(); i++) {
+            if (segments.get(i).getTypeKey() == type) {
+                segment = segments.get(i);
+                break;
+            }
+        }
+
+        return segment;
+    }
+
     public static EveriPassVerificationResult validateEveriPassUnsafe(NetParams netParams, ParsedLink parsedLink) {
         if (!ParsedLink.isEveriPass(parsedLink)) {
             throw new EvtLinkException("Flag is not correct for everiPass");
         }
 
         // get timestamp
-        Optional<EvtLink.Segment> timestampSegment = parsedLink.getSegments().stream()
-                .filter(segment -> segment.getTypeKey() == 42).findFirst();
+        EvtLink.Segment timestampSegment = findSegmentByType(parsedLink.getSegments(), 42);
 
-        if (!timestampSegment.isPresent()) {
+        if (timestampSegment == null) {
             throw new EvtLinkException("Failed to parse EveriPass link to extract \"timestamp\"");
         }
 
-        long timestampInMilli = getUnsignedInt(timestampSegment.get().getContent()) * 1000;
+        long timestampInMilli = getUnsignedInt(timestampSegment.getContent()) * 1000;
 
         if (Math.abs(DateTime.now().getMillis() - timestampInMilli) > 6 * 10000) {
             throw new EvtLinkException("EveriPass is already expired");
         }
 
         // get domain
-        Optional<EvtLink.Segment> domainSegment = parsedLink.getSegments().stream()
-                .filter(segment -> segment.getTypeKey() == 91).findFirst();
 
-        if (!domainSegment.isPresent()) {
+        EvtLink.Segment domainSegment = findSegmentByType(parsedLink.getSegments(), 91);
+
+        if (domainSegment == null) {
             throw new EvtLinkException("Failed to parse EveriPass link to extract \"domain\"");
         }
 
         // get token name
-        Optional<EvtLink.Segment> tokenSegment = parsedLink.getSegments().stream()
-                .filter(segment -> segment.getTypeKey() == 92).findFirst();
+        EvtLink.Segment tokenSegment = findSegmentByType(parsedLink.getSegments(), 92);
 
-        if (!tokenSegment.isPresent()) {
+        if (tokenSegment == null) {
             throw new EvtLinkException("Failed to parse EveriPass link to extract \"token name\"");
         }
 
-        String domain = new String(domainSegment.get().getContent(), StandardCharsets.UTF_8);
-        String tokenName = new String(tokenSegment.get().getContent(), StandardCharsets.UTF_8);
+        String domain = new String(domainSegment.getContent(), StandardCharsets.UTF_8);
+        String tokenName = new String(tokenSegment.getContent(), StandardCharsets.UTF_8);
 
         if (parsedLink.getPublicKeys().size() != 1) {
             throw new EvtLinkException(
@@ -87,10 +98,19 @@ public class EvtLink {
             List<TokenDomain> ownedTokens = new Api(netParams)
                     .getOwnedTokens(PublicKeysParams.of(parsedLink.getPublicKeys()));
 
-            boolean ownToken = ownedTokens.stream()
-                    .anyMatch(token -> token.getDomain().equals(domain) && token.getName().equals(tokenName));
+            boolean isOwnToken = false;
 
-            return new EveriPassVerificationResult(ownToken, domain, tokenName);
+            for (int i = 0; i < ownedTokens.size(); i++) {
+                TokenDomain token = ownedTokens.get(i);
+
+                if (token.getDomain().equals(domain) && token.getName().equals(tokenName)) {
+                    isOwnToken = true;
+                    break;
+                }
+
+            }
+
+            return new EveriPassVerificationResult(isOwnToken, domain, tokenName);
         } catch (ApiResponseException ex) {
             throw new EvtLinkException(
                     String.format("Can't get owned tokens from the public keys, detailed error: " + "%s", ex.getRaw()),

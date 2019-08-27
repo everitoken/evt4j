@@ -2,7 +2,6 @@ package io.everitoken.sdk.java.param;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.annotation.JSONField;
@@ -30,7 +29,13 @@ public class PublicKeysParams implements ApiParams {
 
     @JSONField(name = "keys")
     public List<String> getPublicKeys() {
-        return publicKeys.stream().map(PublicKey::toString).collect(Collectors.toList());
+        List<String> rtn = new ArrayList<>();
+
+        for (int i = 0; i < publicKeys.size(); i++) {
+            rtn.add(publicKeys.get(i).toString());
+        }
+
+        return rtn;
     }
 
     @Override

@@ -1,8 +1,8 @@
 package io.everitoken.sdk.java.provider;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -43,6 +43,10 @@ public class SignProvider implements SignProviderInterface {
     public List<Signature> sign(final byte[] bufToSign) {
         Objects.requireNonNull(keyProvider);
         final List<PrivateKey> keys = keyProvider.get();
-        return keys.stream().map(privateKey -> Signature.signHash(bufToSign, privateKey)).collect(Collectors.toList());
+        List<Signature> signatures = new ArrayList<>();
+        for (int i = 0; i < keys.size(); i++) {
+            signatures.add(Signature.signHash(bufToSign, keys.get(i)));
+        }
+        return signatures;
     }
 }

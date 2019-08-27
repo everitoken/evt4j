@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -56,7 +55,14 @@ public class TransactionService {
     }
 
     public static List<String> signTransaction(byte[] trxDigest, SignProviderInterface signProvider) {
-        return signProvider.sign(trxDigest).stream().map(Signature::toString).collect(Collectors.toList());
+        List<Signature> signatures = signProvider.sign(trxDigest);
+        List<String> rtn = new ArrayList<>();
+
+        for (int i = 0; i < signatures.size(); i++) {
+            rtn.add(signatures.get(i).toString());
+        }
+
+        return rtn;
     }
 
     public static List<String> signTransaction(Transaction trx, List<String> keys, NetParams walletNetParams,
@@ -125,10 +131,18 @@ public class TransactionService {
     public Transaction buildRawTransaction(TransactionConfiguration trxConfig, List<? extends Abi> actions,
             boolean checkEveriPay) {
 
-        List<String> serializedActions = actions.stream().map(action -> action.serialize(actionSerializeProvider))
-                .collect(Collectors.toList());
+        boolean hasEveriPay = false;
 
-        boolean hasEveriPay = actions.stream().anyMatch(action -> action.getName().equals("everipay"));
+        List<String> serializedActions = new ArrayList<>();
+
+        for (int i = 0; i < actions.size(); i++) {
+
+            if (!hasEveriPay) {
+                hasEveriPay = actions.get(i).getName().equals("everipay");
+            }
+
+            serializedActions.add(actions.get(i).serialize(actionSerializeProvider));
+        }
 
         if (checkEveriPay && hasEveriPay) {
             throw new IllegalArgumentException("EveriPay action is found in this action list, use "
@@ -144,11 +158,17 @@ public class TransactionService {
         Transaction rawTx = buildRawTransaction(trxConfig, actions, false);
 
         JSONObject txObj = JSONObject.parseObject(JSON.toJSONString(rawTx));
+
+        List<String> publicKeys = new ArrayList<>();
+
+        for (int i = 0; i < availablePublicKeys.size(); i++) {
+            publicKeys.add(availablePublicKeys.get(i).toString());
+        }
+
         List<String> requiredKeys = new SigningRequiredKeys().request(RequestParams.of(netParams, () -> {
             JSONObject json = new JSONObject();
             json.put("transaction", txObj);
-            json.put("available_keys",
-                    availablePublicKeys.stream().map(PublicKey::toString).collect(Collectors.toList()));
+            json.put("available_keys", publicKeys);
             return json.toString();
         }));
 
@@ -172,8 +192,12 @@ public class TransactionService {
         byte[] trxSignableDigest = api.getSignableDigest(trxRaw.toString());
 
         // get required keys for suspended proposals
-        List<String> publicKeys = keyProvider.get().stream().map(PrivateKey::toPublicKey).map(PublicKey::toString)
-                .collect(Collectors.toList());
+        List<String> publicKeys = new ArrayList<>();
+        List<PrivateKey> privateKeys = keyProvider.get();
+
+        for (int i = 0; i < privateKeys.size(); i++) {
+            publicKeys.add(privateKeys.get(i).toPublicKey().toString());
+        }
 
         JSONArray suspendRequiredArray = api.getSuspendRequiredKeys(proposalName, publicKeys);
         List<String> suspendRequiredKeys = new ArrayList<>();
@@ -182,10 +206,17 @@ public class TransactionService {
             suspendRequiredKeys.add((String) suspendRequiredArray.get(i));
         }
 
-        // sign it to get the signatures
-        return keyProvider.get().stream().filter(privateKey -> {
+        List<Signature> signatures = new ArrayList<>();
+
+        for (int i = 0; i < privateKeys.size(); i++) {
+            PrivateKey privateKey = privateKeys.get(i);
             PublicKey publicKey = privateKey.toPublicKey();
-            return suspendRequiredKeys.contains(publicKey.toString());
-        }).map(privateKey -> Signature.signHash(trxSignableDigest, privateKey)).collect(Collectors.toList());
+
+            if (suspendRequiredKeys.contains(publicKey.toString())) {
+                signatures.add(Signature.signHash(trxSignableDigest, privateKey));
+            }
+        }
+
+        return signatures;
     }
 }

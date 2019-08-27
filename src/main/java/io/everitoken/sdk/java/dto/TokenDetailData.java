@@ -59,10 +59,4 @@ public class TokenDetailData implements Meta {
     public JSONArray getMetas() {
         return metas;
     }
-
-    @Override
-    public String toString() {
-        return String.format("%s, %s -> %s, %s -> %s", super.toString(), "NewDomainAction", getName(), "owner",
-                owner.stream().map(PublicKey::toString).reduce(String::concat));
-    }
 }

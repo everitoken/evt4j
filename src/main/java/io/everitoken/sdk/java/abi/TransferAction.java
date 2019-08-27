@@ -1,7 +1,7 @@
 package io.everitoken.sdk.java.abi;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.alibaba.fastjson.annotation.JSONField;
 
@@ -27,7 +27,13 @@ public class TransferAction extends Abi {
     @NotNull
     @Contract("_, _, _, _ -> new")
     public static TransferAction of(String domain, String tokenName, List<String> to, String memo) {
-        return new TransferAction(domain, tokenName, to.stream().map(Address::of).collect(Collectors.toList()), memo);
+        List<Address> addresses = new ArrayList<>();
+
+        for (int i = 0; i < to.size(); i++) {
+            addresses.add(Address.of(to.get(i)));
+        }
+
+        return new TransferAction(domain, tokenName, addresses, memo);
     }
 
     @Override
@@ -41,6 +47,12 @@ public class TransferAction extends Abi {
     }
 
     public List<String> getTo() {
-        return to.stream().map(Address::toString).collect(Collectors.toList());
+        List<String> rtn = new ArrayList<>();
+
+        for (int i = 0; i < to.size(); i++) {
+            rtn.add(to.get(i).getAddress());
+        }
+
+        return rtn;
     }
 }

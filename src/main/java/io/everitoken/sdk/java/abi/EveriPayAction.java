@@ -1,7 +1,6 @@
 package io.everitoken.sdk.java.abi;
 
 import java.nio.ByteBuffer;
-import java.util.Optional;
 
 import com.alibaba.fastjson.annotation.JSONField;
 
@@ -46,24 +45,22 @@ public class EveriPayAction extends Abi {
         }
 
         // get symbol from link
-        Optional<EvtLink.Segment> symbolIdSegment = parsedLink.getSegments().stream()
-                .filter(segment -> segment.getTypeKey() == 44).findFirst();
+        EvtLink.Segment symbolIdSegment = EvtLink.findSegmentByType(parsedLink.getSegments(), 44);
 
-        if (!symbolIdSegment.isPresent()) {
+        if (symbolIdSegment == null) {
             throw new IllegalArgumentException("Failed to parse EveriPay link to extract symbolId");
         }
 
-        int symbolId = ByteBuffer.allocate(4).put(symbolIdSegment.get().getContent()).getInt(0);
+        int symbolId = ByteBuffer.allocate(4).put(symbolIdSegment.getContent()).getInt(0);
 
-        Optional<EvtLink.Segment> linkId = parsedLink.getSegments().stream()
-                .filter(segment -> segment.getTypeKey() == 156).findFirst();
+        EvtLink.Segment linkId = EvtLink.findSegmentByType(parsedLink.getSegments(), 156);
 
-        if (!linkId.isPresent()) {
+        if (linkId == null) {
             throw new IllegalArgumentException("Failed to parse EveriPay link to extract linkId");
         }
 
         return new EveriPayAction(link, Integer.toString(symbolId), Asset.parseFromRawBalance(asset), Address.of(payee),
-                Utils.HEX.encode(linkId.get().getContent()));
+                Utils.HEX.encode(linkId.getContent()));
     }
 
     @Override

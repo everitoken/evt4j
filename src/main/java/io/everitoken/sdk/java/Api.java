@@ -1,7 +1,7 @@
 package io.everitoken.sdk.java;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -170,9 +170,15 @@ public class Api {
                     String.format("Direct \"%s\" is not supported, only asc and desc are supported", direction));
         }
 
+        List<String> publicKeyList = new ArrayList<>();
+
+        for (int i = 0; i < publicKeys.size(); i++) {
+            publicKeyList.add(publicKeys.get(i).toString());
+        }
+
         return new TransactionDetailsOfPublicKeys(apiRequestConfig).request(RequestParams.of(netParams, () -> {
             JSONObject body = new JSONObject();
-            body.put("keys", publicKeys.stream().map(PublicKey::toString).collect(Collectors.toList()));
+            body.put("keys", publicKeyList);
             body.put("skip", skip);
             body.put("take", take);
             body.put("dire", direction);

@@ -36,6 +36,8 @@ class OkhttpApi {
 
         int timeout = localApiReqConfig.getTimeout();
 
+        this.client = new OkHttpClient.Builder().connectTimeout(timeout, TimeUnit.MILLISECONDS)
+                .writeTimeout(timeout, TimeUnit.MILLISECONDS).readTimeout(timeout, TimeUnit.MILLISECONDS).build();
     }
 
     protected OkhttpApi(String uri) {

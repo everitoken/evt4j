@@ -1,7 +1,6 @@
 package io.everitoken.sdk.java.abi;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Optional;
 
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
@@ -33,23 +32,21 @@ public class EveriPassAction extends Abi {
         }
 
         // get domain
-        Optional<EvtLink.Segment> domainSegment = parsedLink.getSegments().stream()
-                .filter(segment -> segment.getTypeKey() == 91).findFirst();
+        EvtLink.Segment domainSegment = EvtLink.findSegmentByType(parsedLink.getSegments(), 91);
 
-        if (!domainSegment.isPresent()) {
+        if (domainSegment == null) {
             throw new EvtLinkException("Failed to parse EveriPass link to extract \"domain\"");
         }
 
         // get token name
-        Optional<EvtLink.Segment> tokenSegment = parsedLink.getSegments().stream()
-                .filter(segment -> segment.getTypeKey() == 92).findFirst();
+        EvtLink.Segment tokenSegment = EvtLink.findSegmentByType(parsedLink.getSegments(), 92);
 
-        if (!tokenSegment.isPresent()) {
+        if (tokenSegment == null) {
             throw new EvtLinkException("Failed to parse EveriPass link to extract \"token name\"");
         }
 
-        String domain = new String(domainSegment.get().getContent(), StandardCharsets.UTF_8);
-        String tokenName = new String(tokenSegment.get().getContent(), StandardCharsets.UTF_8);
+        String domain = new String(domainSegment.getContent(), StandardCharsets.UTF_8);
+        String tokenName = new String(tokenSegment.getContent(), StandardCharsets.UTF_8);
 
         return new EveriPassAction(link, domain, tokenName);
     }
