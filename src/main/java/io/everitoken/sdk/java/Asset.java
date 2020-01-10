@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.spongycastle.util.Strings;
+import org.bouncycastle.util.Strings;
 
 import io.everitoken.sdk.java.exceptions.InvalidFungibleBalanceException;
 

@@ -3,7 +3,7 @@ package io.everitoken.sdk.java.dto;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.annotation.JSONField;
 
-import org.spongycastle.util.Strings;
+import org.bouncycastle.util.Strings;
 
 import io.everitoken.sdk.java.exceptions.InvalidFungibleBalanceException;
 

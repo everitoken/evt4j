@@ -137,7 +137,7 @@
         <dependency>
             <groupId>org.bitcoinj</groupId>
             <artifactId>bitcoinj-core</artifactId>
-            <version>0.14.7</version>
+            <version>0.15.6</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -176,6 +176,11 @@
             <groupId>com.google.zxing</groupId>
             <artifactId>javase</artifactId>
             <version>3.3.3</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>28.2-jre</version>
         </dependency>
     </dependencies>
     <name>evt4j</name>
