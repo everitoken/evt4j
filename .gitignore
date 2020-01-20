@@ -30,3 +30,4 @@ target
 .settings
 .vscode/
 .vim
+.projections.json
